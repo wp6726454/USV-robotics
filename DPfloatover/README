@@ -1,0 +1,11 @@
+Code for Float-over Decommissions using Dynamic Positioning
+
+1. To use gamepad
+sudo ds4drv
+and you can press the share button and the PlayStation button simultaneously to
+put the gamepad in pairing mode
+
+2. Select-based concurrent socket server
+
+
+3. Thread-based concurrent socket server

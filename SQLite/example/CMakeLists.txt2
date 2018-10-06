@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.5.1)
+project (Tutorial)
+add_executable(tutorial dbconnect.c)
+include_directories(/usr/include)
+link_directories(/usr/lib)
+target_link_libraries(tutorial sqlite3)

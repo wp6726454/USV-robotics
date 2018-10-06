@@ -1,0 +1,31 @@
+[comment]
+  The milo1 example in OPF format
+[/comment]
+
+[hints]
+  [hint NUMVAR] 2 [/hint]
+  [hint NUMCON] 2 [/hint]
+  [hint NUMANZ] 4 [/hint]
+[/hints]
+
+[variables disallow_new_variables]
+  x1 x2 
+[/variables]
+
+[objective maximize 'obj']
+   x1 + 6.4e-1 x2
+[/objective]
+
+[constraints]
+  [con 'c1'] 5e+1 x1 + 3.1e+1 x2 <= 2.5e+2 [/con]
+  [con 'c2'] -4 <= 3 x1 - 2 x2 [/con]
+[/constraints]
+
+[bounds]
+  [b] 0 <= * [/b]
+[/bounds]
+
+[integer]
+  x1 x2 
+[/integer]
+
