@@ -129,9 +129,7 @@ void updateKalmanA(double orientation) {
 // initi
 int main() {
   // The first vessel
-<<<<<<< HEAD
-  vessel_first myvessel_first{{623, 0, 0, 0, 706, 444, 0, 444, 1298}};
-=======
+
   vessel_first myvessel_first{
       {623, 0, 0, 0, 706, 444, 0, 444, 1298},  // mass
       {17, 0, 0, 0, 20, 0, 0, 0, 100},         // damping
@@ -178,7 +176,6 @@ int main() {
       -1.893,                                  // right_x
       0.216                                    // right_y
   };
->>>>>>> real time control
   realtimevessel_first myrealtimevessel_first;
   myrealtimevessel_first.tau.setZero();
   myrealtimevessel_first.alpha << -M_PI / 2, M_PI / 180, -M_PI / 30;
@@ -228,9 +225,6 @@ int main() {
   write2csvfile("first_BalphaU.csv", save_BalphaU_first);
 
   // The second vessel
-<<<<<<< HEAD
-  vessel_second myvessel_second;
-=======
   // constant parameters of the second vessel
   vessel_second myvessel_second{
       {623, 0, 0, 0, 706, 444, 0, 444, 1298},  // mass
@@ -278,7 +272,7 @@ int main() {
       -1.893,                                  // right_x
       0.216                                    // right_y
   };
->>>>>>> real time control
+
   realtimevessel_second myrealtimevessel_second;
   myrealtimevessel_second.tau.setZero();
   myrealtimevessel_second.alpha << -M_PI / 2, M_PI / 180, -M_PI / 30;
@@ -328,9 +322,7 @@ int main() {
   write2csvfile("second_BalphaU.csv", save_BalphaU_second);
 
   // The third vessel
-<<<<<<< HEAD
-  vessel_third myvessel_third;
-=======
+
   // constant parameters of the third vessel
   vessel_third myvessel_third{
       {623, 0, 0, 0, 706, 444, 0, 444, 1298},  // mass
@@ -378,7 +370,6 @@ int main() {
       -1.893,                                  // right_x
       0.216                                    // right_y
   };
->>>>>>> real time control
   realtimevessel_third myrealtimevessel_third;
   myrealtimevessel_third.tau.setZero();
   myrealtimevessel_third.alpha << -M_PI / 2, M_PI / 180, -M_PI / 30;

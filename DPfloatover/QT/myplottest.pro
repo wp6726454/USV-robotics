@@ -12,33 +12,21 @@ TARGET = myplottest
 TEMPLATE = app
 CONFIG += c++14
 INCLUDEPATH+=\
-<<<<<<< HEAD
-    /home/scar1et/Coding/CPP1X/USV/DPfloatover/third_party/eigen   \
-    /opt/mosek/8/tools/platform/linux64x86/h \
-    /home/scar1et/Coding/CPP1X/USV/DPfloatover/include
-
-
-QMAKE_CXXFLAGS += -std=c++14 \
-                  -march=native -O3 -mavx
-
-LIBS +=  -lsqlite3 \
-        -L/opt/mosek/8/tools/platform/linux64x86/bin \
-        -Wl,-rpath-link,/opt/mosek/8/tools/platform/linux64x86/bin '-Wl,-rpath=/opt/mosek/8/tools/platform/linux64x86/bin' \
-        -lmosek64
-=======
     /home/skloe/Coding/CPP1X/USV/DPfloatover/third_party/eigen   \
     /opt/mosek/7/tools/platform/linux32x86/h \
-    /home/skloe/Coding/CPP1X/USV/DPfloatover/include
+    /home/skloe/Coding/CPP1X/USV/DPfloatover/include \
+    /home/skloe/Coding/CPP1X/USV/timer \
 
-
+QMAKE_LFLAGS += -m32
 QMAKE_CXXFLAGS += -m32 -std=c++14 \
                   -march=native -O3 -mavx
 
-LIBS +=  -lsqlite3 \
-        -L/opt/mosek/7/tools/platform/linux32x86/bin \
-        -Wl,-rpath-link,/opt/mosek/7/tools/platform/linux32x86/bin '-Wl,-rpath=/opt/mosek/7/tools/platform/linux32x86/bin' \
+LIBS += -L/opt/mosek/7/tools/platform/linux32x86/bin \
+        -Wl,-rpath-link,/opt/mosek/7/tools/platform/linux32x86/bin \
+        -Wl,-rpath,'/opt/mosek/7/tools/platform/linux32x86/bin' \
+        -lsqlite3 \
         -lmosek
->>>>>>> real time control
+
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings

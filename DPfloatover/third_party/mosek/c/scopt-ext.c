@@ -4,6 +4,7 @@
    File     : scopt-ext.c
 
  */ 
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,7 +64,7 @@ static void scgrdobjstruc(nlhand_t nlh,
 
   zibuf = nlh->zibuf;
 
-  #if DEBUG>2
+  #if DEBUG
   printf("scgrdobjstruc: begin\n");
   #endif
 
@@ -98,7 +99,7 @@ static void scgrdobjstruc(nlhand_t nlh,
   #if DEBUG>5
   printf("grdnz: %d\n",nz[0]);
   #endif
-  #if DEBUG>2
+  #if DEBUG
   printf("scgrdobjstruc: end\n");
   #endif
 
@@ -112,7 +113,7 @@ static void scgrdconistruc(nlhand_t nlh,
   int j,k,
       *zibuf;
 
-  #if DEBUG>2
+  #if DEBUG
   printf("scgrdconistruc: begin\n");
   #endif
 
@@ -149,7 +150,7 @@ static void scgrdconistruc(nlhand_t nlh,
   #if DEBUG>5
   printf("i: %d nz: %d\n",i,nz[0]);
   #endif
-  #if DEBUG>2
+  #if DEBUG
   printf("scgrdconistruc: end\n");
   #endif
 } /* scgrdconistruc */
@@ -157,7 +158,7 @@ static void scgrdconistruc(nlhand_t nlh,
 static int schesstruc(nlhand_t     nlh,
                       int          yo,
                       int          numycnz,
-                      const int *ycsub,
+                      MSKCONST int *ycsub,
                       int          *nz,
                       int          *sub)
 /* Computes the number nonzeros the lower triangular part of
@@ -171,7 +172,7 @@ static int schesstruc(nlhand_t     nlh,
   int i,j,k,p,
       *zibuf;
 
-  #if DEBUG>2
+  #if DEBUG
   printf("schesstruc: begin\n");
   #endif
 
@@ -253,7 +254,7 @@ static int schesstruc(nlhand_t     nlh,
   #if DEBUG>5
   printf("Hessian size: %d\n",nz[0]);
   #endif
-  #if DEBUG>2
+  #if DEBUG
   printf("schesstruc: end\n");
   #endif
 
@@ -269,7 +270,7 @@ static int MSKAPI scstruc(void        *nlhandle,
                           int         *grdconisub,
                           int          yo,
                           int          numycnz,
-                          const int *ycsub,
+                          MSKCONST int *ycsub,
                           int          maxnumhesnz,
                           int          *numhesnz,
                           int          *hessubi,
@@ -281,7 +282,7 @@ static int MSKAPI scstruc(void        *nlhandle,
   int      k,itemp;
   nlhand_t nlh;
 
-  #if DEBUG>2
+  #if DEBUG
   printf("scstruc: begin\n");
   #endif
 
@@ -303,7 +304,7 @@ static int MSKAPI scstruc(void        *nlhandle,
 
   if ( numhesnz )
   {
-    #if DEBUG>2
+    #if DEBUG
     printf("Evaluate Hessian structure yo: %d\n",yo);
     #endif
 
@@ -331,7 +332,7 @@ static int MSKAPI scstruc(void        *nlhandle,
   }
   #endif
 
-  #if DEBUG>2
+  #if DEBUG
   printf("scstruc: end\n");
   #endif
 
@@ -342,7 +343,6 @@ static int evalopr(int    opr,
                    double f,
                    double g,
                    double h,
-                   int    j,
                    double xj,
                    double *fxj,
                    double *grdfxj,
@@ -351,7 +351,6 @@ static int evalopr(int    opr,
      fxj:    Is the function value
      grdfxj: Is the first derivative.
      hexfxj: Is the second derivative.
-   Return: A nonzero value if a function could not evaluated. 
  */
 {
   double rtemp;
@@ -359,8 +358,9 @@ static int evalopr(int    opr,
   switch ( opr )
   {
     case MSK_OPR_ENT:
-      if ( xj<=0.0 ) 
+      if ( xj<=0.0 ) {
         return ( 1 );
+      }
 
       if ( fxj )
         fxj[0] = f*xj*log(xj);
@@ -385,8 +385,9 @@ static int evalopr(int    opr,
       break;
     case MSK_OPR_LOG:
       rtemp = g*xj+h;
-      if ( rtemp<=0.0 ) 
+      if ( rtemp<=0.0 ) {
         return ( 1 );
+      }
 
       if ( fxj )
         fxj[0] = f*log(rtemp);
@@ -398,63 +399,18 @@ static int evalopr(int    opr,
         hesfxj[0] = -(f*g*g)/(rtemp*rtemp);
       break;
     case MSK_OPR_POW:
-      if ( g==1.0 ) 
-      {
-        /* This is the linear case.
-           We strongly recommend not to put
-           linear terms among the nonlinearities. */
+      if ( fxj )
+        fxj[0] = f*pow(xj+h,g);
 
-        if (fxj)
-          fxj[0] = f*(xj+h);
+      if ( grdfxj )
+        grdfxj[0] = f*g*pow(xj+h,g-1.0);
 
-        if ( grdfxj )
-          grdfxj[0] = f;
-
-        if ( hesfxj )
-           hesfxj[0] = 0.0;
-      }
-      else
-      {
-        if (fxj)
-          fxj[0] = f*pow(xj+h,g);
-
-        if ( grdfxj )
-        {
-          if ( xj==0.0 && g<1.0 )
-          {
-            #if DEBUG
-            printf("%s(%d): Hessian evaluation error for variable x%d: %e*(%e+%e)^%e\n",__FILE__,__LINE__,j,f,xj,h,g);
-            #endif
-            return ( 1 );
-          }
-
-          grdfxj[0] = f*g*pow(xj+h,g-1.0);
-        }
-
-        if ( hesfxj )
-        {
-          if ( (xj+h)==0.0 && g<2.0 )
-          {
-            /* The second order derivative is not defined because 1.0/0.0 has to be evaluated. */
-
-            #if DEBUG
-            printf("%s(%d): Hessian evaluation error for variable x%d: %e*(%e+%e)^%e\n",__FILE__,__LINE__,j,f,xj,h,g);
-            #endif
-            return ( 1 );
-          }
-          hesfxj[0] = f * g * (g - 1.0) * pow(xj + h, g - 2.0);
-        }
-      }
+      if ( hesfxj )
+        hesfxj[0] = f*g*(g-1.0)*pow(xj+h,g-2.0);
       break;
     case MSK_OPR_SQRT: /* handle operator f * sqrt(gx + h) */
-
       rtemp = g*xj+h;
-      if ( rtemp<0.0  || ( rtemp<=0.0 && ( grdfxj || hesfxj ) ) )
-      {
-        #if DEBUG
-        printf("%s(%d): Function evaluation error\n",__FILE__,__LINE__);
-        #endif
-
+      if ( rtemp<=0.0 ) {
         return ( 1 );
       }
       
@@ -472,11 +428,11 @@ static int evalopr(int    opr,
       exit(0);
   }
   
-  return ( 0 );
+  return ( MSK_RES_OK );
 } /* evalopr */
 
 static int scobjeval(nlhand_t        nlh,
-                     const double *x,
+                     MSKCONST double *x,
                      double          *objval,
                      int             *grdnz,
                      int             *grdsub,
@@ -489,7 +445,7 @@ static int scobjeval(nlhand_t        nlh,
   double fx,grdfx,
          *zdbuf;
 
-  #if DEBUG>2
+  #if DEBUG
   printf("scobjeval: begin\n");
   #endif
 
@@ -506,7 +462,7 @@ static int scobjeval(nlhand_t        nlh,
   {
     j = nlh->oprjo[k];
 
-    r = evalopr(nlh->opro[k],nlh->oprfo[k],nlh->oprgo[k],nlh->oprho[k],j,x[j],&fx,&grdfx,NULL);
+    r = evalopr(nlh->opro[k],nlh->oprfo[k],nlh->oprgo[k],nlh->oprho[k],x[j],&fx,&grdfx,NULL);
     if ( r )
     {
       #if DEBUG 
@@ -564,7 +520,7 @@ static int scobjeval(nlhand_t        nlh,
   }
   #endif
 
-  #if DEBUG>2
+  #if DEBUG
   printf("scobjeval: end\n");
   #endif
 
@@ -573,10 +529,10 @@ static int scobjeval(nlhand_t        nlh,
 
 static int scgrdconeval(nlhand_t        nlh,
                         int             i,
-                        const double *x,
+                        MSKCONST double *x,
                         double          *fval,
                         int             grdnz,
-                        const int    *grdsub,
+                        MSKCONST int    *grdsub,
                         double          *grdval)
 /* Purpose: Compute number value and the gradient of constraint i.
             grdsub[0,...,grdnz-1] tells which values are needed in gradient
@@ -588,7 +544,7 @@ static int scgrdconeval(nlhand_t        nlh,
   double fx,grdfx,
          *zdbuf;
 
-  #if DEBUG>2
+  #if DEBUG
   printf("scgrdconeval: begin\n");
   #endif
 
@@ -607,7 +563,7 @@ static int scgrdconeval(nlhand_t        nlh,
       k = nlh->subc[p];
       j = nlh->oprjc[k];
 
-      r = evalopr(nlh->oprc[k],nlh->oprfc[k],nlh->oprgc[k],nlh->oprhc[k],j,x[j],&fx,&grdfx,NULL);
+      r = evalopr(nlh->oprc[k],nlh->oprfc[k],nlh->oprgc[k],nlh->oprhc[k],x[j],&fx,&grdfx,NULL);
 
       if ( r )
       {
@@ -679,7 +635,7 @@ static int scgrdconeval(nlhand_t        nlh,
   }
   #endif
 
-  #if DEBUG>2
+  #if DEBUG
   printf("scgrdconeval: end\n");
   #endif
 
@@ -687,19 +643,19 @@ static int scgrdconeval(nlhand_t        nlh,
 } /* scgrdconeval */
 
 static int MSKAPI sceval(void            *nlhandle,
-                         const double *xx,
+                         MSKCONST double *xx,
                          double          yo,
-                         const double *yc,
+                         MSKCONST double *yc,
                          double          *objval,
                          int             *numgrdobjnz,
                          int             *grdobjsub,
                          double          *grdobjval,
                          int             numi,
-                         const int    *subi,
+                         MSKCONST int    *subi,
                          double          *conval,
-                         const int    *grdconptrb,
-                         const int    *grdconptre,
-                         const int    *grdconsub,
+                         MSKCONST int    *grdconptrb,
+                         MSKCONST int    *grdconptre,
+                         MSKCONST int    *grdconsub,
                          double          *grdconval,
                          double          *grdlag,
                          int             maxnumhesnz,
@@ -711,22 +667,21 @@ static int MSKAPI sceval(void            *nlhandle,
             requested information to MOSEK.
  */
 {
-  nlhand_t        nlh=(nlhand_t) nlhandle;
-  const MSKint32t numcon = nlh->numcon,
-                  numvar = nlh->numvar;
-  double          fx,grdfx,hesfx;
-  int             r=0; 
-  int             i,j,k,l,p,
-                  *zibuf;
- 
+  double   fx,grdfx,hesfx;
+  int      r; 
+  int      i,j,k,l,p,numvar,numcon,
+           *zibuf;
+  nlhand_t nlh;
 
   #if DEBUG
   printf("sceval: begin\n");
   #endif
 
-  if ( numhesnz )
-    numhesnz[0] = 0;
-  
+  nlh    = (nlhand_t) nlhandle;
+
+  numcon = nlh->numcon; 
+  numvar = nlh->numvar;
+
   r      = scobjeval(nlh,xx,objval,numgrdobjnz,grdobjsub,grdobjval);
 
   for(k=0; k<numi && !r; ++k)
@@ -738,12 +693,6 @@ static int MSKAPI sceval(void            *nlhandle,
                      grdconsub==NULL ? NULL : grdconsub+grdconptrb[k],
                      grdconval==NULL ? NULL : grdconval+grdconptrb[k]);
   }
-
-  #if DEBUG
-  if ( r ) 
-    printf("%s(%d): r=%d\n",__FILE__,__LINE__,r);
-  #endif
-
 
   if ( grdlag && !r )
   {
@@ -759,56 +708,41 @@ static int MSKAPI sceval(void            *nlhandle,
       for(k=0; k<nlh->numopro && !r; ++k)
       {
         j = nlh->oprjo[k];
-        r = evalopr(nlh->opro[k],nlh->oprfo[k],nlh->oprgo[k],nlh->oprho[k],j,xx[j],NULL,&grdfx,NULL);
+        r = evalopr(nlh->opro[k],nlh->oprfo[k],nlh->oprgo[k],nlh->oprho[k],xx[j],NULL,&grdfx,NULL);
         if ( r )
         {
-          #if DEBUG
-          printf("%s(%d): Function evaluation error for variable j: %d xx: %e\n",__FILE__,__LINE__,j,xx[j]);
-          #endif
+          #if DEBUG 
+          printf("Failure for variable j: %d\n",j);
+          #endif 
         }
         else 
           grdlag[j] += yo*grdfx;
       }
     }
 
-    #if DEBUG
-    if ( r ) 
-      printf("%s(%d): r=%d\n",__FILE__,__LINE__,r);
-    #endif
-
     if ( nlh->ptrc )
     {
-      for(l=0; l<numi && !r; ++l)
+      for(l=0; l<numi && r==MSK_RES_OK; ++l)
       {
         i = subi[l];
-        for(p=nlh->ptrc[i]; p<nlh->ptrc[i+1] && !r; ++p)
+        for(p=nlh->ptrc[i]; p<nlh->ptrc[i+1] && r==MSK_RES_OK; ++p)
         {
           k = nlh->subc[p];
           j = nlh->oprjc[k];
-          r = evalopr(nlh->oprc[k],nlh->oprfc[k],nlh->oprgc[k],nlh->oprhc[k],j,xx[j],NULL,&grdfx,NULL);  
-          if ( r )
-          {
-            #if DEBUG
-            printf("%s(%d): Function evaluation error for variable j: %d xx: %e\n",__FILE__,__LINE__,j,xx[j]);
-            #endif
-          }
-          else
-            grdlag[j] -= yc[i]*grdfx;
+
+          r = evalopr(nlh->oprc[k],nlh->oprfc[k],nlh->oprgc[k],nlh->oprhc[k],xx[j],NULL,&grdfx,NULL);
+
+          grdlag[j] -= yc[i]*grdfx;
         }
       }
     }
   }
 
-  #if DEBUG
-  if ( r ) 
-    printf("%s(%d): r=%d\n",__FILE__,__LINE__,r);
-  #endif
-
-  if ( maxnumhesnz && !r )
+  if ( maxnumhesnz && r==MSK_RES_OK )
   {
     /* Compute and store the Hessian of the Lagrange function. */
 
-    #if DEBUG & 0
+    #if DEBUG
     printf("x: \n");
     for(j=0; j<numvar; ++j)
       printf(" %e\n",xx[j]);
@@ -822,57 +756,41 @@ static int MSKAPI sceval(void            *nlhandle,
     numhesnz[0] = 0;
     if ( yo!=0.0 )
     {
-      for(k=0; k<nlh->numopro && !r; ++k)
+      for(k=0; k<nlh->numopro && r==MSK_RES_OK; ++k)
       {
         j = nlh->oprjo[k];
-        r = evalopr(nlh->opro[k],nlh->oprfo[k],nlh->oprgo[k],nlh->oprho[k],j,xx[j],NULL,NULL,&hesfx);
-        if ( r )
+        r = evalopr(nlh->opro[k],nlh->oprfo[k],nlh->oprgo[k],nlh->oprho[k],xx[j],NULL,NULL,&hesfx);
+        if ( !zibuf[j] )
         {
-          #if DEBUG
-          printf("%s(%d): Function evaluation error for variable j: %d xx: %e\n",__FILE__,__LINE__,j,xx[j]);
-          #endif
+          ++ numhesnz[0];
+          zibuf[j]             = numhesnz[0];
+          hessubi[zibuf[j]-1]  = j;
+          hesval[zibuf[j]-1]   = 0.0;
         }
-        else
-        {
-          if ( !zibuf[j] )
-          {
-                                ++ numhesnz[0];
-            zibuf[j]             = numhesnz[0];
-            hessubi[zibuf[j]-1]  = j;
-            hesval[zibuf[j]-1]   = 0.0;
-          }
-          hesval[zibuf[j]-1] += yo*hesfx;
-        }
+        hesval[zibuf[j]-1] += yo*hesfx;
       }
     }
 
     if ( nlh->ptrc )
     {
-      for(l=0; l<numi && !r; ++l)
+      for(l=0; l<numi && r==MSK_RES_OK; ++l)
       {
         i = subi[l];
-        for(p=nlh->ptrc[i]; p<nlh->ptrc[i+1] && !r; ++p)
+        for(p=nlh->ptrc[i]; p<nlh->ptrc[i+1] && r==MSK_RES_OK; ++p)
         {
           k = nlh->subc[p];
           j = nlh->oprjc[k];
-          r = evalopr(nlh->oprc[k],nlh->oprfc[k],nlh->oprgc[k],nlh->oprhc[k],j,xx[j],NULL,NULL,&hesfx);
-          if ( r )
+
+          r = evalopr(nlh->oprc[k],nlh->oprfc[k],nlh->oprgc[k],nlh->oprhc[k],xx[j],NULL,NULL,&hesfx);
+
+          if ( !zibuf[j] )
           {
-            #if DEBUG
-            printf("%s(%d): Function evaluation error for variable j: %d xx: %e\n",__FILE__,__LINE__,j,xx[j]);
-            #endif
+                                ++ numhesnz[0];
+            zibuf[j]             = numhesnz[0];
+            hesval[zibuf[j]-1]   = 0.0;
+            hessubi[zibuf[j]-1]  = j;
           }
-          else
-          {
-            if ( !zibuf[j] )
-            {
-                                  ++ numhesnz[0];
-              zibuf[j]             = numhesnz[0];
-              hesval[zibuf[j]-1]   = 0.0;
-              hessubi[zibuf[j]-1]  = j;
-            }
-            hesval[zibuf[j]-1] -= yc[i]*hesfx;
-          }
+          hesval[zibuf[j]-1] -= yc[i]*hesfx;
         }
       }
     }
@@ -889,6 +807,7 @@ static int MSKAPI sceval(void            *nlhandle,
       hessubj[k] = j;
       zibuf[j]   = 0;
     }
+
   }
 
   #if DEBUG>5

@@ -10,19 +10,19 @@
 #ifndef _CONTROLLER_H_
 #define _CONTROLLER_H_
 
-#include "../../../include/constants.h"
-#include "/home/scar1et/Coding/CPP1X/USV/timer/timecounter.hpp"
+#include <math.h>
+#include <stdio.h>
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 #include <Eigen/SparseCholesky>
 #include <fstream>
 #include <iostream>
 #include <map>
-#include <math.h>
-#include <stdio.h>
 #include <string>
 #include <unordered_map>
 #include <unsupported/Eigen/MatrixFunctions>
+#include "../../../include/constants.h"
+#include "timecounter.hpp"
 const int m = 3;
 const int n = 12;
 const int mpn = m + n;
@@ -43,7 +43,7 @@ typedef Eigen::Matrix<double, nz, 1> Vectnz;
 typedef Eigen::Matrix<double, nmu, 1> Vectnmu;
 
 class controller {
-public:
+ public:
   controller() {
     initilizeABcts();
     generateABdiscrete(0);
@@ -178,31 +178,31 @@ public:
                           totalresidualnorm);
   }
 
-private:
+ private:
   int fastcount = 0;
 
-  Matnn Acts;        // A in the continuous-time state space model
-  Matnm Bcts;        // B in the continuous-time state space model
-  Eigen::MatrixXd A; // A in the discrete-time state space model
-  Eigen::MatrixXd B; // B in the discrete-time state space model
-  Vectn Omega_bar;   // mean of noise in state space model
+  Matnn Acts;         // A in the continuous-time state space model
+  Matnm Bcts;         // B in the continuous-time state space model
+  Eigen::MatrixXd A;  // A in the discrete-time state space model
+  Eigen::MatrixXd B;  // B in the discrete-time state space model
+  Vectn Omega_bar;    // mean of noise in state space model
 
   // objective matrices in MPC
-  Matnn Q;  // Q in MPC
-  Matmm R;  // R in MPC
-  Matnm S;  // S in MPC
-  Matnn Qf; // Qf in MPC
-  Vectn q;  // q in MPC
-  Vectn qf; // qf in MPC
-  Vectm r;  // r in MPC
+  Matnn Q;   // Q in MPC
+  Matmm R;   // R in MPC
+  Matnm S;   // S in MPC
+  Matnn Qf;  // Qf in MPC
+  Vectn q;   // q in MPC
+  Vectn qf;  // qf in MPC
+  Vectm r;   // r in MPC
 
   // constraints in MPC
-  Eigen::Matrix<double, num_Fx, n> Fx; // Fx in MPC
-  Eigen::Matrix<double, num_Fx, 1> fx; // fx in MPC
-  Eigen::Matrix<double, num_Fu, m> Fu; // Fu in MPC
-  Eigen::Matrix<double, num_Fu, 1> fu; // fu in MPC
-  Eigen::Matrix<double, num_Ff, n> Ff; // Ff in MPC
-  Eigen::Matrix<double, num_Ff, 1> ff; // ff in MPC
+  Eigen::Matrix<double, num_Fx, n> Fx;  // Fx in MPC
+  Eigen::Matrix<double, num_Fx, 1> fx;  // fx in MPC
+  Eigen::Matrix<double, num_Fu, m> Fu;  // Fu in MPC
+  Eigen::Matrix<double, num_Fu, 1> fu;  // fu in MPC
+  Eigen::Matrix<double, num_Ff, n> Ff;  // Ff in MPC
+  Eigen::Matrix<double, num_Ff, 1> ff;  // ff in MPC
 
   // Quadratic programming in MPC
   Eigen::MatrixXd H;
@@ -304,7 +304,7 @@ private:
     // Quadratic programming in MPC
     /* H and g */
     H.resize(nz, nz);
-    g.resize(nz, 1); // the first row block are not specified
+    g.resize(nz, 1);  // the first row block are not specified
     H.topLeftCorner(m, m) = R;
     H.bottomRightCorner(n, n) = Qf;
 
@@ -335,7 +335,7 @@ private:
 
     /* C and b */
     C.resize(nmu, nz);
-    b.resize(nmu, 1); // the first row block are not specified
+    b.resize(nmu, 1);  // the first row block are not specified
     C.topLeftCorner(n, m + n) << -B, Eigen::MatrixXd::Identity(n, n);
     b.topRows(n) = Omega_bar;
     for (int i = 0; i != (T - 1); ++i) {
@@ -539,7 +539,7 @@ private:
       Eigen::LLT<Eigen::MatrixXd> lltofYii(Yii - L_last * L_last.transpose());
       Lii = lltofYii.matrixL();
       Li_1i = Lii.triangularView<Eigen::Lower>().solve(Yii_1);
-      Li_1i.transposeInPlace(); // a = a.transpose(); // !!! do NOT do this !!!
+      Li_1i.transposeInPlace();  // a = a.transpose(); // !!! do NOT do this !!!
       /* update map for LLt of Y */
       map4Lii[i] = Lii;
       map4Lii_1[i] = Li_1i;
@@ -620,7 +620,7 @@ private:
 
     // compute the l2 norm of primal and dual residuals
     totalresidualnorm =
-        sqrt(primal_residual_square + dual_residual_square); // squared l2 norm
+        sqrt(primal_residual_square + dual_residual_square);  // squared l2 norm
     /* check if the implicit constraints are satisfied */
     if ((d.array() < residuals_tolerance).any()) {
       totalresidualnorm *= 1000;
@@ -688,7 +688,7 @@ private:
     }
     // compute the l2 norm of primal and dual residuals
     double totalresidualnorm =
-        sqrt(primal_residual_square + dual_residual_square); // squared l2 norm
+        sqrt(primal_residual_square + dual_residual_square);  // squared l2 norm
     /* check if the implicit constraints are satisfied */
     if ((d.array() < residuals_tolerance).any()) {
       totalresidualnorm *= 1000;
@@ -795,7 +795,6 @@ private:
   void thrustallocation() {}
   // read data from csv file and pass to Eigen matrix
   Eigen::MatrixXd readCSV(const std::string &file, int rows, int cols) {
-
     std::ifstream in(file);
     std::string line;
 
@@ -805,9 +804,7 @@ private:
     Eigen::MatrixXd res = Eigen::MatrixXd(rows, cols);
 
     if (in.is_open()) {
-
       while (std::getline(in, line)) {
-
         char *ptr = (char *)line.c_str();
         int len = line.length();
 
@@ -815,7 +812,6 @@ private:
 
         char *start = ptr;
         for (int i = 0; i < len; i++) {
-
           if (ptr[i] == ',') {
             res(row, col++) = atof(start);
             start = ptr + i + 1;

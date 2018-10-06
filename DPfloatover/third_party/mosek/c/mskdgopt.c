@@ -16,6 +16,7 @@
 */
 
 
+
 #include "dgopt.h"
 
 static void MSKAPI printstr(void       *handle,
@@ -50,7 +51,8 @@ int main (int argc,char ** argv)
     if ( r==MSK_RES_OK && argc>3 )
     {
       /* Read parameter file if defined. */
-      r = MSK_readparamfile(task,argv[3]);
+      MSK_putstrparam(task,MSK_SPAR_PARAM_READ_FILE_NAME,argv[3]);
+      r = MSK_readparamfile(task);
     }
   }
   

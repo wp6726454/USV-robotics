@@ -6,124 +6,111 @@
   Purpose:   This examples demonstrates proper response handling.
 */
 
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "mosek.h"
 
-/* Log handler */
 void MSKAPI printlog(void *ptr,
-                     const char s[])
+                     MSKCONST char s[])
 {
-  printf("%s", s);
-} 
+  printf("%s",s);
+} /* printlog */  
 
-int main(int argc, char const *argv[])
+int main(int argc,char const *argv[])
 {
   MSKenv_t    env;
-  MSKtask_t   task;
   MSKrescodee r;
-  char        symname[MSK_MAX_STR_LEN];
-  char        desc[MSK_MAX_STR_LEN];
-  int         i, numvar;
-  double      *xx = NULL;
-  const char  *filename;
+  MSKtask_t   task;
 
-  if ( argc >= 2 ) filename = argv[1];
-  else             filename = "../data/cqo1.mps";
-
-  // Create the environment
-  r = MSK_makeenv(&env, NULL);
-
-  if ( r == MSK_RES_OK )
+  if ( argc<2 )
   {
-    // Create the task
-    r = MSK_makeemptytask(env, &task);
+    printf("No input file specified\n");
+    exit(0);
+  }
+  else
+    printf("Inputfile:  %s\n",argv[1]);
 
-    // (Optionally) attach the log handler to receive log information
-    // if ( r == MSK_RES_OK ) MSK_linkfunctotaskstream(task, MSK_STREAM_LOG, NULL, printlog);
+  r = MSK_makeenv(&env,NULL);
+ 
+  if ( r==MSK_RES_OK )
+  {
+    r = MSK_makeemptytask(env,&task);
+    if ( r==MSK_RES_OK )
+      MSK_linkfunctotaskstream(task, MSK_STREAM_LOG, NULL,     printlog); 
 
-    // (Optionally) uncomment this line to most likely see solution status Unknown
-    // MSK_putintparam(task, MSK_IPAR_INTPNT_MAX_ITERATIONS, 1);
-
-    // In this example we read an optimization problem from a file
-    r = MSK_readdata(task, filename);
-
-    if ( r == MSK_RES_OK )
+    r = MSK_readdata(task,argv[1]);
+    if ( r==MSK_RES_OK )
     {
       MSKrescodee trmcode;
       MSKsolstae  solsta;
 
-      // Do the optimization, and exit in case of error
-      r = MSK_optimizetrm(task, &trmcode); 
-      if ( r != MSK_RES_OK ) {
-        MSK_getcodedesc(r, symname, desc);
-        printf("Error during optimization: %s %s\n", symname, desc);
-        exit(r);
-      }
+      r = MSK_optimizetrm(task,&trmcode); /* Do the optimization. */ 
 
-      /* Expected result: The solution status of the interiot-point solution is optimal. */
+      /* Expected result: The solution status of the basic solution is optimal. */
 
-      if ( MSK_RES_OK == MSK_getsolsta(task, MSK_SOL_ITR, &solsta) )
+      if ( MSK_RES_OK==MSK_getsolsta(task,MSK_SOL_ITR,&solsta) )
       {
-        switch ( solsta )
+        switch( solsta )
         {
-          case MSK_SOL_STA_OPTIMAL:
+          case MSK_SOL_STA_OPTIMAL:   
           case MSK_SOL_STA_NEAR_OPTIMAL:
-            printf("An optimal interior-point solution is located.\n");
+            printf("An optimal basic solution is located.\n");
 
-            /* Read a print the variable values in the solution */
-            MSK_getnumvar(task, &numvar);
-            xx = calloc(numvar, sizeof(double));
-            MSK_getxx(task, MSK_SOL_ITR, xx);
-            for(i = 0; i < numvar; i++)
-              printf("xx[%d] = %.4lf\n", i, xx[i]);
-            free(xx);
+            MSK_solutionsummary(task,MSK_STREAM_MSG);
             break;
-
           case MSK_SOL_STA_DUAL_INFEAS_CER:
           case MSK_SOL_STA_NEAR_DUAL_INFEAS_CER:
             printf("Dual infeasibility certificate found.\n");
             break;
-
           case MSK_SOL_STA_PRIM_INFEAS_CER:
           case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:
             printf("Primal infeasibility certificate found.\n");
             break;
-
           case MSK_SOL_STA_UNKNOWN:
-            /* The solutions status is unknown. The termination code
+          {
+            char symname[MSK_MAX_STR_LEN];
+            char desc[MSK_MAX_STR_LEN];
+
+            /* The solutions status is unknown. The termination code 
                indicating why the optimizer terminated prematurely. */
+
             printf("The solution status is unknown.\n");
-            if ( r != MSK_RES_OK )
+            if ( r!=MSK_RES_OK )
             {
-              /* Optimization error */
-              MSK_getcodedesc(r, symname, desc);
-              printf("  Response code: %s %s\n", symname, desc);
+              /* A system failure e.g. out of space. */
+
+              MSK_getcodedesc(r,symname,desc);
+
+              printf("  Response code: %s\n",symname);  
             }
             else
             {
-              /* No-error cause of termination e.g. an iteration limit is reached.  */
-              MSK_getcodedesc(trmcode, symname, desc);
-              printf("  Termination code: %s %s\n", symname, desc);
+              /* No system failure e.g. an iteration limit is reached.  */
+
+              MSK_getcodedesc(trmcode,symname,desc);
+
+              printf("  Termination code: %s\n",symname);  
             }
             break;
-
+          }
           default:
-            MSK_solstatostr(task, solsta, desc);
-            printf("An unexpected solution status %s with code %d is obtained.\n", desc, solsta);
+            printf("An unexpected solution status is obtained.\n");
             break;
         }
       }
       else
-        printf("Could not obtain the solution status for the requested solution.\n");
+        printf("Could not obtain the solution status for the requested solution.\n");  
     }
-    else {
-      MSK_getcodedesc(r, symname, desc);
-      printf("Optimization was not started because of error %s(%d): %s\n", symname, r, desc);
-    }
-
     MSK_deletetask(&task);
   }
 
   MSK_deleteenv(&env);
-  return r;
-} 
+  printf("Return code: %d (0 means no error occurred.)\n",r);
+
+  return ( r );
+} /* main */
+
+

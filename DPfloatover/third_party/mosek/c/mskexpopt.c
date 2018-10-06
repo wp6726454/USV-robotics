@@ -15,35 +15,34 @@
               solves expopt1.eo using the dual formulation and writes the solution to 
               the file expopt1.sol.
 */
+#define WHICHSOL MSK_SOL_ITR  
 #include <stdlib.h>
 #include <string.h>
-#include "mosekinternal.h"
+
 #include "expopt.h"
 
-#define WHICHSOL MSK_SOL_ITR  
-
-static double maxdbl (double x,double y)
+double maxdbl (double x,double y)
 {
   return x>y ? x : y;
 }
-
-static void MSKAPI printcb(void* handle, const char str[])
+void MSKAPI printcb(void* handle,MSKCONST char str[])
 {
   printf("%s",str);
 }
 
-int main (int argc,const char *argv[])
+int main (int argc, char **argv)
 {
-  MSKrescodee  r;
-  const char   *geoptfile = NULL, *dflt_solutionfile = NULL;
-  const char   *statfile = NULL, *statname = NULL, *statkey = NULL;
-  char         *cbuf = NULL;
+  MSKrescodee 
+    r = MSK_RES_OK;
+  char         *geoptfile = NULL, *cbuf = NULL, *dflt_solutionfile = NULL;
   int          numanz,solveform = 1,numter,numvar,numcon;  
   int          *subi = NULL,*subk = NULL, *subj = NULL;
   double       *c = NULL,*akj = NULL;
   double       objval;
-  MSKprostae   prosta;
-  MSKsolstae   solsta;
+  MSKprostae
+    prosta;
+  MSKsolstae
+    solsta;
   MSKenv_t     env;
   MSKtask_t    expopttask;
   expopthand_t expopth = NULL;
@@ -51,13 +50,14 @@ int main (int argc,const char *argv[])
   char         buffer[MSK_MAX_STR_LEN],symnam[MSK_MAX_STR_LEN];
   MSKint32t    maxnamelen;
     
-  r = MSK_makeenv(&env,
-                  #if 0
-                  "mosek.dbg"
-                  #else
-                  NULL
-                  #endif
-                  );
+  if (r == MSK_RES_OK)
+    r = MSK_makeenv(&env,
+                    #if 0
+                    "mosek.dbg"
+                    #else
+                    NULL
+                    #endif
+                    );
        
   if (r == MSK_RES_OK)
     MSK_makeemptytask(env,&(expopttask));
@@ -79,7 +79,8 @@ int main (int argc,const char *argv[])
     {
       argv++;
       argc--;
-      r = MSK_readparamfile(expopttask,argv[0]);
+      MSK_putstrparam(expopttask,MSK_SPAR_PARAM_READ_FILE_NAME,argv[0]);
+      MSK_readparamfile(expopttask);
       argv++;
       argc--;
     }
@@ -106,39 +107,6 @@ int main (int argc,const char *argv[])
       argv++;
       argc--;
     }
-    else if (0==strcmp(argv[0],"-statfile") && argc > 1)
-    {
-      argv++;
-      argc--;
-
-
-      statfile = argv[0];
-
-      argv++;
-      argc--;
-    }
-    else if (0==strcmp(argv[0],"-statname") && argc > 1)
-    {
-      argv++;
-      argc--;
-
-
-      statname = argv[0];
-
-      argv++;
-      argc--;
-    }
-    else if (0==strcmp(argv[0],"-statkey") && argc > 1)
-    {
-      argv++;
-      argc--;
-
-
-      statkey = argv[0];
-
-      argv++;
-      argc--;
-    }
     else
     {
       geoptfile = argv[0];
@@ -159,16 +127,16 @@ int main (int argc,const char *argv[])
 
     if (r == MSK_RES_OK)
       r = MSK_expoptread(env,
-                         geoptfile,
-                         &numcon,
-                         &numvar,
-                         &numter,
-                         &subi,
-                         &c,
-                         &subk,
-                         &subj,
-                         &akj,
-                         &numanz);
+                 geoptfile,
+                 &numcon,
+                 &numvar,
+                 &numter,
+                 &subi,
+                 &c,
+                 &subk,
+                 &subj,
+                 &akj,
+                 &numanz);
     
   }
   else
@@ -185,17 +153,18 @@ int main (int argc,const char *argv[])
     printf("Data setup for expopt begin.\n");   
       
     r =  MSK_expoptsetup(expopttask,
-                         solveform,
-                         numcon,
-                         numvar,
-                         numter,
-                         subi,
-                         c,
-                         subk,
-                         subj,
-                         akj,
-                         numanz,
-                         &expopth);
+                 solveform,
+                 numcon,
+                 numvar,
+                 numter,
+                 subi,
+                 c,
+                 subk,
+                 subj,
+                 akj,
+                 numanz,
+                 &expopth
+                 );
     printf("Data setup for expopt end.\n");
   
     if (r == MSK_RES_OK && numvar)
@@ -212,29 +181,19 @@ int main (int argc,const char *argv[])
         r = MSK_RES_ERR_SPACE;
     }
      
-    if (r == MSK_RES_OK && statfile)
-    {
-      MSK_startstat(expopttask);
-      MSK_putstrparam(expopttask,MSK_SPAR_STAT_FILE_NAME,statfile);
-      MSK_putstrparam(expopttask,MSK_SPAR_STAT_NAME,statname);
-      MSK_putstrparam(expopttask,MSK_SPAR_STAT_KEY,statkey);
-      MSK_putintparam(expopttask, MSK_IPAR_AUTO_UPDATE_SOL_INFO, MSK_ON);
-      MSK_putintparam(expopttask, MSK_IPAR_COMPRESS_STATFILE, MSK_OFF);
-    }
   
     if (r == MSK_RES_OK)
       r = MSK_expoptimize( expopttask,
-                           &prosta,
-                           &solsta,
-                           &objval,
-                           xx,
-                           y,
-                           &expopth);
+                          &prosta,
+                          &solsta,
+                          &objval,
+                          xx,
+                          y,
+                          &expopth);
   
     MSK_solutionsummary(expopttask, MSK_STREAM_MSG);
-
-    if (statfile && (r == MSK_RES_OK || r == MSK_RES_TRM_STALL || r == MSK_RES_TRM_MAX_ITERATIONS))
-      MSK_appendstat(expopttask);
+  
+      
   
     /* Print solution summary */
   
@@ -434,4 +393,8 @@ int main (int argc,const char *argv[])
   
   return ( r );
 }
+
+  
+
+
 

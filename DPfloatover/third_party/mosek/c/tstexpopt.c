@@ -5,11 +5,12 @@
 
    Purpose  : To demonstrate a simple interface for exponential optimization.
 */
+
 #include <string.h>
 
 #include "expopt.h"
 
-void MSKAPI printcb(void* handle, const char str[])
+void MSKAPI printcb(void* handle, MSKCONST char str[])
 {
   printf("%s",str);
 }
@@ -89,4 +90,7 @@ int main (int argc, char **argv)
   MSK_deleteenv(&env);
   
 }
+  
+  
+
   

@@ -21,12 +21,9 @@
 #include <map>
 #include <string>
 #include <unsupported/Eigen/MatrixFunctions>
-#include "../../../include/constants.h"
-<<<<<<< HEAD
-#include "/home/scar1et/Coding/CPP1X/USV/timer/timecounter.hpp"
-=======
+#include "constants.h"
 #include "timecounter.hpp"
->>>>>>> real time control
+#include "timecounter.hpp"
 #include "vesselparameter.h"
 
 void write2csvfile(const std::string &, const Eigen::MatrixXd &);

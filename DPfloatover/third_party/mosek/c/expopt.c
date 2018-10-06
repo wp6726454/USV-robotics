@@ -5,6 +5,7 @@
 
    Purpose:   Solve the exponential optimization problem. 
 */
+
 #define SCALE          1
 #define DEBUG          0
 #define WRITE_AS_SCOPT 0
@@ -19,8 +20,8 @@ typedef struct
         {
           
           int solveform;
-          MSKint32t numvar;
-          void      *nl_data;
+          int numvar;
+          void *nl_data;
           
         } nlhandt;
 
@@ -155,17 +156,17 @@ static int parsetriple(char   *buf,
 
 
 MSKrescodee
-MSK_expoptread(MSKenv_t   env,
-               const char *filename,
-               MSKint32t  *numcon,  
-               MSKint32t  *numvar,
-               MSKint32t  *numter,
-               MSKidxt    **subi,          /* Which constraint a term belongs to or zero for objective */ 
-               double     **c,             /* Coefficients of terms */
-               MSKidxt    **subk,          /* Term index */
-               MSKidxt    **subj,          /* Variable index */ 
-               double     **akj,           /* akj[i] is coefficient of variable subj[i] in term subk[i] */
-               MSKint32t  *numanz)         /* Length of akj */
+MSK_expoptread(MSKenv_t  env,
+               char      *filename,
+               MSKintt   *numcon,  
+               MSKintt   *numvar,
+               MSKintt   *numter,
+               MSKidxt   **subi,          /* Which constraint a term belongs to or zero for objective */ 
+               double    **c,             /* Coefficients of terms */
+               MSKidxt   **subk,          /* Term index */
+               MSKidxt   **subj,          /* Variable index */ 
+               double    **akj,           /* akj[i] is coefficient of variable subj[i] in term subk[i] */
+               MSKintt   *numanz)         /* Length of akj */
                    
 /* Purpose:
            Read a geometric optimization problem on the exponential
@@ -174,7 +175,8 @@ MSK_expoptread(MSKenv_t   env,
            responsibility to free them with MSK_free after use.
  */
 {
-  MSKrescodee r = MSK_RES_OK;
+  MSKrescodee
+    r = MSK_RES_OK;
   char    buf[MAX_LINE_LENGTH];
   char    buf2[MAX_LINE_LENGTH];  
   FILE    *f;
@@ -372,21 +374,21 @@ MSK_expoptread(MSKenv_t   env,
 }
 
 MSKrescodee
-MSK_expoptwrite(MSKenv_t   env,
-                const char *filename,
-                MSKint32t  numcon,  
-                MSKint32t  numvar,
-                MSKint32t  numter,
-                MSKidxt    *subi,          
-                double     *c,             
-                MSKidxt    *subk,          
-                MSKidxt    *subj,          
-                double     *akj,           
-                MSKint32t  numanz)
+MSK_expoptwrite(MSKenv_t  env,
+                char      *filename,
+                MSKintt   numcon,  
+                MSKintt   numvar,
+                MSKintt   numter,
+                MSKidxt   *subi,          
+                double    *c,             
+                MSKidxt   *subk,          
+                MSKidxt   *subj,          
+                double    *akj,           
+                MSKintt    numanz)
 {
   MSKrescodee r = MSK_RES_OK;
   FILE        *f;
-  MSKint32t   i;
+  MSKintt     i;
   
   f = fopen(filename,"wt");
 
@@ -418,16 +420,16 @@ MSK_expoptwrite(MSKenv_t   env,
       
 MSKrescodee 
 MSK_expoptsetup(MSKtask_t     expopttask,            
-                MSKint32t     solveform,      /* If 1 solve by dual formulation */
-                MSKint32t     numcon,
-                MSKint32t     numvar,
-                MSKint32t     numter,
+                MSKintt       solveform,      /* If 1 solve by dual formulation */
+                MSKintt       numcon,
+                MSKintt       numvar,
+                MSKintt       numter,
                 MSKidxt       *subi,
                 double        *c,
                 MSKidxt       *subk,
                 MSKidxt       *subj,
                 double        *akj,
-                MSKint32t     numanz,
+                MSKintt       numanz,
                 expopthand_t  *expopthnd)  /* Data structure containing nonlinear information */
 
 /* Purpose: Setup problem in expopttask.  For every call to expoptsetup there
@@ -436,6 +438,13 @@ MSK_expoptsetup(MSKtask_t     expopttask,
 {
   MSKrescodee
     r = MSK_RES_OK;
+  MSKidxt   i,k,itmp,itmp2;
+  MSKintt   numobjterm,numconterm,*nter_per_con = NULL;
+  MSKintt   *opro = NULL,*oprjo = NULL;
+  double    *oprfo = NULL,*oprgo = NULL,*oprho = NULL;
+  MSKintt   numopro,numoprc,*oprc = NULL,*opric = NULL,*oprjc = NULL,*ibuf = NULL;
+  double    *oprfc = NULL,*oprgc = NULL,*oprhc = NULL,*rbuf = NULL;
+  nlhand_t  nlh;
   
 #if DEBUG > 0
   printf ("**numvar = %d\n",numvar);
@@ -443,612 +452,603 @@ MSK_expoptsetup(MSKtask_t     expopttask,
   printf ("**numter = %d\n",numter);
 #endif
   
-  expopthnd[0] = (expopthand_t) MSK_calloctask(expopttask,1,sizeof(nlhandt));
+  nlh = (nlhand_t) MSK_calloctask(expopttask,1,sizeof(nlhandt));
+  nlh->numvar = numvar;
     
-  if ( expopthnd[0] ) 
+  if (nlh) 
+    expopthnd[0] = (void *) nlh; 
+  else
+    r = MSK_RES_ERR_SPACE;
+    
+  nlh->solveform = solveform; 
+
+  /* clear expopttask */
   {
-    MSKint32t   i,k,itmp,itmp2;
-    MSKint32t numobjterm,numconterm,*nter_per_con = NULL;
-    MSKint32t *opro = NULL,*oprjo = NULL;
-    double    *oprfo = NULL,*oprgo = NULL,*oprho = NULL;
-    MSKint32t numopro,numoprc,*oprc = NULL,*opric = NULL,*oprjc = NULL,*ibuf = NULL;
-    double    *oprfc = NULL,*oprgc = NULL,*oprhc = NULL,*rbuf = NULL;
-    nlhand_t  nlh=expopthnd[0];
+    MSKidxt *delsub = NULL;
+    MSKintt delsublen;
+    if (r == MSK_RES_OK)
+      r = MSK_putnlfunc(expopttask,NULL,NULL,NULL);
+    if (r == MSK_RES_OK)
+      r = MSK_getnumvar(expopttask,&itmp);
 
-    nlh->solveform = solveform; 
-    nlh->numvar    = numvar;
-    nlh->nl_data   = NULL;
+    if (r == MSK_RES_OK)
+      r = MSK_getnumcon(expopttask,&itmp2);
+  
+    delsublen = itmp<itmp2 ? itmp2:itmp;
 
-    /* clear expopttask */
+    if (delsublen)
     {
-      MSKidxt *delsub = NULL;
-      MSKintt delsublen;
-      if (r == MSK_RES_OK)
-        r = MSK_putnlfunc(expopttask,NULL,NULL,NULL);
-      if (r == MSK_RES_OK)
-        r = MSK_getnumvar(expopttask,&itmp);
+    if (r == MSK_RES_OK)
+    {
+      delsub = MSK_calloctask(expopttask,delsublen,sizeof(MSKidxt));
+      if (delsub == NULL)
+        r = MSK_RES_ERR_SPACE;
+    }
 
-      if (r == MSK_RES_OK)
-        r = MSK_getnumcon(expopttask,&itmp2);
+    for (i=0;i<delsublen && r == MSK_RES_OK;++i)
+      delsub[i]=i;
     
-      delsublen = itmp<itmp2 ? itmp2:itmp;
+    if (r == MSK_RES_OK)
+      r = MSK_removevars(expopttask,itmp,delsub);
 
-      if (delsublen)
-      {
-      if (r == MSK_RES_OK)
-      {
-        delsub = MSK_calloctask(expopttask,delsublen,sizeof(MSKidxt));
-        if (delsub == NULL)
-          r = MSK_RES_ERR_SPACE;
-      }
+    if (r == MSK_RES_OK)
+      r = MSK_removecons(expopttask,itmp2,delsub); 
 
-      for (i=0;i<delsublen && r == MSK_RES_OK;++i)
-        delsub[i]=i;
-      
-      if (r == MSK_RES_OK)
-        r = MSK_removevars(expopttask,itmp,delsub);
-
-      if (r == MSK_RES_OK)
-        r = MSK_removecons(expopttask,itmp2,delsub); 
-
-      MSK_freetask(expopttask,delsub);
-      }
+    MSK_freetask(expopttask,delsub);
     }
+  }
 
-    for (i=0;i<numter && r == MSK_RES_OK;++i)
+  for (i=0;i<numter && r == MSK_RES_OK;++i)
+  {
+    if (subi[i] > numcon)
     {
-      if (subi[i] > numcon)
-      {
-        printf("The index subi[%d] = %d is to large\n",i,subi[i]);
-        r = MSK_RES_ERR_INDEX_IS_TOO_LARGE;
-      }
-     
-      if (subi[i] < 0 && r == MSK_RES_OK)
-      {
-        printf("The index subi[%d] = %d is negative\n",i,subi[i]);
-        r = MSK_RES_ERR_INDEX_IS_TOO_SMALL;
-      }    
+      printf("The index subi[%d] = %d is to large\n",i,subi[i]);
+      r = MSK_RES_ERR_INDEX_IS_TOO_LARGE;
     }
-
-    for (i=0;i<numanz;++i && r == MSK_RES_OK)
+   
+    if (subi[i] < 0 && r == MSK_RES_OK)
     {
-      if (subj[i] >= numvar)
-      {
-        printf("The index subj[%d] = %d is to large\n",i,subj[i]);
-        r = MSK_RES_ERR_INDEX_IS_TOO_LARGE;
-      }
+      printf("The index subi[%d] = %d is negative\n",i,subi[i]);
+      r = MSK_RES_ERR_INDEX_IS_TOO_SMALL;
+    }    
+  }
 
-      if (subj[i] < 0 && r == MSK_RES_OK)
-      {
-        printf("The index subj[%d] = %d is negative\n",i,subj[i]);
-        r = MSK_RES_ERR_INDEX_IS_TOO_SMALL;
-      }  
-    }
-
-    for (i=0;i<numter && r == MSK_RES_OK;++i)
+  for (i=0;i<numanz;++i && r == MSK_RES_OK)
+  {
+    if (subj[i] >= numvar)
     {
-      if (c[i] <= 0.0)
-      {
-        printf ("The coefficient c[%d] <= 0. Only positive coefficients allowed\n",i);
-        r = MSK_RES_ERR_UNKNOWN;
-      }
+      printf("The index subj[%d] = %d is to large\n",i,subj[i]);
+      r = MSK_RES_ERR_INDEX_IS_TOO_LARGE;
     }
-    
-    numobjterm = 0;
-    for (i=0;i<numter;++i)
-      if (subi[i] == 0)
-        ++numobjterm;
+
+    if (subj[i] < 0 && r == MSK_RES_OK)
+    {
+      printf("The index subj[%d] = %d is negative\n",i,subj[i]);
+      r = MSK_RES_ERR_INDEX_IS_TOO_SMALL;
+    }  
+  }
+
+  for (i=0;i<numter && r == MSK_RES_OK;++i)
+  {
+    if (c[i] <= 0.0)
+    {
+      printf ("The coefficient c[%d] <= 0. Only positive coefficients allowed\n",i);
+      r = MSK_RES_ERR_UNKNOWN;
+    }
+  }
+  
+  numobjterm = 0;
+  for (i=0;i<numter;++i)
+    if (subi[i] == 0)
+      ++numobjterm;
+  
+  if (r == MSK_RES_OK)
+  {
+    rbuf = MSK_calloctask(expopttask,numvar+1,sizeof(double));
+    if (rbuf == NULL)
+      r = MSK_RES_ERR_SPACE;
+  }
+  
+  if (r == MSK_RES_OK)
+  {
+      ibuf = MSK_calloctask(expopttask,numvar+1,sizeof(double));
+      if (ibuf == NULL)
+        r = MSK_RES_ERR_SPACE;
+  }    
+
+  for (i=0;i<numvar && r == MSK_RES_OK;++i)
+    ibuf[i] = 0;
+
+  for (i=0;i<numanz && r == MSK_RES_OK;++i)
+    if (akj[i] < 0.0)
+      ibuf[subj[i]] = 1;
+
+  for (i=0;i<numvar && r == MSK_RES_OK;++i)
+    if (!ibuf[i])
+    {
+      printf("Warning: The variable with index '%d' has only positive coefficients akj.\n The problem is possibly ill-posed.\n.\n",i);      
+    }
+
+  for (i=0;i<numvar && r == MSK_RES_OK;++i)
+    ibuf[i] = 0;
+
+  for (i=0;i<numanz && r == MSK_RES_OK;++i)
+    if (akj[i] > 0.0)
+      ibuf[subj[i]] = 1;
+
+  for (i=0;i<numvar && r == MSK_RES_OK;++i)
+    if (!ibuf[i])
+    {
+      printf("Warning: The variable with index '%d' has only negative coefficients akj.\n The problem is possibly ill-posed.\n",i);      
+    }
+  
+  MSK_checkmemtask(expopttask,__FILE__,__LINE__);
+
+  /* Sort subk,subj,akj increasingly according to subk */
+
+  if (r == MSK_RES_OK)
+  {
+    MSKintt *displist = NULL;
+    MSKidxt *subk_sorted = NULL,*subj_sorted = NULL;
+    double *akj_sorted = NULL;   
     
     if (r == MSK_RES_OK)
     {
-      rbuf = MSK_calloctask(expopttask,numvar+1,sizeof(double));
-      if (rbuf == NULL)
+      displist = (MSKintt*) MSK_calloctask(expopttask,numter+1,sizeof(MSKintt));
+      if (displist == NULL)
+        r = MSK_RES_ERR_SPACE;
+    }
+
+    if (r == MSK_RES_OK)
+    {
+      subk_sorted = (MSKidxt*) MSK_calloctask(expopttask,numanz,sizeof(MSKidxt));
+      if (subk_sorted == NULL)
+        r = MSK_RES_ERR_SPACE;
+    }
+
+    if (r == MSK_RES_OK)
+    {
+      subj_sorted = (MSKidxt*) MSK_calloctask(expopttask,numanz,sizeof(MSKidxt));
+      if (subj_sorted == NULL)
+        r = MSK_RES_ERR_SPACE;
+    }
+
+    if (r == MSK_RES_OK)
+    {
+      akj_sorted = (double*) MSK_calloctask(expopttask,numanz,sizeof(double));
+      if (akj_sorted == NULL)
         r = MSK_RES_ERR_SPACE;
     }
     
     if (r == MSK_RES_OK)
     {
-        ibuf = MSK_calloctask(expopttask,numvar+1,sizeof(double));
-        if (ibuf == NULL)
-          r = MSK_RES_ERR_SPACE;
-    }    
-
-    for (i=0;i<numvar && r == MSK_RES_OK;++i)
-      ibuf[i] = 0;
-
-    for (i=0;i<numanz && r == MSK_RES_OK;++i)
-      if (akj[i] < 0.0)
-        ibuf[subj[i]] = 1;
-
-    for (i=0;i<numvar && r == MSK_RES_OK;++i)
-      if (!ibuf[i])
+      for (i=0;i<numter+1;++i)
+        displist[i] = 0;
+      
+      for (i=0;i<numanz;++i)
+        displist[subk[i]+1]++;
+      
+      for (i=0;i<numter-1;++i)
+        displist[i+1] = displist[i] + displist[i+1];  
+      
+      for (i=0;i<numanz;++i)
       {
-        printf("Warning: The variable with index '%d' has only positive coefficients akj.\n The problem is possibly ill-posed.\n.\n",i);      
+      int pos = displist[subk[i]]++;
+      subk_sorted[pos] = subk[i];
+      subj_sorted[pos] = subj[i];
+      akj_sorted[pos]  = akj[i];
       }
+      
+      subk = subk_sorted;
+      subj = subj_sorted;
+      akj  = akj_sorted;
+    }
 
-    for (i=0;i<numvar && r == MSK_RES_OK;++i)
-      ibuf[i] = 0;
-
-    for (i=0;i<numanz && r == MSK_RES_OK;++i)
-      if (akj[i] > 0.0)
-        ibuf[subj[i]] = 1;
-
-    for (i=0;i<numvar && r == MSK_RES_OK;++i)
-      if (!ibuf[i])
-      {
-        printf("Warning: The variable with index '%d' has only negative coefficients akj.\n The problem is possibly ill-posed.\n",i);      
-      }
+    /* Detect duplicates in subj*/ 
+    itmp = 0;
+    for (i=0;i<numvar;++i)
+      ibuf[i] = 0;    
     
-    MSK_checkmemtask(expopttask,__FILE__,__LINE__);
+    while (itmp < numanz && r == MSK_RES_OK)
+    {
+      MSKidxt curterm = subk[itmp],begin;
+         
+      begin = itmp; 
+      while ((itmp < numanz) && (subk[itmp] == curterm) &&  r == MSK_RES_OK)
+      {
+        if (ibuf[subj[itmp]]++)
+        {
+          printf ("Duplicate variable index in term '%d'. For a given term only one variable index subj[k] is allowed.\n",curterm);
+          r = MSK_RES_ERR_UNKNOWN;
+        }   
+        itmp++;
+      }
+      
+      itmp = begin;
 
-    /* Sort subk,subj,akj increasingly according to subk */
+      while ((itmp < numanz) && (subk[itmp] == curterm) &&  r == MSK_RES_OK)
+      {
+        ibuf[subj[itmp]] = 0;
+        itmp++;
+      }
+    }
+    
+    MSK_freetask(expopttask,displist);
+  } 
+  
+  if (solveform >=0)  /* If the dual formulation was chosen */
+  {
+    MSKidxt *p = NULL,*displist = NULL,*pos = NULL;
+    double  *v = NULL;
+    if (r == MSK_RES_OK)
+    {
+      p = MSK_calloctask(expopttask,numcon+1,sizeof(MSKidxt));
+      if (p == NULL)
+        r = MSK_RES_ERR_SPACE;
+    }
 
     if (r == MSK_RES_OK)
     {
-      MSKintt *displist = NULL;
-      MSKidxt *subk_sorted = NULL,*subj_sorted = NULL;
-      double *akj_sorted = NULL;   
-      
-      if (r == MSK_RES_OK)
-      {
-        displist = (MSKintt*) MSK_calloctask(expopttask,numter+1,sizeof(MSKintt));
-        if (displist == NULL)
-          r = MSK_RES_ERR_SPACE;
-      }
+      displist = MSK_calloctask(expopttask,numcon+1,sizeof(MSKidxt));
+      if (displist == NULL)
+        r = MSK_RES_ERR_SPACE;
+    }
 
-      if (r == MSK_RES_OK)
-      {
-        subk_sorted = (MSKidxt*) MSK_calloctask(expopttask,numanz,sizeof(MSKidxt));
-        if (subk_sorted == NULL)
-          r = MSK_RES_ERR_SPACE;
-      }
-
-      if (r == MSK_RES_OK)
-      {
-        subj_sorted = (MSKidxt*) MSK_calloctask(expopttask,numanz,sizeof(MSKidxt));
-        if (subj_sorted == NULL)
-          r = MSK_RES_ERR_SPACE;
-      }
-
-      if (r == MSK_RES_OK)
-      {
-        akj_sorted = (double*) MSK_calloctask(expopttask,numanz,sizeof(double));
-        if (akj_sorted == NULL)
-          r = MSK_RES_ERR_SPACE;
-      }
-      
-      if (r == MSK_RES_OK)
-      {
-        for (i=0;i<numter+1;++i)
-          displist[i] = 0;
-        
-        for (i=0;i<numanz;++i)
-          displist[subk[i]+1]++;
-        
-        for (i=0;i<numter-1;++i)
-          displist[i+1] = displist[i] + displist[i+1];  
-        
-        for (i=0;i<numanz;++i)
-        {
-        int pos = displist[subk[i]]++;
-        subk_sorted[pos] = subk[i];
-        subj_sorted[pos] = subj[i];
-        akj_sorted[pos]  = akj[i];
-        }
-        
-        subk = subk_sorted;
-        subj = subj_sorted;
-        akj  = akj_sorted;
-      }
-
-      /* Detect duplicates in subj*/ 
-      itmp = 0;
-      for (i=0;i<numvar;++i)
-        ibuf[i] = 0;    
-      
-      while (itmp < numanz && r == MSK_RES_OK)
-      {
-        MSKidxt curterm = subk[itmp],begin;
-           
-        begin = itmp; 
-        while ((itmp < numanz) && (subk[itmp] == curterm) &&  r == MSK_RES_OK)
-        {
-          if (ibuf[subj[itmp]]++)
-          {
-            printf ("Duplicate variable index in term '%d'. For a given term only one variable index subj[k] is allowed.\n",curterm);
-            r = MSK_RES_ERR_UNKNOWN;
-          }   
-          itmp++;
-        }
-        
-        itmp = begin;
-
-        while ((itmp < numanz) && (subk[itmp] == curterm) &&  r == MSK_RES_OK)
-        {
-          ibuf[subj[itmp]] = 0;
-          itmp++;
-        }
-      }
-      
-      MSK_freetask(expopttask,displist);
-    } 
-    
-    if (solveform >=0)  /* If the dual formulation was chosen */
+    if (r == MSK_RES_OK)
     {
-      MSKidxt *p = NULL,*displist = NULL,*pos = NULL;
-      double  *v = NULL;
-      if (r == MSK_RES_OK)
-      {
-        p = MSK_calloctask(expopttask,numcon+1,sizeof(MSKidxt));
-        if (p == NULL)
-          r = MSK_RES_ERR_SPACE;
-      }
+      pos = MSK_calloctask(expopttask,numter,sizeof(MSKidxt));
+      if (pos == NULL)
+        r = MSK_RES_ERR_SPACE;
+    }
 
-      if (r == MSK_RES_OK)
-      {
-        displist = MSK_calloctask(expopttask,numcon+1,sizeof(MSKidxt));
-        if (displist == NULL)
-          r = MSK_RES_ERR_SPACE;
-      }
+    if (r == MSK_RES_OK)
+    {
+      v = MSK_calloctask(expopttask,numter,sizeof(double));
+      if (pos == NULL)
+        r = MSK_RES_ERR_SPACE;
+    }
 
-      if (r == MSK_RES_OK)
-      {
-        pos = MSK_calloctask(expopttask,numter,sizeof(MSKidxt));
-        if (pos == NULL)
-          r = MSK_RES_ERR_SPACE;
-      }
-
-      if (r == MSK_RES_OK)
-      {
-        v = MSK_calloctask(expopttask,numter,sizeof(double));
-        if (pos == NULL)
-          r = MSK_RES_ERR_SPACE;
-      }
-
-      if (r == MSK_RES_OK)
-        r = MSK_appendvars(expopttask,numter);
+    if (r == MSK_RES_OK)
+      r = MSK_appendvars(expopttask,numter);
+    
+    if (r == MSK_RES_OK)
+      r = MSK_appendcons(expopttask,numvar+1);
+    
+    if (r == MSK_RES_OK)
+    {      
+      /* Count number of therm in each constraint */
+      for (i=0;i<numcon+1;++i)
+        p[i]=0;
       
-      if (r == MSK_RES_OK)
-        r = MSK_appendcons(expopttask,numvar+1);
+      for (i=0;i<numter;++i)
+        p[subi[i]]+=1;
       
-      if (r == MSK_RES_OK)
-      {      
-        /* Count number of therm in each constraint */
-        for (i=0;i<numcon+1;++i)
-          p[i]=0;
-        
-        for (i=0;i<numter;++i)
-          p[subi[i]]+=1;
-        
-        /* Find order pos of subi sorted increasingly */
-       
-        displist[0] = 0;
-        for (i=1;i<numcon+1 && r == MSK_RES_OK;++i)
-          displist[i]=displist[i-1] + p[i-1];
-        
-        for (i=0;i<numter && r == MSK_RES_OK;++i)
-          pos[i] = displist[subi[i]]++;
-        
-        for (i=0;i<numter && r == MSK_RES_OK;++i)
-          v[pos[i]] = c[i];
-       
-        itmp=0;
-      }
-      
-      while (itmp < numanz && r == MSK_RES_OK)
-      {
-        MSKidxt curterm = subk[itmp];
-        MSKintt nz =0;
-        while ((itmp < numanz) && (subk[itmp] == curterm) )
-        {
-          ibuf[nz] = subj[itmp]; 
-          rbuf[nz] = akj[itmp];
-          nz++;
-          itmp++;
-        }
-
-        if (subi[curterm] == 0 && r == MSK_RES_OK)  /* in objective */
-        {
-          ibuf[nz] = numvar;
-          rbuf[nz] = 1.0;
-          nz++;
-        }
-        
-        if (r == MSK_RES_OK)
-          r = MSK_putacol(expopttask,pos[curterm],nz,ibuf,rbuf);   
-      }
+      /* Find order pos of subi sorted increasingly */
+     
+      displist[0] = 0;
+      for (i=1;i<numcon+1 && r == MSK_RES_OK;++i)
+        displist[i]=displist[i-1] + p[i-1];
       
       for (i=0;i<numter && r == MSK_RES_OK;++i)
-        r = MSK_putvarbound(expopttask,i,MSK_BK_LO,0,MSK_INFINITY);
-
-      for (i=0;i<numvar && r == MSK_RES_OK;++i)
-        r = MSK_putconbound(expopttask,i,MSK_BK_FX,0,0);
-
-      if (r == MSK_RES_OK)
-        r = MSK_putconbound(expopttask,numvar,MSK_BK_FX,1.0,1.0);
-     
-  #if DEBUG > 0
-      /* write linear part */
-      MSK_putintparam(expopttask,MSK_IPAR_WRITE_GENERIC_NAMES,MSK_ON);
-      MSK_writedata(expopttask,"lp_part_dual_formulation.lp");
-  #endif
+        pos[i] = displist[subi[i]]++;
       
-      if (r == MSK_RES_OK)
-        r = MSK_dgosetup(expopttask,
-                         numter,
-                         numvar,
-                         numcon+1,
-                         v,
-                         p,                         
-                         &(nlh->nl_data));
-
-      MSK_freetask(expopttask,p);
-      MSK_freetask(expopttask,displist);
-      MSK_freetask(expopttask,pos);
-      MSK_freetask(expopttask,v);   
+      for (i=0;i<numter && r == MSK_RES_OK;++i)
+        v[pos[i]] = c[i];
+     
+      itmp=0;
     }
-    else
-    { 
-      if (r == MSK_RES_OK)
+    
+    while (itmp < numanz && r == MSK_RES_OK)
+    {
+      MSKidxt curterm = subk[itmp];
+      MSKintt nz =0;
+      while ((itmp < numanz) && (subk[itmp] == curterm) )
       {
-        opro = MSK_calloctask(expopttask,numobjterm,sizeof(MSKintt));
-        if (opro == NULL)
-          r = MSK_RES_ERR_SPACE;
+        ibuf[nz] = subj[itmp]; 
+        rbuf[nz] = akj[itmp];
+        nz++;
+        itmp++;
+      }
+
+      if (subi[curterm] == 0 && r == MSK_RES_OK)  /* in objective */
+      {
+        ibuf[nz] = numvar;
+        rbuf[nz] = 1.0;
+        nz++;
       }
       
       if (r == MSK_RES_OK)
-      {
-        oprjo = MSK_calloctask(expopttask,numobjterm,sizeof(double));
-        if (oprjo == NULL)
+        r = MSK_putacol(expopttask,pos[curterm],nz,ibuf,rbuf);   
+    }
+    
+    for (i=0;i<numter && r == MSK_RES_OK;++i)
+      r = MSK_putbound(expopttask,MSK_ACC_VAR,i,MSK_BK_LO,0,MSK_INFINITY);
+
+    for (i=0;i<numvar && r == MSK_RES_OK;++i)
+      r = MSK_putbound(expopttask,MSK_ACC_CON,i,MSK_BK_FX,0,0);
+
+    if (r == MSK_RES_OK)
+      r = MSK_putbound(expopttask,MSK_ACC_CON,numvar,MSK_BK_FX,1.0,1.0);
+   
+#if DEBUG > 0
+    /* write linear part */
+    MSK_putintparam(expopttask,MSK_IPAR_WRITE_GENERIC_NAMES,MSK_ON);
+    MSK_writedata(expopttask,"lp_part_dual_formulation.lp");
+#endif
+    
+    if (r == MSK_RES_OK)
+      r = MSK_dgosetup(expopttask,
+                       numter,
+                       numvar,
+                       numcon+1,
+                       v,
+                       p,                         
+                       &(nlh->nl_data));
+
+    MSK_freetask(expopttask,p);
+    MSK_freetask(expopttask,displist);
+    MSK_freetask(expopttask,pos);
+    MSK_freetask(expopttask,v);   
+  }
+  else
+  { 
+    if (r == MSK_RES_OK)
+    {
+      opro = MSK_calloctask(expopttask,numobjterm,sizeof(MSKintt));
+      if (opro == NULL)
         r = MSK_RES_ERR_SPACE;
-      }
-      
-      if (r == MSK_RES_OK)
-      {
-        oprfo = MSK_calloctask(expopttask,numobjterm,sizeof(double));
-        if (oprfo == NULL)
-          r = MSK_RES_ERR_SPACE;
-      }
-      
-      if (r == MSK_RES_OK)
-      {
-        oprgo = MSK_calloctask(expopttask,numobjterm,sizeof(double));
-        if (oprgo == NULL)
-          r = MSK_RES_ERR_SPACE;
-      }
-      
-      if (r == MSK_RES_OK)
-      {
-        oprho = MSK_calloctask(expopttask,numobjterm,sizeof(double));
-        if (oprho == NULL)
-          r = MSK_RES_ERR_SPACE;  
-      }
+    }
+    
+    if (r == MSK_RES_OK)
+    {
+      oprjo = MSK_calloctask(expopttask,numobjterm,sizeof(double));
+      if (oprjo == NULL)
+      r = MSK_RES_ERR_SPACE;
+    }
+    
+    if (r == MSK_RES_OK)
+    {
+      oprfo = MSK_calloctask(expopttask,numobjterm,sizeof(double));
+      if (oprfo == NULL)
+        r = MSK_RES_ERR_SPACE;
+    }
+    
+    if (r == MSK_RES_OK)
+    {
+      oprgo = MSK_calloctask(expopttask,numobjterm,sizeof(double));
+      if (oprgo == NULL)
+        r = MSK_RES_ERR_SPACE;
+    }
+    
+    if (r == MSK_RES_OK)
+    {
+      oprho = MSK_calloctask(expopttask,numobjterm,sizeof(double));
+      if (oprho == NULL)
+        r = MSK_RES_ERR_SPACE;  
+    }
 
-      if (r == MSK_RES_OK)
-      {
-        nter_per_con = MSK_calloctask(expopttask,numcon+1,sizeof(MSKintt));
-        if (nter_per_con == NULL)
-          r = MSK_RES_ERR_SPACE;  
-      }
-       
-      MSK_checkmemtask(expopttask,__FILE__,__LINE__);
-
-      
-      if (r == MSK_RES_OK)
-      {
-      
-        for (i=0;i<numcon+1;++i)
-          nter_per_con[i] = 0;
-        
-        /* Setup nonlinear objective */
-
-        for(i=0;i<numter;++i)
-          nter_per_con[subi[i]]++;
-
-      
-        for(i=0,k=0;i<numter && r == MSK_RES_OK;++i)
-        {
-          if (subi[i] == 0)
-          {
-            oprho[k] = 0;
-            oprgo[k] = 1.0;
-            oprfo[k] = 1.0;          
-            oprjo[k] = numvar + i;
-            opro[k]  = MSK_OPR_EXP;
-            ++k;
-          }
-        }
-      }    
-      
-      numopro = numobjterm;      
-      numconterm = numter - numobjterm; 
-      
-      if (r == MSK_RES_OK)
-      {
-        oprc = MSK_calloctask(expopttask,numconterm,sizeof(MSKintt));
-        opric = MSK_calloctask(expopttask,numconterm,sizeof(double));
-        oprjc = MSK_calloctask(expopttask,numconterm,sizeof(double));
-        oprfc = MSK_calloctask(expopttask,numconterm,sizeof(double));
-        oprgc = MSK_calloctask(expopttask,numconterm,sizeof(double));
-        oprhc = MSK_calloctask(expopttask,numconterm,sizeof(double));
-      }
-
-      if (oprc == NULL &&
-          opric == NULL &&
-          oprjc == NULL &&
-          oprfc == NULL &&
-          oprgc == NULL &&
-          oprhc == NULL)
-        r = MSK_RES_ERR_SPACE;     
+    if (r == MSK_RES_OK)
+    {
+      nter_per_con = MSK_calloctask(expopttask,numcon+1,sizeof(MSKintt));
+      if (nter_per_con == NULL)
+        r = MSK_RES_ERR_SPACE;  
+    }
      
-      if ( r == MSK_RES_OK )
-      {
-        for(i=0,k=0;i<numter && r == MSK_RES_OK;++i)
-        {
-          if ((subi[i] != 0) && (nter_per_con[subi[i]] > 1))
-          {
-            oprc[k]  = MSK_OPR_EXP;
-            opric[k] = subi[i] -1; 
-            oprjc[k] = numvar + i;
-            oprfc[k] = 1.0;     
-            oprgc[k] = 1.0;
-            oprhc[k] = 0.0;
-            k++;
-          }
-        }
-        numoprc = k;
-      }    
-
-      if (r == MSK_RES_OK)
-        r = MSK_appendvars(expopttask,numvar + numter);
-      
-      if (r == MSK_RES_OK)
-        r = MSK_appendcons(expopttask,numcon + numter);
+    MSK_checkmemtask(expopttask,__FILE__,__LINE__);
 
     
-      for (i=0;i<numcon && r == MSK_RES_OK;++i)
-      {     
-        r = MSK_putconbound(expopttask,i,MSK_BK_UP,-MSK_INFINITY,1);    
-      }
+    if (r == MSK_RES_OK)
+    {
+    
+      for (i=0;i<numcon+1;++i)
+        nter_per_con[i] = 0;
+      
+      /* Setup nonlinear objective */
 
-      for (i=numcon;i<numcon+numter && r == MSK_RES_OK;++i)
+      for(i=0;i<numter;++i)
+        nter_per_con[subi[i]]++;
+
+    
+      for(i=0,k=0;i<numter && r == MSK_RES_OK;++i)
       {
-        if ((nter_per_con[subi[i-numcon]]) > 1 || (subi[i-numcon] ==0)) 
+        if (subi[i] == 0)
         {
-          r = MSK_putconbound(expopttask,i,MSK_BK_FX,-log(c[i-numcon]),-log(c[i-numcon]));
+          oprho[k] = 0;
+          oprgo[k] = 1.0;
+          oprfo[k] = 1.0;          
+          oprjo[k] = numvar + i;
+          opro[k]  = MSK_OPR_EXP;
+          ++k;
+        }
+      }
+    }    
+    
+    numopro = numobjterm;      
+    numconterm = numter - numobjterm; 
+    
+    if (r == MSK_RES_OK)
+    {
+      oprc = MSK_calloctask(expopttask,numconterm,sizeof(MSKintt));
+      opric = MSK_calloctask(expopttask,numconterm,sizeof(double));
+      oprjc = MSK_calloctask(expopttask,numconterm,sizeof(double));
+      oprfc = MSK_calloctask(expopttask,numconterm,sizeof(double));
+      oprgc = MSK_calloctask(expopttask,numconterm,sizeof(double));
+      oprhc = MSK_calloctask(expopttask,numconterm,sizeof(double));
+    }
+
+    if (oprc == NULL &&
+        opric == NULL &&
+        oprjc == NULL &&
+        oprfc == NULL &&
+        oprgc == NULL &&
+        oprhc == NULL)
+      r = MSK_RES_ERR_SPACE;     
+   
+    if ( r == MSK_RES_OK )
+    {
+      for(i=0,k=0;i<numter && r == MSK_RES_OK;++i)
+      {
+        if ((subi[i] != 0) && (nter_per_con[subi[i]] > 1))
+        {
+          oprc[k]  = MSK_OPR_EXP;
+          opric[k] = subi[i] -1; 
+          oprjc[k] = numvar + i;
+          oprfc[k] = 1.0;     
+          oprgc[k] = 1.0;
+          oprhc[k] = 0.0;
+          k++;
+        }
+      }
+      numoprc = k;
+    }    
+
+    if (r == MSK_RES_OK)
+      r = MSK_appendvars(expopttask,numvar + numter);
+    
+    if (r == MSK_RES_OK)
+      r = MSK_appendcons(expopttask,numcon + numter);
+
+  
+    for (i=0;i<numcon && r == MSK_RES_OK;++i)
+    {     
+      r = MSK_putbound(expopttask,MSK_ACC_CON,i,MSK_BK_UP,-MSK_INFINITY,1);    
+    }
+
+    for (i=numcon;i<numcon+numter && r == MSK_RES_OK;++i)
+    {
+      if ((nter_per_con[subi[i-numcon]]) > 1 || (subi[i-numcon] ==0)) 
+      {
+        r = MSK_putbound(expopttask,MSK_ACC_CON,i,MSK_BK_FX,-log(c[i-numcon]),-log(c[i-numcon]));
+      }
+      else
+      {
+        r = MSK_putbound(expopttask,MSK_ACC_CON,i,MSK_BK_UP,-MSK_INFINITY,-log(c[i-numcon]));
+      }
+    }
+
+    for (i=0;i<numvar && r == MSK_RES_OK;++i)
+    {
+      r = MSK_putbound(expopttask,MSK_ACC_VAR,i,MSK_BK_FR,-MSK_INFINITY,MSK_INFINITY);
+    }
+
+    for (i=numvar;i<numvar+numter && r == MSK_RES_OK;++i)
+    {
+      r = MSK_putbound(expopttask,MSK_ACC_VAR,i,MSK_BK_FR,-MSK_INFINITY,MSK_INFINITY);
+    }
+    
+    MSK_checkmemtask(expopttask,__FILE__,__LINE__);
+    
+    itmp=0;
+    {
+      MSKidxt termindex;
+
+      for (termindex=0;termindex<numter;++termindex)
+      {
+        if (subk[itmp] != termindex)
+        {
+          MSKintt nz =0;
+          ibuf[nz] = numvar + termindex;  /* add v_t */
+          rbuf[nz] = -1.0;
+          nz++;
+
+          if (r == MSK_RES_OK)
+            r = MSK_putarow(expopttask,termindex+numcon,nz,ibuf,rbuf);
+          
+          if (r == MSK_RES_OK)
+            r = MSK_putbound(expopttask,MSK_ACC_CON,termindex+numcon,MSK_BK_FX,-log(c[termindex]),-log(c[termindex]));
         }
         else
         {
-          r = MSK_putconbound(expopttask,i,MSK_BK_UP,-MSK_INFINITY,-log(c[i-numcon]));
-        }
-      }
-
-      for (i=0;i<numvar && r == MSK_RES_OK;++i)
-      {
-        r = MSK_putvarbound(expopttask,i,MSK_BK_FR,-MSK_INFINITY,MSK_INFINITY);
-      }
-
-      for (i=numvar;i<numvar+numter && r == MSK_RES_OK;++i)
-      {
-        r = MSK_putvarbound(expopttask,i,MSK_BK_FR,-MSK_INFINITY,MSK_INFINITY);
-      }
-      
-      MSK_checkmemtask(expopttask,__FILE__,__LINE__);
-      
-      itmp=0;
-      {
-        MSKidxt termindex;
-
-        for (termindex=0;termindex<numter;++termindex)
-        {
-          if (subk[itmp] != termindex)
+          MSKintt nz =0;
+          
+          while ((itmp < numanz) && (subk[itmp] == termindex))
           {
-            MSKintt nz =0;
+            ibuf[nz] = subj[itmp]; 
+            rbuf[nz] = akj[itmp];
+            nz++;
+            itmp++;
+          }
+          
+          if ((nter_per_con[subi[termindex]] > 1) || subi[termindex] == 0)
+          {
             ibuf[nz] = numvar + termindex;  /* add v_t */
             rbuf[nz] = -1.0;
             nz++;
 
             if (r == MSK_RES_OK)
-              r = MSK_putarow(expopttask,termindex+numcon,nz,ibuf,rbuf);
-            
-            if (r == MSK_RES_OK)
-              r = MSK_putconbound(expopttask,termindex+numcon,MSK_BK_FX,-log(c[termindex]),-log(c[termindex]));
+              r = MSK_putbound(expopttask,MSK_ACC_CON,termindex+numcon,MSK_BK_FX,-log(c[termindex]),-log(c[termindex]));
           }
           else
           {
-            MSKintt nz =0;
-            
-            while ((itmp < numanz) && (subk[itmp] == termindex))
-            {
-              ibuf[nz] = subj[itmp]; 
-              rbuf[nz] = akj[itmp];
-              nz++;
-              itmp++;
-            }
-            
-            if ((nter_per_con[subi[termindex]] > 1) || subi[termindex] == 0)
-            {
-              ibuf[nz] = numvar + termindex;  /* add v_t */
-              rbuf[nz] = -1.0;
-              nz++;
-
-              if (r == MSK_RES_OK)
-                r = MSK_putconbound(expopttask,termindex+numcon,MSK_BK_FX,-log(c[termindex]),-log(c[termindex]));
-            }
-            else
-            {
-              if (r == MSK_RES_OK)
-                r = MSK_putconbound(expopttask,termindex+numcon,MSK_BK_UP,-MSK_INFINITY,-log(c[termindex]));
-            }
-            
             if (r == MSK_RES_OK)
-              r = MSK_putarow(expopttask,termindex+numcon,nz,ibuf,rbuf);
+              r = MSK_putbound(expopttask,MSK_ACC_CON,termindex+numcon,MSK_BK_UP,-MSK_INFINITY,-log(c[termindex]));
           }
+          
+          if (r == MSK_RES_OK)
+            r = MSK_putarow(expopttask,termindex+numcon,nz,ibuf,rbuf);
         }
       }
-    
-        
-         
-      MSK_checkmemtask(expopttask,__FILE__,__LINE__);
-
-      
-      if (r == MSK_RES_OK)
-        r = MSK_scbegin(expopttask,
-                        numopro,
-                        opro,
-                        oprjo,
-                        oprfo,
-                        oprgo,
-                        oprho,
-                        numoprc,
-                        oprc,
-                        opric,
-                        oprjc,
-                        oprfc,
-                        oprgc,
-                        oprhc,
-                        &(nlh->nl_data));
-      
-
-      if (r == MSK_RES_OK)
-        r = MSK_putobjsense(expopttask,
-                            MSK_OBJECTIVE_SENSE_MINIMIZE);
-     
-      MSK_checkmemtask(expopttask,__FILE__,__LINE__);
-
-  #if WRITE_AS_SCOPT
-      MSK_putintparam(expopttask,
-                      MSK_IPAR_WRITE_GENERIC_NAMES,
-                      MSK_ON);
-        
-      MSK_scwrite(expopttask,nlh->nl_data,"scoptp");
-  #endif
-      
-      MSK_freetask(expopttask,opro);
-      MSK_freetask(expopttask,oprjo);
-      MSK_freetask(expopttask,oprfo);
-      MSK_freetask(expopttask,oprgo);
-      MSK_freetask(expopttask,oprho);
-      MSK_freetask(expopttask,oprc);
-      MSK_freetask(expopttask,oprjc);
-      MSK_freetask(expopttask,opric);
-      MSK_freetask(expopttask,oprfc);
-      MSK_freetask(expopttask,oprgc);
-      MSK_freetask(expopttask,oprhc);
     }
+  
+      
+       
+    MSK_checkmemtask(expopttask,__FILE__,__LINE__);
+
     
-    MSK_freetask(expopttask,rbuf);
-    MSK_freetask(expopttask,ibuf);
-    MSK_freetask(expopttask,subk);
-    MSK_freetask(expopttask,subj);
-    MSK_freetask(expopttask,akj);
-    MSK_freetask(expopttask,nter_per_con);
+    if (r == MSK_RES_OK)
+      r = MSK_scbegin(expopttask,
+                      numopro,
+                      opro,
+                      oprjo,
+                      oprfo,
+                      oprgo,
+                      oprho,
+                      numoprc,
+                      oprc,
+                      opric,
+                      oprjc,
+                      oprfc,
+                      oprgc,
+                      oprhc,
+                      &(nlh->nl_data));
+    
+
+    if (r == MSK_RES_OK)
+      r = MSK_putobjsense(expopttask,
+                          MSK_OBJECTIVE_SENSE_MINIMIZE);
+   
+    MSK_checkmemtask(expopttask,__FILE__,__LINE__);
+
+#if WRITE_AS_SCOPT
+    MSK_putintparam(expopttask,
+                    MSK_IPAR_WRITE_GENERIC_NAMES,
+                    MSK_ON);
+      
+    MSK_scwrite(expopttask,nlh->nl_data,"scoptp");
+#endif
+    
+    MSK_freetask(expopttask,opro);
+    MSK_freetask(expopttask,oprjo);
+    MSK_freetask(expopttask,oprfo);
+    MSK_freetask(expopttask,oprgo);
+    MSK_freetask(expopttask,oprho);
+    MSK_freetask(expopttask,oprc);
+    MSK_freetask(expopttask,oprjc);
+    MSK_freetask(expopttask,opric);
+    MSK_freetask(expopttask,oprfc);
+    MSK_freetask(expopttask,oprgc);
+    MSK_freetask(expopttask,oprhc);
   }
-  else
-    r =MSK_RES_ERR_SPACE;
+  
+  MSK_freetask(expopttask,rbuf);
+  MSK_freetask(expopttask,ibuf);
+  MSK_freetask(expopttask,subk);
+  MSK_freetask(expopttask,subj);
+  MSK_freetask(expopttask,akj);
+  MSK_freetask(expopttask,nter_per_con);
     
   return ( r );
-} /* MSK_expoptsetup*/
+}
 
 
 MSKrescodee
@@ -1184,28 +1184,35 @@ MSK_expoptimize(MSKtask_t    expopttask,
   return ( r );
 }
 
-MSKrescodee MSK_expoptfree(MSKtask_t    expopttask,
-                           expopthand_t *expopthnd)
+MSKrescodee
+MSK_expoptfree(MSKtask_t    expopttask,
+               expopthand_t *expopthnd)
 {
   /* Purpose: Free data allocated by expoptsetup. For every call
               to expoptsetup there must be exactly one call to expoptfree. 
    */
-  MSKrescodee r=MSK_RES_OK;
-  nlhand_t    *nlh=(nlhand_t *) expopthnd;
+  MSKrescodee
+    r = MSK_RES_OK;
+  nlhand_t  nlh;
 
-  if ( nlh[0]!=NULL )
+  if (expopthnd[0] != NULL)
   {
-    if ( nlh[0]->nl_data != NULL)
+    nlh = (nlhand_t) expopthnd[0];    
+    if (nlh->nl_data != NULL)
     { 
-      if ( nlh[0]->solveform<0 )
-        r = MSK_scend(expopttask,&(nlh[0]->nl_data));
+      if (nlh->solveform < 0)
+      {
+        r = MSK_scend(expopttask,
+                      &(nlh->nl_data));
+      }
       else
-        r = MSK_freedgo(expopttask,&(nlh[0]->nl_data));
+      {
+        MSK_freedgo(expopttask,&(nlh->nl_data));
+      }
     }
-
-    MSK_freetask(expopttask,nlh[0]);
-    nlh[0] = NULL;
+    MSK_freetask(expopttask,nlh);
   }
   
   return ( r );
 }
+

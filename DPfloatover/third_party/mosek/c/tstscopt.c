@@ -20,7 +20,7 @@
 #define NUMANZ   3 /* Number of non-zeros in A. */
 
 static void MSKAPI printstr(void *handle,
-                            const char str[])
+                            MSKCONST char str[])
 {
   printf("%s",str);
 } /* printstr */
@@ -83,8 +83,8 @@ int main()
   buc[0] = 1.0;           buc[1] = 0.0;
 
   /* Specify bounds for variables. */
-  bkx[0] = MSK_BK_LO;      bkx[1] = MSK_BK_LO;     bkx[2] = MSK_BK_LO;
-  blx[0] = 0.0;            blx[1] = 0.1;           blx[2] = 0.0;
+  bkx[0] = MSK_BK_FR;      bkx[1] = MSK_BK_FR;     bkx[2] = MSK_BK_LO;
+  blx[0] = -MSK_INFINITY;  blx[1] = -MSK_INFINITY; blx[2] = 0.0;
   bux[0] = MSK_INFINITY;   bux[1] = MSK_INFINITY;  bux[2] = MSK_INFINITY;
 
   /* Create  the mosek environment. */
@@ -145,3 +145,5 @@ int main()
 
   return r;
 } /* main */
+
+

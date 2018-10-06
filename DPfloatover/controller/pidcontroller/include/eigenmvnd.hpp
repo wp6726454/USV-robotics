@@ -33,29 +33,32 @@ class eigenmvnd {
     return os;
   }
 
-public:
+ public:
   // disable the default constructor
   eigenmvnd() = delete;
   // default constructor
   explicit eigenmvnd(const Eigen::MatrixXd &requested_mean,
                      const Eigen::MatrixXd &requested_covariance,
                      int _totalsample) noexcept
-      : mean(requested_mean), covariance(requested_covariance),
-        totalsample(_totalsample), row_standard(requested_mean.rows()),
+      : mean(requested_mean),
+        covariance(requested_covariance),
+        totalsample(_totalsample),
+        row_standard(requested_mean.rows()),
         multidistribution(row_standard, totalsample) {}
 
   ~eigenmvnd() noexcept {}
 
   eigenmvnd &perform_mvnd() {
     // generate a M*N matrix with multivariate normal distribution
-    multidistribution = generate_meanm() + generate_cholesky_matrix_L() *
-                                               generate_standard_normals();
+    multidistribution =
+        generate_meanm() +
+        generate_cholesky_matrix_L() * generate_standard_normals();
     return *this;
   }
 
   auto get_mvnd_matrix() const noexcept { return multidistribution; }
 
-private:
+ private:
   // utility functions
   Eigen::MatrixXd generate_standard_normal() const {
     // generate a column vector with standard normal distribution
@@ -92,4 +95,4 @@ private:
   int row_standard;
   Eigen::MatrixXd multidistribution;
 };
-#endif // _EIGENMVND_HPP
+#endif  // _EIGENMVND_HPP

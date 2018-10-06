@@ -17,21 +17,13 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-<<<<<<< HEAD
-#include "/home/scar1et/Coding/CPP1X/USV/timer/timecounter.hpp"
-#include "constants.h"
-#include "mosek.h" /* Include the MOSEK definition file. */
-#include "realtimedata.h"
-=======
 #include "constants.h"
 #include "mosek.h" /* Include the MOSEK definition file. */
 #include "realtimedata.h"
 #include "timecounter.hpp"
->>>>>>> real time control
 
-// static void MSKAPI printstr(void *handle, const char str[]) {
-//   printf("%s", str);
-// } /* printstr */
+// static void MSKAPI printstr(void *handle, const char str[]) {  //
+// printf("%s", str);  // } /* printstr */
 
 void write2csvfile(const std::string &, const Eigen::MatrixXd &);
 void write2csvfile(const std::string &, const Eigen::MatrixXi &);
@@ -323,14 +315,8 @@ class thrusterallocation_first {
       upper_delta_alpha_bow(0) = 0;
       upper_delta_u_bow(0) =
           std::min(_vessel.max_thrust_bow_positive - _realtimevessel.u(0),
-<<<<<<< HEAD
-                   _vessel.Kbar_positive *
-                           (_realtimevessel.rotation(0) +
-                            _vessel.max_delta_rotation_bow) *
-=======
                    _vessel.Kbar_positive * (_realtimevessel.rotation(0) +
                                             _vessel.max_delta_rotation_bow) *
->>>>>>> real time control
                            (_realtimevessel.rotation(0) +
                             _vessel.max_delta_rotation_bow) -
                        _realtimevessel.u(0));
@@ -345,14 +331,8 @@ class thrusterallocation_first {
       lower_delta_alpha_bow(0) = 0;
       upper_delta_alpha_bow(0) = 0;
       upper_delta_u_bow(0) =
-<<<<<<< HEAD
-          std::min(_vessel.Kbar_negative *
-                           (_realtimevessel.rotation(0) -
-                            _vessel.max_delta_rotation_bow) *
-=======
           std::min(_vessel.Kbar_negative * (_realtimevessel.rotation(0) -
                                             _vessel.max_delta_rotation_bow) *
->>>>>>> real time control
                            (_realtimevessel.rotation(0) -
                             _vessel.max_delta_rotation_bow) -
                        _realtimevessel.u(0),
@@ -381,14 +361,8 @@ class thrusterallocation_first {
     double thrust_azimuth_left = _vessel.K_left * _realtimevessel.rotation(1) *
                                  _realtimevessel.rotation(1);
     upper_delta_u_left =
-<<<<<<< HEAD
-        std::min(_vessel.K_left *
-                         (_realtimevessel.rotation(1) +
-                          _vessel.max_delta_rotation_azimuth) *
-=======
         std::min(_vessel.K_left * (_realtimevessel.rotation(1) +
                                    _vessel.max_delta_rotation_azimuth) *
->>>>>>> real time control
                          (_realtimevessel.rotation(1) +
                           _vessel.max_delta_rotation_azimuth) -
                      thrust_azimuth_left,
@@ -414,14 +388,8 @@ class thrusterallocation_first {
                                   _realtimevessel.rotation(2) *
                                   _realtimevessel.rotation(2);
     upper_delta_u_right =
-<<<<<<< HEAD
-        std::min(_vessel.K_right *
-                         (_realtimevessel.rotation(2) +
-                          _vessel.max_delta_rotation_azimuth) *
-=======
         std::min(_vessel.K_right * (_realtimevessel.rotation(2) +
                                     _vessel.max_delta_rotation_azimuth) *
->>>>>>> real time control
                          (_realtimevessel.rotation(2) +
                           _vessel.max_delta_rotation_azimuth) -
                      thrust_azimuth_right,
@@ -1045,14 +1013,8 @@ class thrusterallocation_second {
       upper_delta_alpha_bow(0) = 0;
       upper_delta_u_bow(0) =
           std::min(_vessel.max_thrust_bow_positive - _realtimevessel.u(0),
-<<<<<<< HEAD
-                   _vessel.Kbar_positive *
-                           (_realtimevessel.rotation(0) +
-                            _vessel.max_delta_rotation_bow) *
-=======
                    _vessel.Kbar_positive * (_realtimevessel.rotation(0) +
                                             _vessel.max_delta_rotation_bow) *
->>>>>>> real time control
                            (_realtimevessel.rotation(0) +
                             _vessel.max_delta_rotation_bow) -
                        _realtimevessel.u(0));
@@ -1067,14 +1029,8 @@ class thrusterallocation_second {
       lower_delta_alpha_bow(0) = 0;
       upper_delta_alpha_bow(0) = 0;
       upper_delta_u_bow(0) =
-<<<<<<< HEAD
-          std::min(_vessel.Kbar_negative *
-                           (_realtimevessel.rotation(0) -
-                            _vessel.max_delta_rotation_bow) *
-=======
           std::min(_vessel.Kbar_negative * (_realtimevessel.rotation(0) -
                                             _vessel.max_delta_rotation_bow) *
->>>>>>> real time control
                            (_realtimevessel.rotation(0) -
                             _vessel.max_delta_rotation_bow) -
                        _realtimevessel.u(0),
@@ -1103,14 +1059,8 @@ class thrusterallocation_second {
     double thrust_azimuth_left = _vessel.K_left * _realtimevessel.rotation(1) *
                                  _realtimevessel.rotation(1);
     upper_delta_u_left =
-<<<<<<< HEAD
-        std::min(_vessel.K_left *
-                         (_realtimevessel.rotation(1) +
-                          _vessel.max_delta_rotation_azimuth) *
-=======
         std::min(_vessel.K_left * (_realtimevessel.rotation(1) +
                                    _vessel.max_delta_rotation_azimuth) *
->>>>>>> real time control
                          (_realtimevessel.rotation(1) +
                           _vessel.max_delta_rotation_azimuth) -
                      thrust_azimuth_left,
@@ -1136,14 +1086,8 @@ class thrusterallocation_second {
                                   _realtimevessel.rotation(2) *
                                   _realtimevessel.rotation(2);
     upper_delta_u_right =
-<<<<<<< HEAD
-        std::min(_vessel.K_right *
-                         (_realtimevessel.rotation(2) +
-                          _vessel.max_delta_rotation_azimuth) *
-=======
         std::min(_vessel.K_right * (_realtimevessel.rotation(2) +
                                     _vessel.max_delta_rotation_azimuth) *
->>>>>>> real time control
                          (_realtimevessel.rotation(2) +
                           _vessel.max_delta_rotation_azimuth) -
                      thrust_azimuth_right,
@@ -1764,14 +1708,8 @@ class thrusterallocation_third {
       upper_delta_alpha_bow(0) = 0;
       upper_delta_u_bow(0) =
           std::min(_vessel.max_thrust_bow_positive - _realtimevessel.u(0),
-<<<<<<< HEAD
-                   _vessel.Kbar_positive *
-                           (_realtimevessel.rotation(0) +
-                            _vessel.max_delta_rotation_bow) *
-=======
                    _vessel.Kbar_positive * (_realtimevessel.rotation(0) +
                                             _vessel.max_delta_rotation_bow) *
->>>>>>> real time control
                            (_realtimevessel.rotation(0) +
                             _vessel.max_delta_rotation_bow) -
                        _realtimevessel.u(0));
@@ -1786,14 +1724,8 @@ class thrusterallocation_third {
       lower_delta_alpha_bow(0) = 0;
       upper_delta_alpha_bow(0) = 0;
       upper_delta_u_bow(0) =
-<<<<<<< HEAD
-          std::min(_vessel.Kbar_negative *
-                           (_realtimevessel.rotation(0) -
-                            _vessel.max_delta_rotation_bow) *
-=======
           std::min(_vessel.Kbar_negative * (_realtimevessel.rotation(0) -
                                             _vessel.max_delta_rotation_bow) *
->>>>>>> real time control
                            (_realtimevessel.rotation(0) -
                             _vessel.max_delta_rotation_bow) -
                        _realtimevessel.u(0),
@@ -1822,14 +1754,8 @@ class thrusterallocation_third {
     double thrust_azimuth_left = _vessel.K_left * _realtimevessel.rotation(1) *
                                  _realtimevessel.rotation(1);
     upper_delta_u_left =
-<<<<<<< HEAD
-        std::min(_vessel.K_left *
-                         (_realtimevessel.rotation(1) +
-                          _vessel.max_delta_rotation_azimuth) *
-=======
         std::min(_vessel.K_left * (_realtimevessel.rotation(1) +
                                    _vessel.max_delta_rotation_azimuth) *
->>>>>>> real time control
                          (_realtimevessel.rotation(1) +
                           _vessel.max_delta_rotation_azimuth) -
                      thrust_azimuth_left,
@@ -1855,14 +1781,8 @@ class thrusterallocation_third {
                                   _realtimevessel.rotation(2) *
                                   _realtimevessel.rotation(2);
     upper_delta_u_right =
-<<<<<<< HEAD
-        std::min(_vessel.K_right *
-                         (_realtimevessel.rotation(2) +
-                          _vessel.max_delta_rotation_azimuth) *
-=======
         std::min(_vessel.K_right * (_realtimevessel.rotation(2) +
                                     _vessel.max_delta_rotation_azimuth) *
->>>>>>> real time control
                          (_realtimevessel.rotation(2) +
                           _vessel.max_delta_rotation_azimuth) -
                      thrust_azimuth_right,

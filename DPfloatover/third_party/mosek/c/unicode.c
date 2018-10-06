@@ -1,75 +1,61 @@
 /*
    Copyright: Copyright (c) MOSEK ApS, Denmark. All rights reserved.
 
-   File:      unicode.c
+   File: unicode.c
 
-   Purpose:   To demonstrate how to use unicoded strings.
+   Purpose:   To demonstrate how to use a unicoded strings.
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+
 #include "mosek.h"
 
-<<<<<<< HEAD
-int main(int argc, const char *argv[]) {
-  char output[512];
-  wchar_t *input = L"My task name";
-  MSKenv_t env;
-  MSKrescodee r;
-  MSKtask_t task;
-  size_t len, conv;
-
-  r = MSK_makeenv(&env, NULL);
-
-  if (r == MSK_RES_OK) {
-    r = MSK_makeemptytask(env, &task);
-
-    if (r == MSK_RES_OK) {
-=======
-int main(int argc, const char *argv[])
+int main(int argc, char *argv[])
 {
   char        output[512];
-  wchar_t     *input = L"My task name";
+  wchar_t     *input=L"myfile.mps";
   MSKenv_t    env;
   MSKrescodee r;
   MSKtask_t   task;
-  size_t      len, conv;
+  size_t      len,conv;
 
-  r = MSK_makeenv(&env, NULL);
 
-  if ( r == MSK_RES_OK )
-  {
-    r = MSK_makeemptytask(env, &task);
+  r = MSK_makeenv(&env,NULL);
 
-    if ( r == MSK_RES_OK )
-    {
->>>>>>> real time control
+  if ( r==MSK_RES_OK ) 
+  { 
+    r = MSK_makeemptytask(env,&task);
+
+    if ( r==MSK_RES_OK )   
+    { 
       /*
-         The wchar_t string input specifying the task name
-         is converted to a UTF8 string that can be inputted
+         The wchar_t string "input" specifying a file name
+         is converted to a UTF8 string that can be inputted 
          to MOSEK.
-      */
-      r = MSK_wchartoutf8(sizeof(output), &len, &conv, output, input);
-
-<<<<<<< HEAD
-      if (r == MSK_RES_OK) r = MSK_puttaskname(task, output);
-=======
-      if ( r == MSK_RES_OK )
-        r = MSK_puttaskname(task, output);
->>>>>>> real time control
-
-      MSK_deletetask(&task);
-    }
-
-    MSK_deleteenv(&env);
+       */
+    
+      r = MSK_wchartoutf8(sizeof(output),&len,&conv,output,input);
+    
+      if ( r==MSK_RES_OK )
+      {     
+        /* output is now an UTF8 encoded string. */ 
+        r = MSK_readdata(task,output);
+      }  
+    
+      if ( r==MSK_RES_OK )
+      {
+        r = MSK_optimize(task);
+        MSK_solutionsummary(task,MSK_STREAM_MSG);
+      }
+    }  
+    MSK_deletetask(&task);
   }
+  MSK_deleteenv(&env);
 
-  printf("Return code - %d\n", r);
-<<<<<<< HEAD
-  return (r);
-=======
+  printf("Return code - %d\n",r);
+
   return ( r );
->>>>>>> real time control
 } /* main */

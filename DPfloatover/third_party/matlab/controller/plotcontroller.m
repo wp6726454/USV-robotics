@@ -1,13 +1,8 @@
 clear
 close all;
 
-<<<<<<< HEAD
 name='first';
-path='/home/scar1et/Coding/CPP1X/USV/DPfloatover/controller/pidcontroller/example/';
-=======
-name='third';
 path='/home/skloe/Coding/CPP1X/USV/DPfloatover/controller/pidcontroller/example/';
->>>>>>> real time control
 path=strcat(path,name);
 x=csvread(strcat(path,'_x.csv'));
 u=csvread(strcat(path,'_u.csv'));

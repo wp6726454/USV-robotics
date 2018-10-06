@@ -20,11 +20,11 @@
                         the nonlinear part of the
                         problem.
  */  
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "dgopt.h"
 #include "mosek.h" /* Include the MOSEK definition file. */
 
 
@@ -49,11 +49,11 @@ typedef struct
 
           MSKtask_t   task;
 
-          MSKint32t   n;        /* Number of variables.  */
-          MSKint32t   t;        /* Number of terms in
+          MSKintt     n;        /* Number of variables.  */
+          MSKintt     t;        /* Number of terms in
                                    the objective of the primal problem. */
-          MSKint32t   *p;
-          MSKint32t   numhesnz; /* Number of non-zeros in
+          MSKintt     *p;
+          MSKintt     numhesnz; /* Number of non-zeros in
                                    the Hessian.          */
         } nlhandt;
 
@@ -78,26 +78,26 @@ static int MSKAPI printnldata(nlhand_t nlh)
 } /* printnldata */
 
 
-static int MSKAPI dgostruc(void            *nlhandle,
-                           MSKint32t       *numgrdobjnz,
-                           MSKint32t       *grdobjsub,
-                           MSKint32t       i,
-                           int             *convali,
-                           MSKint32t       *grdconinz,
-                           MSKint32t       *grdconisub,
-                           MSKint32t       yo,
-                           MSKint32t       numycnz,
-                           const MSKint32t *ycsub,
-                           MSKint32t       maxnumhesnz,
-                           MSKint32t       *numhesnz,
-                           MSKint32t       *hessubi,
-                           MSKint32t       *hessubj)
-/* Purpose: Provide information to MOSEK about the problem structure
-            and sparsity.
+int MSKAPI dgostruc(void    *nlhandle,
+                    MSKintt  *numgrdobjnz,
+                    MSKidxt  *grdobjsub,
+                    MSKidxt  i,
+                    int      *convali,
+                    MSKidxt  *grdconinz,
+                    MSKidxt  *grdconisub,
+                    MSKintt  yo,
+                    MSKintt  numycnz,
+                    MSKCONST MSKidxt  *ycsub,
+                    MSKintt  maxnumhesnz,
+                    MSKintt  *numhesnz,
+                    MSKidxt  *hessubi,
+                    MSKidxt  *hessubj)
+/* Purpose: Provide information to MOSEK about the
+            problem structure and sparsity.
  */
 {
-  MSKint32t j,k,l; 
-  nlhand_t  nlh;
+  MSKidxt  j,k,l; 
+  nlhand_t nlh;
 
   nlh = (nlhand_t) nlhandle;
 
@@ -211,39 +211,38 @@ static int MSKAPI dgostruc(void            *nlhandle,
 } /* dgostruc */
 
 static int MSKAPI dgoeval(void             *nlhandle,
-                          const double  *xx,
+                          MSKCONST double  *xx,
                           double           yo,
-                          const double  *yc,
+                          MSKCONST double  *yc,
                           double           *objval,
-                          MSKint32t        *numgrdobjnz,
-                          MSKint32t        *grdobjsub,
+                          MSKintt          *numgrdobjnz,
+                          MSKidxt          *grdobjsub,
                           double           *grdobjval,
-                          MSKint32t        numi,
-                          const MSKidxt *subi,
+                          MSKintt          numi,
+                          MSKCONST MSKidxt *subi,
                           double           *conval,
-                          const MSKintt *grdconptrb,
-                          const MSKintt *grdconptre,
-                          const MSKidxt *grdconsub,
+                          MSKCONST MSKintt *grdconptrb,
+                          MSKCONST MSKintt *grdconptre,
+                          MSKCONST MSKidxt *grdconsub,
                           double           *grdconval,
                           double           *grdlag,
-                          MSKint32t        maxnumhesnz,
-                          MSKint32t        *numhesnz,
-                          MSKint32t        *hessubi,
-                          MSKint32t        *hessubj,
+                          MSKintt          maxnumhesnz,
+                          MSKintt          *numhesnz,
+                          MSKidxt          *hessubi,
+                          MSKidxt          *hessubj,
                           double           *hesval)
 /* Purpose: To evaluate the nonlinear function and return the
-            requested information to MOSEK.
- */
+        requested information to MOSEK.
+     */
 {
-  double    rtemp;
-  MSKint32t i,j,k,l,itemp;
-  nlhand_t  nlh;
+  double   rtemp;
+
+  MSKidxt  i,j,k,l,itemp;
+  nlhand_t nlh;
 
   nlh = (nlhand_t) nlhandle;
 
-  #if 0
   MSK_checkmemtask(nlh->task,__FILE__,__LINE__);
-  #endif
   
   if ( objval )
   {
@@ -269,7 +268,10 @@ static int MSKAPI dgoeval(void             *nlhandle,
     {
       for(j=nlh->p[k]; j<nlh->p[k+1] ; ++j)
       {
+        
+
         #if DEBUG
+
         printf("(%d) xx = %p, k = %d, j = %d, nlh = %p, p[0] = %d\n",
                __LINE__,xx,k,j,nlh,nlh->p[0]);
         if ( xx[j]<=0.0 )
@@ -513,22 +515,22 @@ static int MSKAPI dgoeval(void             *nlhandle,
   return ( 0 );
 } /* dgoeval */
 
-MSKrescodee MSK_dgoread(MSKtask_t  task,
-                        const char *nldatafile,
-                        MSKint32t  *numvar,       /* numterms in primal */
-                        MSKint32t  *numcon,       /* numvar in primal */
-                        MSKint32t  *t,            /* number of constraints in primal*/
-                        double     **v,           /* coiefients for terms in primal*/
-                        MSKint32t  **p            /* corresponds to number of terms 
-                                                     in each constraint in the 
-                                                     primal */
-                        )
+MSKrescodee MSK_dgoread(MSKtask_t task,
+                        char      *nldatafile,
+                        MSKintt   *numvar,   /* numterms in primal */
+                        MSKintt   *numcon,   /* numvar in primal */
+                        MSKintt   *t,        /* constraints in primal */
+                        double    **v,       /* coefficients for terms */
+                        MSKintt   **p        /* corresponds to number of 
+                                                terms in each constraint in the 
+                                                primal */
+                       )
 {
   MSKrescodee r=MSK_RES_OK;
   MSKenv_t    env;
   char        buf[MAX_LINE_LENGTH];
   FILE        *f;
-  MSKint32t   i;
+  MSKintt     i;
 
   MSK_getenv(task,&env);
   v[0] = NULL; p[0] = NULL;
@@ -586,104 +588,134 @@ MSKrescodee MSK_dgoread(MSKtask_t  task,
   return ( r );
 }
  
-MSKrescodee MSK_dgosetup(MSKtask_t task,
-                         MSKint32t numvar,
-                         MSKint32t numcon,
-                         MSKint32t t,
-                         double    *v,
-                         MSKint32t *p,   
-                         dgohand_t *dgoh)
+MSKrescodee
+MSK_dgosetup(MSKtask_t task,
+             MSKintt   numvar,
+             MSKintt   numcon,
+             MSKintt   t,
+             double    *v,
+             MSKintt   *p,   
+             nlhand_t  *nlh)
 {
 
-  MSKint32t   j,k;
+  MSKintt     j,k;
   MSKrescodee r=MSK_RES_OK;
-  nlhand_t    *nlh=(nlhand_t *) dgoh;
+  MSKenv_t    env;
 
-  nlh[0] = (nlhand_t) MSK_calloctask(task,1,sizeof(nlhandt));
-  if ( nlh[0]!=NULL )
-  {
+
+  nlh[0] = NULL;
+  
+  MSK_getenv(task,&env);  
+  
     /* set up nonlinear part */
   
-    nlh[0]->p    = NULL;
-    nlh[0]->n    = numvar;
-    nlh[0]->t    = t;
-    nlh[0]->task = task;
-
-    nlh[0]->p    = MSK_calloctask(task,nlh[0]->t+1,sizeof(int));
-    if (nlh[0]->p!=NULL )
-    {
-      nlh[0]->p[0] = 0;
-      for(k=0; k<nlh[0]->t; ++k)
-      {        
-        nlh[0]->p[k+1] = nlh[0]->p[k]+p[k];
-      }
-
-      for(k=0; k<nlh[0]->t; ++k)
-      {
-        for(j=nlh[0]->p[k]; j<nlh[0]->p[k+1]; ++j)
-        {
-          r = MSK_putcj(task,j,OBJSCAL*log(v[j]));
-        }
-      }  
-
-        
-      if ( nlh[0]->p[nlh[0]->t]==nlh[0]->n )
-      {
-        /*
-         * The problem is now defined
-         * and the setup can proceed.
-         * Next, the number of Hessian non-zeros
-         * is computed.
-         */
-
-        nlh[0]->numhesnz = nlh[0]->p[1]-nlh[0]->p[0];
-        for(k=1; k<nlh[0]->t; ++k)
-        {   
-          if (( nlh[0]->p[k+1]-nlh[0]->p[k])>1 )  
-          {
-            /* If only one term in primal constraint, 
-               the corresponding value in H is zero. 
-             */
-            nlh[0]->numhesnz += ((nlh[0]->p[k+1]-nlh[0]->p[k])
-                                 * (1+nlh[0]->p[k+1]-nlh[0]->p[k]))/2;
-          } 
-        }
-        printf("Number of Hessian non-zeros: %d\n",nlh[0]->numhesnz);
-
-        MSK_putnlfunc(task,nlh[0],dgostruc,dgoeval);
-        r = MSK_putobjsense(task,MSK_OBJECTIVE_SENSE_MAXIMIZE);
-      }
-      else
-      {
-        printf("Incorrect function definition.\n");
-        printf("n gathered from the task file: %d\n",nlh[0]->n);
-        printf("n computed based on p        : %d\n",nlh[0]->p[nlh[0]->t]);
-        r = MSK_RES_ERR_UNKNOWN;
-      }
-
-    }
-    else
+  if (r == MSK_RES_OK)
+  {
+    nlh[0] = (nlhand_t) MSK_calloctask(task,1,sizeof(nlhandt));
+    if (nlh[0] == NULL)
       r = MSK_RES_ERR_SPACE;
-  }
-  else
-    r = MSK_RES_ERR_SPACE;
+  }  
+
+ 
+  nlh[0]->p = NULL;
+  
+  if ( r == MSK_RES_OK )
+  {
+    nlh[0]->n = numvar;
+
+  
+    if ( r==MSK_RES_OK )
+    {
+      nlh[0]->t = t;
+      nlh[0]->task = task;
+
+
+      if (r == MSK_RES_OK)
+      {
+        nlh[0]->p = MSK_calloctask(task,nlh[0]->t+1,sizeof(int));
+        if (nlh[0]->p == NULL)
+          r = MSK_RES_ERR_SPACE;
+      }
+
+      if ( r == MSK_RES_OK )
+      {
+        nlh[0]->p[0] = 0;
+        for(k=0; k<nlh[0]->t; ++k)
+        {        
+          nlh[0]->p[k+1] = nlh[0]->p[k]+p[k];
+        }
+
+      
+
+        for(k=0; k<nlh[0]->t; ++k)
+        {
+          for(j=nlh[0]->p[k]; j<nlh[0]->p[k+1]; ++j)
+          {
+#if DEBUG
+            assert(v[j] > 0);
+#endif
+            MSK_putcj(task,j,OBJSCAL*log(v[j]));
+          }
+        }  
+
+          
+        if ( nlh[0]->p[nlh[0]->t]==nlh[0]->n )
+        {
+          /*
+           * The problem is now defined
+           * and the setup can proceed.
+           * Next, the number of Hessian non-zeros
+           * is computed.
+           */
+
+          nlh[0]->numhesnz = nlh[0]->p[1]-nlh[0]->p[0];
+          for(k=1; k<nlh[0]->t; ++k)
+          {   
+            if (( nlh[0]->p[k+1]-nlh[0]->p[k])>1 )  
+            {
+              /* If only one term in primal constraint, 
+                 the corresponding value in H is zero. 
+               */
+              nlh[0]->numhesnz += ((nlh[0]->p[k+1]-nlh[0]->p[k])
+                                   * (1+nlh[0]->p[k+1]-nlh[0]->p[k]))/2;
+            } 
+          }
+          printf("Number of Hessian non-zeros: %d\n",nlh[0]->numhesnz);
+
+          MSK_putnlfunc(task,nlh[0],dgostruc,dgoeval);
+        }
+        else
+        {
+          printf("Incorrect function definition.\n");
+          printf("n gathered from the task file: %d\n",nlh[0]->n);
+          printf("n computed based on p        : %d\n",nlh[0]->p[nlh[0]->t]);
+          r = MSK_RES_ERR_UNKNOWN;
+        }
+      }
+    }
+  }     
+
+  if (r == MSK_RES_OK)
+    r = MSK_putobjsense(task,MSK_OBJECTIVE_SENSE_MAXIMIZE);
   
   return ( r );
 } /* dgosetup */
 
 MSKrescodee MSK_freedgo(MSKtask_t task,
-                        dgohand_t *dgoh)
+                        nlhand_t  *nlh)    
 {
-  nlhand_t *nlh=(nlhand_t *) dgoh;
  
-  if ( nlh[0] )
+  if ( nlh )
   {
     /* Free allocated data. */
 
     MSK_freetask(task,nlh[0]->p);
     MSK_freetask(task,nlh[0]);
-    nlh[0] = NULL;
   }
+    
+  nlh[0] = NULL;
     
   return ( MSK_RES_OK );
 }
+
+

@@ -28,7 +28,7 @@
 #include <thread>
 #include <unordered_map>
 #include "../sql/include/databasecpp.h"
-#include "/home/scar1et/Coding/CPP1X/USV/timer/timecounter.hpp"
+#include "timecounter.hpp"
 #include "constants.h"
 
 class threadloop {
