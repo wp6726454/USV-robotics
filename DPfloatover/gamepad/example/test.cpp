@@ -25,12 +25,12 @@ int main(int argc, char** argv) {
     exit(1);
   }
 
+  JoystickEvent event;
   while (true) {
     // Restrict rate
     usleep(1000);
 
     // Attempt to sample an event from the joystick
-    JoystickEvent event;
     if (joystick.sample(&event)) {
       if (event.isButton()) {
         printf("Button %u is %s\n", event.number,

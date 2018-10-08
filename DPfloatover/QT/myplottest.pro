@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui gamepad
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -57,8 +57,7 @@ SOURCES += \
     ../network/libcrc/src/crcdnp.c \
     ../network/libcrc/src/crckrmit.c \
     ../network/libcrc/src/crcsick.c \
-    ../network/libcrc/src/nmea-chk.c \
-    gamepadmonitor.cpp
+    ../network/libcrc/src/nmea-chk.c
 
 
 HEADERS += \
@@ -72,7 +71,6 @@ HEADERS += \
     ../network/include/crccheck.h \
     ../network/include/datapack.h \
     ../network/libcrc/include/checksum.h \
-    gamepadmonitor.h \
     ../motioncapture/include/motioncapture.h \
     ../include/threaded_Loop.h \
     ../network/include/tcpserver_t.h \

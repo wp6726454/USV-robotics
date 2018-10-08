@@ -13,7 +13,7 @@
 #ifndef _THREADLOOP_HPP_
 #define _THREADLOOP_HPP_
 
-#include "../QT/gamepadmonitor.h"
+#include "../gamepad/include/joystick.h"
 #include "../controller/pidcontroller/include/controller.h"
 #include "../motioncapture/include/motioncapture.h"
 #include "../network/include/crccheck.h"
@@ -35,7 +35,7 @@ class threadloop {
  public:
   threadloop()
       : connection_status(0),
-        mydb(dbsavepath),
+        mydb(dbsavepath),mygamepad("/dev/input/js0"),
         _controller_first(_vessel_first, _realtimevessel_first),
         _controller_second(_vessel_second, _realtimevessel_second),
         _controller_third(_vessel_third, _realtimevessel_third) {}
@@ -160,7 +160,7 @@ class threadloop {
   //
   int connection_status;
   databasecpp mydb;
-  GamepadMonitor mygamepad;
+  Joystick mygamepad;
   // mysql mysqli;
   motioncapture mymotioncapture;
   threadtcpsocketserver myserver;

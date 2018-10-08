@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <string>
+#include "constants.h"
 
 #define JS_EVENT_BUTTON 0x01  // button pressed/released
 #define JS_EVENT_AXIS 0x02    // joystick moved
@@ -26,7 +27,24 @@
  * Encapsulates all data relevant to a sampled joystick event.
  */
 class JoystickEvent {
+  /**
+ * The ostream inserter needs to be a friend so it can access the
+ * internal data structures.
+ */
+  friend std::ostream& operator<<(std::ostream& os, const JoystickEvent& e);
+
  public:
+  JoystickEvent()
+      : button_up(false),
+        button_down(false),
+        button_left(false),
+        button_right(false),
+        button_L1(false),
+        button_R1(false),
+        gamepad_xforce(0),
+        gamepad_yforce(0),
+        gamepad_zmoment(0) {}
+  ~JoystickEvent() {}
   /** Minimum value of axes range */
   static const short MIN_AXES_VALUE = -32768;
 
@@ -71,11 +89,52 @@ class JoystickEvent {
    */
   bool isInitialState() { return (type & JS_EVENT_INIT) != 0; }
 
-  /**
-   * The ostream inserter needs to be a friend so it can access the
-   * internal data structures.
-   */
-  friend std::ostream& operator<<(std::ostream& os, const JoystickEvent& e);
+  bool GamepadMonitor::getButtonDown() const { return button_down; }
+  bool GamepadMonitor::getButtonL1() const { return button_L1; }
+  bool GamepadMonitor::getButtonLeft() const { return button_left; }
+  bool GamepadMonitor::getButtonR1() const { return button_R1; }
+  bool GamepadMonitor::getButtonRight() const { return button_right; }
+  bool GamepadMonitor::getButtonUp() const { return button_up; }
+  int GamepadMonitor::getGamepadXforce() const { return gamepad_xforce; }
+  int GamepadMonitor::getGamepadYforce() const { return gamepad_yforce; }
+  int GamepadMonitor::getGamepadZmoment() const { return gamepad_zmoment; }
+
+ private:
+  bool button_up;
+  bool button_down;
+  bool button_left;
+  bool button_right;
+  bool button_L1;
+  bool button_R1;
+  int gamepad_xforce;
+  int gamepad_yforce;
+  int gamepad_zmoment;
+  int computegamepadxforce() {
+    int temp_positiveforce = 0;
+    int temp_negativeforce = 0;
+    if (button_up) temp_positiveforce = 1;
+    if (button_down) temp_negativeforce = -1;
+    return temp_negativeforce + temp_positiveforce;
+  }
+  int computegamepadyforce() {
+    int temp_positiveforce = 0;
+    int temp_negativeforce = 0;
+    if (button_right) temp_positiveforce = 1;
+    if (button_left) temp_negativeforce = -1;
+    return temp_negativeforce + temp_positiveforce;
+  }
+  int computegamepadzmoment() {
+    int temp_positiveforce = 0;
+    int temp_negativeforce = 0;
+    if (button_R1) temp_positiveforce = 1;
+    if (button_L1) temp_negativeforce = -1;
+    return temp_negativeforce + temp_positiveforce;
+  }
+  void computegamepadforce() {
+    gamepad_xforce = computegamepadxforce();
+    gamepad_yforce = computegamepadyforce();
+    gamepad_zmoment = computegamepadzmoment();
+  }
 };
 
 /**

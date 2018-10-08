@@ -3,9 +3,16 @@
 #include <QtGamepad/QGamepad>
 
 GamepadMonitor::GamepadMonitor(QObject *parent)
-    : QObject(parent), m_gamepad(0), button_up(false), button_down(false),
-      button_left(false), button_right(false), button_L1(false),
-      button_R1(false), gamepad_xforce(0), gamepad_yforce(0),
+    : QObject(parent),
+      m_gamepad(0),
+      button_up(false),
+      button_down(false),
+      button_left(false),
+      button_right(false),
+      button_L1(false),
+      button_R1(false),
+      gamepad_xforce(0),
+      gamepad_yforce(0),
       gamepad_zmoment(0) {}
 
 void GamepadMonitor::initializeGamepad() {
@@ -86,30 +93,24 @@ void GamepadMonitor::initializeGamepad() {
 int GamepadMonitor::computegamepadxforce() {
   int temp_positiveforce = 0;
   int temp_negativeforce = 0;
-  if (button_up)
-    temp_positiveforce = 1;
-  if (button_down)
-    temp_negativeforce = -1;
+  if (button_up) temp_positiveforce = 1;
+  if (button_down) temp_negativeforce = -1;
   return temp_negativeforce + temp_positiveforce;
 }
 
 int GamepadMonitor::computegamepadyforce() {
   int temp_positiveforce = 0;
   int temp_negativeforce = 0;
-  if (button_right)
-    temp_positiveforce = 1;
-  if (button_left)
-    temp_negativeforce = -1;
+  if (button_right) temp_positiveforce = 1;
+  if (button_left) temp_negativeforce = -1;
   return temp_negativeforce + temp_positiveforce;
 }
 
 int GamepadMonitor::computegamepadzmoment() {
   int temp_positiveforce = 0;
   int temp_negativeforce = 0;
-  if (button_R1)
-    temp_positiveforce = 1;
-  if (button_L1)
-    temp_negativeforce = -1;
+  if (button_R1) temp_positiveforce = 1;
+  if (button_L1) temp_negativeforce = -1;
   return temp_negativeforce + temp_positiveforce;
 }
 
