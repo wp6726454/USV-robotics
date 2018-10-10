@@ -188,6 +188,9 @@ class threadloop {
       0.1,                                     // D_x
       0.1,                                     // D_y
       0.2,                                     // D_theta
+      0.01,                                    // allowed_error_x
+      0.01,                                    // allowed_error_y;
+      0.01,                                    // allowed_error_orientation;
       6.0,                                     // maxpositive_x_thrust(N)
       5.0,                                     // maxnegative_x_thrust(N)
       3,                                       // maxpositive_y_thrust(N)
@@ -198,8 +201,10 @@ class threadloop {
       // 25.0,                                    // maxnegative_x_thrust(N)
       // 6,                                       // maxpositive_y_thrust(N)
       // 4,                                       // maxnegative_y_thrust(N)
-      // 11,                                      // maxpositive_Mz_thrust(N*m)
-      // 7.6,                                     // maxnegative_Mz_thrust(N*m)
+      // 11,                                      //
+      // maxpositive_Mz_thrust(N*m)
+      // 7.6,                                     //
+      // maxnegative_Mz_thrust(N*m)
       3,       // m
       3,       // n
       9,       // numvar
@@ -241,6 +246,9 @@ class threadloop {
       0.1,                                     // D_x
       0.1,                                     // D_y
       0.2,                                     // D_theta
+      0.01,                                    // allowed_error_x
+      0.01,                                    // allowed_error_y;
+      0.01,                                    // allowed_error_orientation;
       26.0,                                    // maxpositive_x_thrust(N)
       25.0,                                    // maxnegative_x_thrust(N)
       6,                                       // maxpositive_y_thrust(N)
@@ -288,6 +296,9 @@ class threadloop {
       0.1,                                     // D_x
       0.1,                                     // D_y
       0.2,                                     // D_theta
+      0.01,                                    // allowed_error_x
+      0.01,                                    // allowed_error_y;
+      0.01,                                    // allowed_error_orientation;
       26.0,                                    // maxpositive_x_thrust(N)
       25.0,                                    // maxnegative_x_thrust(N)
       6,                                       // maxpositive_y_thrust(N)
