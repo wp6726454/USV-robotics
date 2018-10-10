@@ -1,7 +1,7 @@
 clear
 close all;
 
-name='first';
+name='third';
 path='/home/skloe/Coding/CPP1X/USV/DPfloatover/controller/pidcontroller/example/';
 path=strcat(path,name);
 x=csvread(strcat(path,'_x.csv'));

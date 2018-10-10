@@ -31,15 +31,18 @@ class pidcontroller_first {
     setsetpoints(_setpoints);
     // calculate error
     position_error = setpoints - _realtimedata.State.head(3);
-    // proportional term
-    Eigen::Vector3d Pout = matrix_P * position_error;
-    // integral term
-    position_error_integral += sample_time * position_error;
-    Eigen::Vector3d Iout = matrix_I * position_error_integral;
-    // derivative term
-    Eigen::Vector3d Dout = -matrix_D * _realtimedata.State.tail(3);
-    // output
-    _realtimedata.tau = Pout + Iout + Dout;
+    if (compareerror(position_error)) {
+      _realtimedata.tau.setZero();
+    } else {  // proportional term
+      Eigen::Vector3d Pout = matrix_P * position_error;
+      // integral term
+      position_error_integral += sample_time * position_error;
+      Eigen::Vector3d Iout = matrix_I * position_error_integral;
+      // derivative term
+      Eigen::Vector3d Dout = -matrix_D * _realtimedata.State.tail(3);
+      // output
+      _realtimedata.tau = Pout + Iout + Dout;
+    }
   }
 
  private:
@@ -47,6 +50,7 @@ class pidcontroller_first {
   Eigen::Matrix3d matrix_P;
   Eigen::Matrix3d matrix_I;
   Eigen::Matrix3d matrix_D;
+  Eigen::Vector3d allowed_error;
 
   // real time data
   Eigen::Vector3d position_error;
@@ -54,6 +58,7 @@ class pidcontroller_first {
   Eigen::Vector3d setpoints;
   // initialize the PID matrix
   void initializePIDmatrix(const vessel_first &_vessel_first) {
+    // pid matrix
     matrix_P.setZero();
     matrix_I.setZero();
     matrix_D.setZero();
@@ -66,6 +71,10 @@ class pidcontroller_first {
     matrix_D(0, 0) = _vessel_first.D_x;
     matrix_D(1, 1) = _vessel_first.D_y;
     matrix_D(2, 2) = _vessel_first.D_theta;
+    // error
+    allowed_error(0) = _vessel_first.allowed_error_x;
+    allowed_error(1) = _vessel_first.allowed_error_y;
+    allowed_error(2) = _vessel_first.allowed_error_orientation;
   }
   void initializepidcontroller() {
     position_error.setZero();
@@ -75,6 +84,12 @@ class pidcontroller_first {
   // specify the real time setpoints
   void setsetpoints(const Eigen::Vector3d &_setpoints) {
     setpoints = _setpoints;
+  }
+  // compare the real time error with the allowed error
+  bool compareerror(const Eigen::Vector3d &_realtime_error) {
+    for (int i = 0; i != 3; ++i)
+      if (abs(_realtime_error(i)) > allowed_error(i)) return false;
+    return true;
   }
 };
 
@@ -94,15 +109,18 @@ class pidcontroller_second {
     setsetpoints(_setpoints);
     // calculate error
     position_error = setpoints - _realtimedata.State.head(3);
-    // proportional term
-    Eigen::Vector3d Pout = matrix_P * position_error;
-    // integral term
-    position_error_integral += sample_time * position_error;
-    Eigen::Vector3d Iout = matrix_I * position_error_integral;
-    // derivative term
-    Eigen::Vector3d Dout = -matrix_D * _realtimedata.State.tail(3);
-    // output
-    _realtimedata.tau = Pout + Iout + Dout;
+    if (compareerror(position_error)) {
+      _realtimedata.tau.setZero();
+    } else {  // proportional term
+      Eigen::Vector3d Pout = matrix_P * position_error;
+      // integral term
+      position_error_integral += sample_time * position_error;
+      Eigen::Vector3d Iout = matrix_I * position_error_integral;
+      // derivative term
+      Eigen::Vector3d Dout = -matrix_D * _realtimedata.State.tail(3);
+      // output
+      _realtimedata.tau = Pout + Iout + Dout;
+    }
   }
 
  private:
@@ -110,13 +128,14 @@ class pidcontroller_second {
   Eigen::Matrix3d matrix_P;
   Eigen::Matrix3d matrix_I;
   Eigen::Matrix3d matrix_D;
-
+  Eigen::Vector3d allowed_error;
   // real time data
   Eigen::Vector3d position_error;
   Eigen::Vector3d position_error_integral;
   Eigen::Vector3d setpoints;
   // initialize the PID matrix
   void initializePIDmatrix(const vessel_second &_vessel_second) {
+    // pid matrix
     matrix_P.setZero();
     matrix_I.setZero();
     matrix_D.setZero();
@@ -129,6 +148,10 @@ class pidcontroller_second {
     matrix_D(0, 0) = _vessel_second.D_x;
     matrix_D(1, 1) = _vessel_second.D_y;
     matrix_D(2, 2) = _vessel_second.D_theta;
+    // error
+    allowed_error(0) = _vessel_second.allowed_error_x;
+    allowed_error(1) = _vessel_second.allowed_error_y;
+    allowed_error(2) = _vessel_second.allowed_error_orientation;
   }
   void initializepidcontroller() {
     position_error.setZero();
@@ -138,6 +161,12 @@ class pidcontroller_second {
   // specify the real time setpoints
   void setsetpoints(const Eigen::Vector3d &_setpoints) {
     setpoints = _setpoints;
+  }
+  // compare the real time error with the allowed error
+  bool compareerror(const Eigen::Vector3d &_realtime_error) {
+    for (int i = 0; i != 3; ++i)
+      if (abs(_realtime_error(i)) > allowed_error(i)) return false;
+    return true;
   }
 };
 
@@ -157,15 +186,18 @@ class pidcontroller_third {
     setsetpoints(_setpoints);
     // calculate error
     position_error = setpoints - _realtimedata.State.head(3);
-    // proportional term
-    Eigen::Vector3d Pout = matrix_P * position_error;
-    // integral term
-    position_error_integral += sample_time * position_error;
-    Eigen::Vector3d Iout = matrix_I * position_error_integral;
-    // derivative term
-    Eigen::Vector3d Dout = -matrix_D * _realtimedata.State.tail(3);
-    // output
-    _realtimedata.tau = Pout + Iout + Dout;
+    if (compareerror(position_error)) {
+      _realtimedata.tau.setZero();
+    } else {  // proportional term
+      Eigen::Vector3d Pout = matrix_P * position_error;
+      // integral term
+      position_error_integral += sample_time * position_error;
+      Eigen::Vector3d Iout = matrix_I * position_error_integral;
+      // derivative term
+      Eigen::Vector3d Dout = -matrix_D * _realtimedata.State.tail(3);
+      // output
+      _realtimedata.tau = Pout + Iout + Dout;
+    }
   }
 
  private:
@@ -173,13 +205,14 @@ class pidcontroller_third {
   Eigen::Matrix3d matrix_P;
   Eigen::Matrix3d matrix_I;
   Eigen::Matrix3d matrix_D;
-
+  Eigen::Vector3d allowed_error;
   // real time data
   Eigen::Vector3d position_error;
   Eigen::Vector3d position_error_integral;
   Eigen::Vector3d setpoints;
   // initialize the PID matrix
   void initializePIDmatrix(const vessel_third &_vessel_third) {
+    // pid matrix
     matrix_P.setZero();
     matrix_I.setZero();
     matrix_D.setZero();
@@ -192,6 +225,10 @@ class pidcontroller_third {
     matrix_D(0, 0) = _vessel_third.D_x;
     matrix_D(1, 1) = _vessel_third.D_y;
     matrix_D(2, 2) = _vessel_third.D_theta;
+    // error
+    allowed_error(0) = _vessel_third.allowed_error_x;
+    allowed_error(1) = _vessel_third.allowed_error_y;
+    allowed_error(2) = _vessel_third.allowed_error_orientation;
   }
   void initializepidcontroller() {
     position_error.setZero();
@@ -201,6 +238,12 @@ class pidcontroller_third {
   // specify the real time setpoints
   void setsetpoints(const Eigen::Vector3d &_setpoints) {
     setpoints = _setpoints;
+  }
+  // compare the real time error with the allowed error
+  bool compareerror(const Eigen::Vector3d &_realtime_error) {
+    for (int i = 0; i != 3; ++i)
+      if (abs(_realtime_error(i)) > allowed_error(i)) return false;
+    return true;
   }
 };
 #endif /* _PIDCONTROLLER_H_ */

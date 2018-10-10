@@ -69,13 +69,15 @@ class controller_first {
     mythrusterallocation.onestepthrusterallocation(_vessel_first,
                                                    _realtimedata);
   }
+
   // manual control in x,y and Mz direction
   void fullymanualcontroller(int xforce, int yforce, int zmoment,
                              const vessel_first &_vessel_first,
-                             realtimevessel_first &_realtimedata) {
+                             realtimevessel_first &_realtimedata,
+                             FILE *t_file) {
     setGeneralizeForce(_vessel_first, _realtimedata, xforce, yforce, zmoment);
-    mythrusterallocation.onestepthrusterallocation(_vessel_first,
-                                                   _realtimedata);
+    mythrusterallocation.onestepthrusterallocation(_vessel_first, _realtimedata,
+                                                   t_file);
   }
 
  private:
@@ -177,9 +179,11 @@ class controller_second {
   // manual control in x,y and Mz direction
   void fullymanualcontroller(int xforce, int yforce, int zmoment,
                              const vessel_second &_vessel,
-                             realtimevessel_second &_realtimedata) {
+                             realtimevessel_second &_realtimedata,
+                             FILE *t_file) {
     setGeneralizeForce(_vessel, _realtimedata, xforce, yforce, zmoment);
-    mythrusterallocation.onestepthrusterallocation(_vessel, _realtimedata);
+    mythrusterallocation.onestepthrusterallocation(_vessel, _realtimedata,
+                                                   t_file);
   }
 
  private:

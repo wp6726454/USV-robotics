@@ -13,8 +13,8 @@
 #ifndef _THREADLOOP_HPP_
 #define _THREADLOOP_HPP_
 
-#include "../gamepad/include/joystick.h"
 #include "../controller/pidcontroller/include/controller.h"
+#include "../joystick/include/gamepadmonitor.h"
 #include "../motioncapture/include/motioncapture.h"
 #include "../network/include/crccheck.h"
 #include "../network/include/datapack.h"
@@ -28,14 +28,14 @@
 #include <thread>
 #include <unordered_map>
 #include "../sql/include/databasecpp.h"
-#include "timecounter.hpp"
 #include "constants.h"
+#include "timecounter.hpp"
 
 class threadloop {
  public:
   threadloop()
       : connection_status(0),
-        mydb(dbsavepath),mygamepad("/dev/input/js0"),
+        mydb(dbsavepath),
         _controller_first(_vessel_first, _realtimevessel_first),
         _controller_second(_vessel_second, _realtimevessel_second),
         _controller_third(_vessel_third, _realtimevessel_third) {}
@@ -47,8 +47,6 @@ class threadloop {
       myfile = fopen(logsavepath.c_str(), "a+");
       // initialize socket server
       myserver.initializesocketserver(myfile);
-      // initialize gamepad
-      mygamepad.initializeGamepad();
     } else {
       // initialize socket server
       myserver.initializesocketserver(NULL);
@@ -92,6 +90,15 @@ class threadloop {
         _threadthird.join();
     }
   }
+  // gampad
+  void updategamepad_t() {
+    std::thread _threadgamepad(&threadloop::updategamepad, this);
+    if (FILEORNOT) {  // join for terminal, detach for QT
+      _threadid_gamepad = _threadgamepad.native_handle();
+      _threadgamepad.detach();
+    } else
+      _threadgamepad.join();
+  }
   // motion capture
   void updatemotioncapture_t() {
     std::thread _threadmotioncapure(&threadloop::updatemotion, this);
@@ -112,6 +119,7 @@ class threadloop {
   void closelooop() {
     if (FILEORNOT) {
       pthread_cancel(_threadid_connection);
+      pthread_cancel(_threadid_gamepad);
       pthread_cancel(_threadid_motion);
       for (int i = 0; i != MAXCONNECTION; ++i) stopthread(i);
       pthread_cancel(_threadid_database);
@@ -157,10 +165,11 @@ class threadloop {
   pthread_t _threadid_connection;  // the id of thread for socket connection
   pthread_t _threadid_database;    // the id of thread for saving data
   pthread_t _threadid_motion;      // the id of thread for motion capture
+  pthread_t _threadid_gamepad;     // the id of thread for gamepad
   //
   int connection_status;
   databasecpp mydb;
-  Joystick mygamepad;
+  gamepadmonitor mygamepad;
   // mysql mysqli;
   motioncapture mymotioncapture;
   threadtcpsocketserver myserver;
@@ -179,39 +188,45 @@ class threadloop {
       0.1,                                     // D_x
       0.1,                                     // D_y
       0.2,                                     // D_theta
-      26.0,                                    // maxpositive_x_thrust(N)
-      25.0,                                    // maxnegative_x_thrust(N)
-      6,                                       // maxpositive_y_thrust(N)
-      4,                                       // maxnegative_y_thrust(N)
-      11,                                      // maxpositive_Mz_thrust(N*m)
-      7.6,                                     // maxnegative_Mz_thrust(N*m)
-      3,                                       // m
-      3,                                       // n
-      9,                                       // numvar
-      3,                                       // num_constraints
-      5.6e-7,                                  // Kbar_positive
-      2.2e-7,                                  // Kbar_negative
-      100,                                     // max_delta_rotation_bow
-      4000,                                    // max_rotation_bow
-      8.96,                                    // max_thrust_bow_positive
-      3.52,                                    // max_thrust_bow_negative
-      2e-5,                                    // K_left
-      2e-5,                                    // K_right
-      20,                                      // max_delta_rotation_bow
-      1000,                                    // max_rotation_azimuth
-      20,                                      // max_thrust_azimuth_left
-      20,                                      // max_thrust_azimuth_right
-      0.1277,                                  // max_delta_alpha_azimuth
-      M_PI,                                    // max_alpha_azimuth_left
-      0,                                       // min_alpha_azimuth_left
-      0,                                       // max_alpha_azimuth_right
-      -M_PI,                                   // min_alpha_azimuth_right
-      1.9,                                     // bow_x
-      0,                                       // bow_y
-      -1.893,                                  // left_x
-      -0.216,                                  // left_y
-      -1.893,                                  // right_x
-      0.216                                    // right_y
+      6.0,                                     // maxpositive_x_thrust(N)
+      5.0,                                     // maxnegative_x_thrust(N)
+      3,                                       // maxpositive_y_thrust(N)
+      2,                                       // maxnegative_y_thrust(N)
+      5,                                       // maxpositive_Mz_thrust(N*m)
+      3,                                       // maxnegative_Mz_thrust(N*m)
+      // 26.0,                                    // maxpositive_x_thrust(N)
+      // 25.0,                                    // maxnegative_x_thrust(N)
+      // 6,                                       // maxpositive_y_thrust(N)
+      // 4,                                       // maxnegative_y_thrust(N)
+      // 11,                                      // maxpositive_Mz_thrust(N*m)
+      // 7.6,                                     // maxnegative_Mz_thrust(N*m)
+      3,       // m
+      3,       // n
+      9,       // numvar
+      3,       // num_constraints
+      5.6e-7,  // Kbar_positive
+      2.2e-7,  // Kbar_negative
+      100,     // max_delta_rotation_bow
+      4000,    // max_rotation_bow
+      8.96,    // max_thrust_bow_positive
+      3.52,    // max_thrust_bow_negative
+      2e-5,    // K_left
+      2e-5,    // K_right
+      20,      // max_delta_rotation_bow
+      1000,    // max_rotation_azimuth
+      20,      // max_thrust_azimuth_left
+      20,      // max_thrust_azimuth_right
+      0.1277,  // max_delta_alpha_azimuth
+      M_PI,    // max_alpha_azimuth_left
+      0,       // min_alpha_azimuth_left
+      0,       // max_alpha_azimuth_right
+      -M_PI,   // min_alpha_azimuth_right
+      1.9,     // bow_x
+      0,       // bow_y
+      -1.893,  // left_x
+      -0.216,  // left_y
+      -1.893,  // right_x
+      0.216    // right_y
   };
   // constant parameters of the second vessel
   vessel_second _vessel_second{
@@ -381,6 +396,12 @@ class threadloop {
       }
     }
   }
+  // get the real time gamepad response
+  void updategamepad() {
+    while (1) {
+      mygamepad.updategamepad();
+    }
+  }
   // get the real time motion response
   void updatemotion() {
     while (1) {
@@ -454,12 +475,12 @@ class threadloop {
           _controller_first.fullymanualcontroller(
               mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
               mygamepad.getGamepadZmoment(), _vessel_first,
-              _realtimevessel_first);
+              _realtimevessel_first, myfile);
 
           Eigen::Matrix<double, 9, 1> position9DoF_socket =
               Eigen::Matrix<double, 9, 1>::Zero();
           position9DoF_socket << _realtimevessel_first.tau,
-              _realtimevessel_first.tau, _realtimevessel_first.u;
+              _realtimevessel_first.BalphaU, _realtimevessel_first.u;
           packfloat32Eigenvector(send_buf, position9DoF_socket,
                                  CLIENT_DATA_SIZE);
           append_crc16_checksum(send_buf, MAXDATASIZE);
@@ -538,12 +559,12 @@ class threadloop {
           _controller_second.fullymanualcontroller(
               mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
               mygamepad.getGamepadZmoment(), _vessel_second,
-              _realtimevessel_second);
+              _realtimevessel_second, myfile);
 
           Eigen::Matrix<double, 9, 1> position9DoF_socket =
               Eigen::Matrix<double, 9, 1>::Zero();
           position9DoF_socket << _realtimevessel_second.tau,
-              _realtimevessel_second.tau, _realtimevessel_second.u;
+              _realtimevessel_second.BalphaU, _realtimevessel_second.u;
           packfloat32Eigenvector(send_buf, position9DoF_socket,
                                  CLIENT_DATA_SIZE);
           append_crc16_checksum(send_buf, MAXDATASIZE);
@@ -627,7 +648,7 @@ class threadloop {
           Eigen::Matrix<double, 9, 1> position9DoF_socket =
               Eigen::Matrix<double, 9, 1>::Zero();
           position9DoF_socket << _realtimevessel_third.tau,
-              _realtimevessel_third.tau, _realtimevessel_third.u;
+              _realtimevessel_third.BalphaU, _realtimevessel_third.u;
           packfloat32Eigenvector(send_buf, position9DoF_socket,
                                  CLIENT_DATA_SIZE);
           append_crc16_checksum(send_buf, MAXDATASIZE);

@@ -25,7 +25,10 @@ LIBS += -L/opt/mosek/7/tools/platform/linux32x86/bin \
         -Wl,-rpath-link,/opt/mosek/7/tools/platform/linux32x86/bin \
         -Wl,-rpath,'/opt/mosek/7/tools/platform/linux32x86/bin' \
         -lsqlite3 \
-        -lmosek
+        -lmosek \
+        -pthread \
+        -lc     \
+        -lm
 
 
 # The following define makes your compiler emit warnings if you use
@@ -57,7 +60,8 @@ SOURCES += \
     ../network/libcrc/src/crcdnp.c \
     ../network/libcrc/src/crckrmit.c \
     ../network/libcrc/src/crcsick.c \
-    ../network/libcrc/src/nmea-chk.c
+    ../network/libcrc/src/nmea-chk.c \
+    ../joystick/src/joystick.cpp
 
 
 HEADERS += \
@@ -75,7 +79,9 @@ HEADERS += \
     ../include/threaded_Loop.h \
     ../network/include/tcpserver_t.h \
     ../sql/include/databasecpp.h \
-    ../include/realtimedata.h
+    ../include/realtimedata.h \
+    ../joystick/include/gamepadmonitor.h \
+    ../joystick/include/joystick.h
 
 FORMS += \
         mainwindow.ui \

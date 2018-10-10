@@ -47,6 +47,10 @@ struct vessel_first {
   const double D_x;
   const double D_y;
   const double D_theta;
+  const double allowed_error_x;
+  const double allowed_error_y;
+  const double allowed_error_orientation;
+  // manual controller
   const double maxpositive_x_thruster;   // N
   const double maxnegative_x_thruster;   // N
   const double maxpositive_y_thruster;   // N
@@ -106,6 +110,11 @@ struct vessel_second {
   const double D_x;
   const double D_y;
   const double D_theta;
+  const double allowed_error_x;
+  const double allowed_error_y;
+  const double allowed_error_orientation;
+
+  // manual controller
   const double maxpositive_x_thruster;   // N
   const double maxnegative_x_thruster;   // N
   const double maxpositive_y_thruster;   // N
@@ -165,6 +174,11 @@ struct vessel_third {
   const double D_x;
   const double D_y;
   const double D_theta;
+  const double allowed_error_x;
+  const double allowed_error_y;
+  const double allowed_error_orientation;
+
+  // manual controller
   const double maxpositive_x_thruster;   // N
   const double maxnegative_x_thruster;   // N
   const double maxpositive_y_thruster;   // N

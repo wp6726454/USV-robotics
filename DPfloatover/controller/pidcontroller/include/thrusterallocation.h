@@ -78,21 +78,23 @@ class thrusterallocation_first {
     MSK_deleteenv(&env);
   }
 
+  // log file output
   void onestepthrusterallocation(const vessel_first &_vessel_first,
-                                 realtimevessel_first &_realtimevessel) {
+                                 realtimevessel_first &_realtimevessel,
+                                 FILE *t_file = stdout) {
     updateTAparameters(_vessel_first, _realtimevessel);
 
     int index = 0;
     if (index_twice_bow) {
       updateMosekparameters(_vessel_first, 0);
-      onestepmosek(_vessel_first, 0);
+      onestepmosek(_vessel_first, t_file, 0);
       updateMosekparameters(_vessel_first, 1);
-      onestepmosek(_vessel_first, 1);
+      onestepmosek(_vessel_first, t_file, 1);
       index = comparebowthruster(_vessel_first);
 
     } else {
       updateMosekparameters(_vessel_first);
-      onestepmosek(_vessel_first);
+      onestepmosek(_vessel_first, t_file);
     }
     updateNextstep(_vessel_first, _realtimevessel, index);
   }
@@ -544,7 +546,8 @@ class thrusterallocation_first {
   }
 
   // update parameters in QP for each time step
-  void onestepmosek(const vessel_first &_vessel_first, int index = 0) {
+  void onestepmosek(const vessel_first &_vessel_first, FILE *t_file,
+                    int index = 0) {
     MSKint32t i, j;
     double t_results[_vessel_first.numvar];
 
@@ -611,30 +614,44 @@ class thrusterallocation_first {
             case MSK_SOL_STA_DUAL_INFEAS_CER:
             case MSK_SOL_STA_PRIM_INFEAS_CER:
             case MSK_SOL_STA_NEAR_DUAL_INFEAS_CER:
-            case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:
-              printf("Primal or dual infeasibility certificate found.\n");
+            case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER: {
+              t_file = fopen(logsavepath.c_str(), "a+");
+              fprintf(
+                  t_file,
+                  "First: Primal or dual infeasibility certificate found.\n");
+              fclose(t_file);
               break;
-
-            case MSK_SOL_STA_UNKNOWN:
-              printf("The status of the solution could not be determined.\n");
+            }
+            case MSK_SOL_STA_UNKNOWN: {
+              t_file = fopen(logsavepath.c_str(), "a+");
+              fprintf(t_file,
+                      "First: The status of the solution could not be "
+                      "determined.\n");
+              fclose(t_file);
               break;
-
-            default:
-              printf("Other solution status.");
+            }
+            default: {
+              t_file = fopen(logsavepath.c_str(), "a+");
+              fprintf(t_file, "First: Other solution status.");
+              fclose(t_file);
               break;
+            }
           }
         } else {
-          printf("Error while optimizing.\n");
+          t_file = fopen(logsavepath.c_str(), "a+");
+          fprintf(t_file, "First: Error while optimizing.\n");
+          fclose(t_file);
         }
       }
       if (r != MSK_RES_OK) {
         /* In case of an error print error code and description. */
         char symname[MSK_MAX_STR_LEN];
         char desc[MSK_MAX_STR_LEN];
-
-        printf("An error occurred while optimizing.\n");
+        t_file = fopen(logsavepath.c_str(), "a+");
+        fprintf(t_file, "First: An error occurred while optimizing.\n");
         MSK_getcodedesc(r, symname, desc);
-        printf("Error %s - '%s'\n", symname, desc);
+        fprintf(t_file, "Error %s - '%s'\n", symname, desc);
+        fclose(t_file);
       }
     }
   }
@@ -776,20 +793,21 @@ class thrusterallocation_second {
   }
 
   void onestepthrusterallocation(const vessel_second &_vessel_second,
-                                 realtimevessel_second &_realtimevessel) {
+                                 realtimevessel_second &_realtimevessel,
+                                 FILE *t_file = stdout) {
     updateTAparameters(_vessel_second, _realtimevessel);
 
     int index = 0;
     if (index_twice_bow) {
       updateMosekparameters(_vessel_second, 0);
-      onestepmosek(_vessel_second, 0);
+      onestepmosek(_vessel_second, t_file, 0);
       updateMosekparameters(_vessel_second, 1);
-      onestepmosek(_vessel_second, 1);
+      onestepmosek(_vessel_second, t_file, 1);
       index = comparebowthruster(_vessel_second);
 
     } else {
       updateMosekparameters(_vessel_second);
-      onestepmosek(_vessel_second);
+      onestepmosek(_vessel_second, t_file);
     }
     updateNextstep(_vessel_second, _realtimevessel, index);
   }
@@ -1242,7 +1260,8 @@ class thrusterallocation_second {
   }
 
   // update parameters in QP for each time step
-  void onestepmosek(const vessel_second &_vessel_second, int index = 0) {
+  void onestepmosek(const vessel_second &_vessel_second, FILE *t_file,
+                    int index = 0) {
     MSKint32t i, j;
     double t_results[_vessel_second.numvar];
 
@@ -1309,30 +1328,43 @@ class thrusterallocation_second {
             case MSK_SOL_STA_DUAL_INFEAS_CER:
             case MSK_SOL_STA_PRIM_INFEAS_CER:
             case MSK_SOL_STA_NEAR_DUAL_INFEAS_CER:
-            case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:
-              printf("Primal or dual infeasibility certificate found.\n");
+            case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER: {
+              fprintf(
+                  t_file,
+                  "Second: Primal or dual infeasibility certificate found.\n");
+              fclose(t_file);
               break;
-
-            case MSK_SOL_STA_UNKNOWN:
-              printf("The status of the solution could not be determined.\n");
+            }
+            case MSK_SOL_STA_UNKNOWN: {
+              t_file = fopen(logsavepath.c_str(), "a+");
+              fprintf(t_file,
+                      "Second: The status of the solution could not be "
+                      "determined.\n");
+              fclose(t_file);
               break;
-
-            default:
-              printf("Other solution status.");
+            }
+            default: {
+              t_file = fopen(logsavepath.c_str(), "a+");
+              fprintf(t_file, "Second: Other solution status.");
+              fclose(t_file);
               break;
+            }
           }
         } else {
-          printf("Error while optimizing.\n");
+          t_file = fopen(logsavepath.c_str(), "a+");
+          fprintf(t_file, "Second: Error while optimizing.\n");
+          fclose(t_file);
         }
       }
       if (r != MSK_RES_OK) {
         /* In case of an error print error code and description. */
         char symname[MSK_MAX_STR_LEN];
         char desc[MSK_MAX_STR_LEN];
-
-        printf("An error occurred while optimizing.\n");
+        t_file = fopen(logsavepath.c_str(), "a+");
+        fprintf(t_file, "Second: An error occurred while optimizing.\n");
         MSK_getcodedesc(r, symname, desc);
-        printf("Error %s - '%s'\n", symname, desc);
+        fprintf(t_file, "Error %s - '%s'\n", symname, desc);
+        fclose(t_file);
       }
     }
   }

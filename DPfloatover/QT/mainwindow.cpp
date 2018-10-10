@@ -31,6 +31,7 @@ void MainWindow::on_PB_connection_clicked() {
   //  globalvar::_loop.start_connnection_t();
   globalvar::_threadloop.initializelooop();
   globalvar::_threadloop.start_connnection_t();
+  globalvar::_threadloop.updategamepad_t();
 }
 
 void MainWindow::on_PB_start_clicked() {

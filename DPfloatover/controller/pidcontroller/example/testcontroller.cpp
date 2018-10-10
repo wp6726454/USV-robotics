@@ -142,6 +142,9 @@ int main() {
       0.1,                                     // D_x
       0.1,                                     // D_y
       0.2,                                     // D_theta
+      0.01,                                    // allowed_error_x
+      0.01,                                    // allowed_error_y
+      0.01,                                    // allowed_error_orientation
       26.0,                                    // maxpositive_x_thrust(N)
       25.0,                                    // maxnegative_x_thrust(N)
       6,                                       // maxpositive_y_thrust(N)
@@ -238,6 +241,9 @@ int main() {
       0.1,                                     // D_x
       0.1,                                     // D_y
       0.2,                                     // D_theta
+      0.01,                                    // allowed_error_x
+      0.01,                                    // allowed_error_y
+      0.01,                                    // allowed_error_orientation
       26.0,                                    // maxpositive_x_thrust(N)
       25.0,                                    // maxnegative_x_thrust(N)
       6,                                       // maxpositive_y_thrust(N)
@@ -336,6 +342,9 @@ int main() {
       0.1,                                     // D_x
       0.1,                                     // D_y
       0.2,                                     // D_theta
+      0.01,                                    // allowed_error_x
+      0.01,                                    // allowed_error_y
+      0.01,                                    // allowed_error_orientation
       26.0,                                    // maxpositive_x_thrust(N)
       25.0,                                    // maxnegative_x_thrust(N)
       6,                                       // maxpositive_y_thrust(N)
