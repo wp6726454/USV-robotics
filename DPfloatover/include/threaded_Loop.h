@@ -23,6 +23,8 @@
 #include <pthread.h>
 #include <sys/prctl.h>
 #include <unistd.h>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/timer.hpp>
 #include <chrono>
 #include <cstdlib>
 #include <thread>
@@ -463,10 +465,10 @@ class threadloop {
         // output error information
         if (FILEORNOT) {
           myfile = fopen(logsavepath.c_str(), "a+");
-          fprintf(myfile, "thread-server: socket %d hung up\n", sockfd);
+          fprintf(myfile, "First: thread-server: socket %d hung up\n", sockfd);
           fclose(myfile);
         } else
-          printf("thread-server: socket %d hung up\n", sockfd);
+          printf("First: thread-server: socket %d hung up\n", sockfd);
       } else if (nbytes < 0) {
         // connection error
         close(sockfd);                           // bye!
@@ -475,14 +477,17 @@ class threadloop {
         // output error information
         if (FILEORNOT) {
           myfile = fopen(logsavepath.c_str(), "a+");
-          fprintf(myfile, "error in recv!\n");
+          fprintf(myfile, "First: error in recv!\n");
           fclose(myfile);
         } else
-          perror("recv");
+          perror("First: recv");
       } else {  // we got some data from a client
 
         if (verify_crc16_checksum(recv_buf, MAXDATASIZE)) {
           // real-time control and optimization for each client
+          boost::posix_time::ptime t_start =
+              boost::posix_time::second_clock::local_time();
+
           _controller_first.fullymanualcontroller(
               mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
               mygamepad.getGamepadZmoment(), _vessel_first,
@@ -495,15 +500,32 @@ class threadloop {
           packfloat32Eigenvector(send_buf, position9DoF_socket,
                                  CLIENT_DATA_SIZE);
           append_crc16_checksum(send_buf, MAXDATASIZE);
+
+          boost::posix_time::ptime t_end =
+              boost::posix_time::second_clock::local_time();
+          boost::posix_time::time_duration t_elapsed = t_end - t_start;
+          long int mt_elapsed = t_elapsed.total_milliseconds();
+          if (mt_elapsed > 20) {
+            if (FILEORNOT) {
+              myfile = fopen(logsavepath.c_str(), "a+");
+              fprintf(myfile, "First: Take too long for QP!\n");
+              fclose(myfile);
+            } else
+              perror("First: Take too long for QP");
+          } else {
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds(20 - mt_elapsed));
+          }
+
           // send message to clients only
           if (send(sockfd, send_buf, MAXDATASIZE, 0) == -1) {
             // print error information
             if (FILEORNOT) {
               myfile = fopen(logsavepath.c_str(), "a+");
-              fprintf(myfile, "error in send!\n");
+              fprintf(myfile, "First: error in send!\n");
               fclose(myfile);
             } else
-              perror("send");
+              perror("First: send");
           }
 
           std::this_thread::sleep_for(std::chrono::milliseconds(20));
@@ -513,10 +535,10 @@ class threadloop {
             // print error information
             if (FILEORNOT) {
               myfile = fopen(logsavepath.c_str(), "a+");
-              fprintf(myfile, "error in send!\n");
+              fprintf(myfile, "First: error in send!\n");
               fclose(myfile);
             } else
-              perror("send");
+              perror("First: send");
           }
         }
       }
@@ -547,10 +569,10 @@ class threadloop {
         // output error information
         if (FILEORNOT) {
           myfile = fopen(logsavepath.c_str(), "a+");
-          fprintf(myfile, "thread-server: socket %d hung up\n", sockfd);
+          fprintf(myfile, "Second: thread-server: socket %d hung up\n", sockfd);
           fclose(myfile);
         } else
-          printf("thread-server: socket %d hung up\n", sockfd);
+          printf("Second: thread-server: socket %d hung up\n", sockfd);
       } else if (nbytes < 0) {
         // connection error
         close(sockfd);                           // bye!
@@ -559,7 +581,7 @@ class threadloop {
         // output error information
         if (FILEORNOT) {
           myfile = fopen(logsavepath.c_str(), "a+");
-          fprintf(myfile, "error in recv!\n");
+          fprintf(myfile, "Second: error in recv!\n");
           fclose(myfile);
         } else
           perror("recv");
@@ -567,6 +589,9 @@ class threadloop {
 
         if (verify_crc16_checksum(recv_buf, MAXDATASIZE)) {
           // real-time control and optimization for each client
+          boost::posix_time::ptime t_start =
+              boost::posix_time::second_clock::local_time();
+
           _controller_second.fullymanualcontroller(
               mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
               mygamepad.getGamepadZmoment(), _vessel_second,
@@ -579,28 +604,44 @@ class threadloop {
           packfloat32Eigenvector(send_buf, position9DoF_socket,
                                  CLIENT_DATA_SIZE);
           append_crc16_checksum(send_buf, MAXDATASIZE);
+
+          boost::posix_time::ptime t_end =
+              boost::posix_time::second_clock::local_time();
+          boost::posix_time::time_duration t_elapsed = t_end - t_start;
+          long int mt_elapsed = t_elapsed.total_milliseconds();
+          if (mt_elapsed > 20) {
+            if (FILEORNOT) {
+              myfile = fopen(logsavepath.c_str(), "a+");
+              fprintf(myfile, "Second: Take too long for QP!\n");
+              fclose(myfile);
+            } else
+              perror("Second: Take too long for QP");
+          } else {
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds(20 - mt_elapsed));
+          }
+
           // send message to clients only
           if (send(sockfd, send_buf, MAXDATASIZE, 0) == -1) {
             // print error information
             if (FILEORNOT) {
               myfile = fopen(logsavepath.c_str(), "a+");
-              fprintf(myfile, "error in send!\n");
+              fprintf(myfile, "Second: error in send!\n");
               fclose(myfile);
             } else
-              perror("send");
+              perror("Second: send");
           }
 
-          std::this_thread::sleep_for(std::chrono::milliseconds(20));
         } else {
           // send message to clients only
           if (send(sockfd, recv_buf, nbytes, 0) == -1) {
             // print error information
             if (FILEORNOT) {
               myfile = fopen(logsavepath.c_str(), "a+");
-              fprintf(myfile, "error in send!\n");
+              fprintf(myfile, "Second: error in send!\n");
               fclose(myfile);
             } else
-              perror("send");
+              perror("Second: send");
           }
         }
       }

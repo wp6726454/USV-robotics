@@ -11,10 +11,10 @@
 #ifndef _PIDCONTROLLER_H_
 #define _PIDCONTROLLER_H_
 
+#include <cstdlib>
 #include <iostream>
 #include "constants.h"
 #include "realtimedata.h"
-
 // class of pid controller for the first vessel
 class pidcontroller_first {
  public:
@@ -88,7 +88,7 @@ class pidcontroller_first {
   // compare the real time error with the allowed error
   bool compareerror(const Eigen::Vector3d &_realtime_error) {
     for (int i = 0; i != 3; ++i)
-      if (abs(_realtime_error(i)) > allowed_error(i)) return false;
+      if (std::abs(_realtime_error(i)) > allowed_error(i)) return false;
     return true;
   }
 };
@@ -165,7 +165,7 @@ class pidcontroller_second {
   // compare the real time error with the allowed error
   bool compareerror(const Eigen::Vector3d &_realtime_error) {
     for (int i = 0; i != 3; ++i)
-      if (abs(_realtime_error(i)) > allowed_error(i)) return false;
+      if (std::abs(_realtime_error(i)) > allowed_error(i)) return false;
     return true;
   }
 };
@@ -242,7 +242,7 @@ class pidcontroller_third {
   // compare the real time error with the allowed error
   bool compareerror(const Eigen::Vector3d &_realtime_error) {
     for (int i = 0; i != 3; ++i)
-      if (abs(_realtime_error(i)) > allowed_error(i)) return false;
+      if (std::abs(_realtime_error(i)) > allowed_error(i)) return false;
     return true;
   }
 };
