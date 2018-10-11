@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{84D90223-986D-40BA-B458-5715323EC6E2}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>pnio_ctrl_diag</RootNamespace>
+    <ProjectName>pnio_ctrl_diag</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>PNIO_PNDRIVER;EDDS_CFG_HW_PACKET32;TOOL_CHAIN_MICROSOFT;EPS_PSI_CFG_PLATFORM_H=pnd_psi_cfg_plf_windows_wpcap_interniche.h;EPS_RTOS_CFG_INCLUDE_H=eps_posix_cfg_windows.h;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;EPS_CFG_DO_NOT_USE_TGROUPS;PNDEV_OS_WIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\..\..\driver\WpdPack\Include;..\..\..\source\pnboards\eps\epssys\src;..\..\..\source\pnboards\eps\epssys\etc\mem3\cfg;..\..\..\source\pnboards\eps\epssys\etc\lsa;..\..\..\source\pnboards\eps\epssys\cfg;..\..\..\source\pnboards\eps\epssys\etc\timer\cfg;..\..\..\source\pnboards\eps\epssys\etc\psi;..\..\..\source\pnboards\eps\epssys\etc\pncore;..\..\..\source\psi\src\pnstack\lsa;..\..\..\source\psi\src\pnstack\pnio;..\..\..\source\pnio\src\common;..\..\..\source\edds\src\common;..\..\..\source\edds\src\packet32;..\..\..\source\edds\src\inc;..\..\..\source\psi\src\pnstack\edds;..\..\..\source\pnio\src\inc;..\..\..\source\psi\src\pnstack\acp;..\..\..\source\acp\src\common;..\..\..\source\acp\src\inc;..\..\..\source\psi\src\pnstack\cm;..\..\..\source\cm\src\common;..\..\..\source\cm\src\inc;..\..\..\source\psi\src\pnstack\clrpc;..\..\..\source\clrpc\src\common;..\..\..\source\clrpc\src\inc;..\..\..\source\psi\src\pnstack\dcp;..\..\..\source\dcp\src\common;..\..\..\source\dcp\src\inc;..\..\..\source\psi\src\pnstack\hif;..\..\..\source\hif\src\common;..\..\..\source\hif\src\inc;..\..\..\source\psi\src\pnstack\lldp;..\..\..\source\lldp\src\common;..\..\..\source\lldp\src\inc;..\..\..\source\psi\src\pnstack\mrp;..\..\..\source\psi\src\pnstack\nare;..\..\..\source\nare\src\common;..\..\..\source\nare\src\inc;..\..\..\source\psi\src\pnstack\oha;..\..\..\source\oha\src\common;..\..\..\source\oha\src\inc;..\..\..\source\psi\src\common;..\..\..\source\psi\src\inc;..\..\..\source\psi\src\pnstack\sock;..\..\..\source\sock\src\common;..\..\..\source\sock\src\inc;..\..\..\source\psi\src\pnstack\tcip;..\..\..\source\tcip\src\common;..\..\..\source\tcip\src\inc;..\..\..\source\tcip\src_iniche_core\allports;..\..\..\source\tcip\src_iniche_core\h;..\..\..\source\tcip\src_iniche_core\ip;..\..\..\source\tcip\src_iniche_core\snmp;..\..\..\source\tcip\src_iniche_core\snmpv1;..\..\..\source\tcip\src_iniche_core\ipmc;..\..\..\source\tcip\src_iniche_core\tcp;..\..\..\source\mem3\inc;..\..\..\source\mem3\common\inc;..\..\..\source\mem3\createifc\inc;..\..\..\source\mem3\doubledyn\inc;..\..\..\source\mem3\fixraster\inc;..\..\..\source\mem3\incl;..\..\..\source\mem3\universal\inc;..\..\..\source\pnboards\eps\epssys\etc\windows;..\..\..\source\pnboards\eps\epssys\etc\windows\pthreads;..\..\..\source\pnboards\eps\epssys\etc\pntrc;..\..\..\source\pntrc\src\common;..\..\..\source\pntrc\src\inc;..\..\..\source\pnd\src\common;..\..\..\source\pnd\src\inc;..\..\..\source\pnd\src\cfg;..\..\..\source\pnd\src\params;..\..\..\source\pnd\src\params\xml_parser\cfg;..\..\..\source\pnd\src\params\xml_parser\h;..\..\..\source\pnd\src\params\config_ini;..\..\..\source\pnd\src\params\config_xml;..\..\..\source\pnd\src\io_base_core;..\..\..\source\pnd\src\pnio_user_core;..\..\..\source\pnd\src\pnio_user_core\base;..\..\..\source\pnd\src\pnio_user_core\ioc;..\..\..\source\pnd\src\pnio_user_core\iodu;..\..\..\source\pnd\src\pnio_user_core\oha;..\..\..\source\pnd\src\pnio_user_core\pd;..\..\..\source\pnd\src\pnio_user_core\pnstack;..\..\..\source\pndevdrv\imcea\src;..\..\..\source\pnboards\eps\epssys\etc\posix;..\..\shared\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\..\driver\WpdPack\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>winmm.lib;wpcap.lib;Packet.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>PNIO_PNDRIVER;EDDS_CFG_HW_PACKET32;TOOL_CHAIN_MICROSOFT;EPS_PSI_CFG_PLATFORM_H=pnd_psi_cfg_plf_windows_wpcap_interniche.h;EPS_RTOS_CFG_INCLUDE_H=eps_posix_cfg_windows.h;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;EPS_CFG_DO_NOT_USE_TGROUPS;PNDEV_OS_WIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\..\..\driver\WpdPack\Include;..\..\..\source\pnboards\eps\epssys\src;..\..\..\source\pnboards\eps\epssys\etc\mem3\cfg;..\..\..\source\pnboards\eps\epssys\etc\lsa;..\..\..\source\pnboards\eps\epssys\cfg;..\..\..\source\pnboards\eps\epssys\etc\timer\cfg;..\..\..\source\pnboards\eps\epssys\etc\psi;..\..\..\source\pnboards\eps\epssys\etc\pncore;..\..\..\source\psi\src\pnstack\lsa;..\..\..\source\psi\src\pnstack\pnio;..\..\..\source\pnio\src\common;..\..\..\source\edds\src\common;..\..\..\source\edds\src\packet32;..\..\..\source\edds\src\inc;..\..\..\source\psi\src\pnstack\edds;..\..\..\source\pnio\src\inc;..\..\..\source\psi\src\pnstack\acp;..\..\..\source\acp\src\common;..\..\..\source\acp\src\inc;..\..\..\source\psi\src\pnstack\cm;..\..\..\source\cm\src\common;..\..\..\source\cm\src\inc;..\..\..\source\psi\src\pnstack\clrpc;..\..\..\source\clrpc\src\common;..\..\..\source\clrpc\src\inc;..\..\..\source\psi\src\pnstack\dcp;..\..\..\source\dcp\src\common;..\..\..\source\dcp\src\inc;..\..\..\source\psi\src\pnstack\hif;..\..\..\source\hif\src\common;..\..\..\source\hif\src\inc;..\..\..\source\psi\src\pnstack\lldp;..\..\..\source\lldp\src\common;..\..\..\source\lldp\src\inc;..\..\..\source\psi\src\pnstack\mrp;..\..\..\source\psi\src\pnstack\nare;..\..\..\source\nare\src\common;..\..\..\source\nare\src\inc;..\..\..\source\psi\src\pnstack\oha;..\..\..\source\oha\src\common;..\..\..\source\oha\src\inc;..\..\..\source\psi\src\common;..\..\..\source\psi\src\inc;..\..\..\source\psi\src\pnstack\sock;..\..\..\source\sock\src\common;..\..\..\source\sock\src\inc;..\..\..\source\psi\src\pnstack\tcip;..\..\..\source\tcip\src\common;..\..\..\source\tcip\src\inc;..\..\..\source\tcip\src_iniche_core\allports;..\..\..\source\tcip\src_iniche_core\h;..\..\..\source\tcip\src_iniche_core\ip;..\..\..\source\tcip\src_iniche_core\snmp;..\..\..\source\tcip\src_iniche_core\snmpv1;..\..\..\source\tcip\src_iniche_core\ipmc;..\..\..\source\tcip\src_iniche_core\tcp;..\..\..\source\mem3\inc;..\..\..\source\mem3\common\inc;..\..\..\source\mem3\createifc\inc;..\..\..\source\mem3\doubledyn\inc;..\..\..\source\mem3\fixraster\inc;..\..\..\source\mem3\incl;..\..\..\source\mem3\universal\inc;..\..\..\source\pnboards\eps\epssys\etc\windows;..\..\..\source\pnboards\eps\epssys\etc\windows\pthreads;..\..\..\source\pnboards\eps\epssys\etc\pntrc;..\..\..\source\pntrc\src\common;..\..\..\source\pntrc\src\inc;..\..\..\source\pnd\src\common;..\..\..\source\pnd\src\inc;..\..\..\source\pnd\src\cfg;..\..\..\source\pnd\src\params;..\..\..\source\pnd\src\params\xml_parser\cfg;..\..\..\source\pnd\src\params\xml_parser\h;..\..\..\source\pnd\src\params\config_ini;..\..\..\source\pnd\src\params\config_xml;..\..\..\source\pnd\src\io_base_core;..\..\..\source\pnd\src\pnio_user_core;..\..\..\source\pnd\src\pnio_user_core\base;..\..\..\source\pnd\src\pnio_user_core\ioc;..\..\..\source\pnd\src\pnio_user_core\iodu;..\..\..\source\pnd\src\pnio_user_core\oha;..\..\..\source\pnd\src\pnio_user_core\pd;..\..\..\source\pnd\src\pnio_user_core\pnstack;..\..\..\source\pndevdrv\imcea\src;..\..\..\source\pnboards\eps\epssys\etc\posix;..\..\shared\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\..\driver\WpdPack\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>winmm.lib;wpcap.lib;Packet.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\shared\src\helper_functions.cpp" />
+    <ClCompile Include="..\..\shared\src\user_application_common.cpp" />
+    <ClCompile Include="..\src\address_info_data.cpp" />
+    <ClCompile Include="..\src\device.cpp" />
+    <ClCompile Include="..\src\diagnosis_helper.cpp" />
+    <ClCompile Include="..\src\diagnosis_info_data.cpp" />
+    <ClCompile Include="..\src\im_data.cpp" />
+    <ClCompile Include="..\src\pnio_ctrl_diag.cpp" />
+    <ClCompile Include="..\src\submodule_data.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\shared\src\helper_functions.h" />
+    <ClInclude Include="..\..\shared\src\user_application_common.h" />
+    <ClInclude Include="..\src\address_info_data.h" />
+    <ClInclude Include="..\src\device.h" />
+    <ClInclude Include="..\src\diagnosis_helper.h" />
+    <ClInclude Include="..\src\diagnosis_info_data.h" />
+    <ClInclude Include="..\src\im_data.h" />
+    <ClInclude Include="..\src\submodule_data.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\shared\win32\pndriver_w32.vcxproj">
+      <Project>{eba154e8-d4ea-44f8-9ebd-f7af339ad2a1}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

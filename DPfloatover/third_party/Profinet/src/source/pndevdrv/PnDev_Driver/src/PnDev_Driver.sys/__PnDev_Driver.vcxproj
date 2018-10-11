@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Win7 Debug|Win32">
+      <Configuration>Win7 Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Win7 Release|Win32">
+      <Configuration>Win7 Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Win7 Debug|x64">
+      <Configuration>Win7 Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Win7 Release|x64">
+      <Configuration>Win7 Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <Inf Include="PnDev_Driver.inx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PnDev_Driver.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel\netProfiKernel.c" />
+    <ClCompile Include="..\..\common\os_Env.c" />
+    <ClCompile Include="..\..\common\PnCore.c" />
+    <ClCompile Include="..\..\common\pndev_adapt_sys.c" />
+    <ClCompile Include="Basic.c" />
+    <ClCompile Include="Board.c" />
+    <ClCompile Include="Board_Intel.c" />
+    <ClCompile Include="Board_Irte.c" />
+    <ClCompile Include="Board_IrtePnip.c" />
+    <ClCompile Include="Board_IsrDpc.c" />
+    <ClCompile Include="Board_Pnip.c" />
+    <ClCompile Include="Board_Res.c" />
+    <ClCompile Include="Device.c" />
+    <ClCompile Include="Flash.c" />
+    <ClCompile Include="Flash_Nand.c" />
+    <ClCompile Include="Flash_Nor.c" />
+    <ClCompile Include="General.c" />
+    <ClCompile Include="Ioctl.c" />
+    <ClCompile Include="IsrDpc.c" />
+    <ClCompile Include="os.c" />
+    <ClCompile Include="String.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\pnio\src\common\irte_rev05_rsl.h" />
+    <ClInclude Include="..\..\..\..\pnio\src\common\irte_rev06_rsl.h" />
+    <ClInclude Include="..\..\..\..\pnio\src\common\irte_rev07_rsl.h" />
+    <ClInclude Include="..\..\..\..\pnio\src\common\irte_rsl.h" />
+    <ClInclude Include="..\..\..\..\pnio\src\common\perif_xrsl.h" />
+    <ClInclude Include="..\..\..\..\profinet_diag\Analyzer\Dll\Online\Online.h" />
+    <ClInclude Include="..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel\ErtecReg.h" />
+    <ClInclude Include="..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel\netProfiKernel.h" />
+    <ClInclude Include="..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel\netProfiKernelStructs.h" />
+    <ClInclude Include="..\..\common\PnCore_Inc.h" />
+    <ClInclude Include="..\..\common\PnDev_Driver_Inc.h" />
+    <ClInclude Include="..\..\common\os_Env.h" />
+    <ClInclude Include="..\..\common\PnCore.h" />
+    <ClInclude Include="..\..\common\pndev_adapt.h" />
+    <ClInclude Include="..\..\common\pndev_config.h" />
+    <ClInclude Include="..\..\common\PnDev_DriverU.h" />
+    <ClInclude Include="..\..\lsa\lsa_cfg.h" />
+    <ClInclude Include="..\..\lsa\lsa_sys.h" />
+    <ClInclude Include="Asic_Irte.h" />
+    <ClInclude Include="Asic_Pnip.h" />
+    <ClInclude Include="Basic.h" />
+    <ClInclude Include="Board_Irte.h" />
+    <ClInclude Include="Board_IrtePnip.h" />
+    <ClInclude Include="Board_Pnip.h" />
+    <ClInclude Include="C:\Program Files (x86)\Windows Kits\8.0\Include\shared\evntrace.h" />
+    <ClInclude Include="C:\Program Files (x86)\Windows Kits\8.0\Include\shared\ntstatus.h" />
+    <ClInclude Include="C:\Program Files (x86)\Windows Kits\8.0\Include\shared\WINERROR.H" />
+    <ClInclude Include="eddi_irte.h" />
+    <ClInclude Include="Flash.h" />
+    <ClInclude Include="Inc.h" />
+    <ClInclude Include="os.h" />
+    <ClInclude Include="os_SysDll.h" />
+    <ClInclude Include="precomp.h" />
+    <ClInclude Include="Private.h" />
+    <ClInclude Include="SysDll.h" />
+    <ClInclude Include="Trace.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1CF6234E-9D02-4BFE-BA3B-16221EA54C03}</ProjectGuid>
+    <TemplateGuid>{497e31cb-056b-4f31-abb8-447fd55ee5a5}</TemplateGuid>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <Configuration>Win8 Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">Win32</Platform>
+    <SccProjectName>SAK</SccProjectName>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Label="Globals">
+    <RootNamespace>__PnDev_Driver</RootNamespace>
+    <VCTargetsPath Condition="'$(VCTargetsPath11)' != '' and '$(VisualStudioVersion)' == '11.0'">$(VCTargetsPath11)</VCTargetsPath>
+  </PropertyGroup>
+  <PropertyGroup Label="PropertySheets">
+    <PlatformToolset>WindowsKernelModeDriver8.0</PlatformToolset>
+    <ConfigurationType>Driver</ConfigurationType>
+    <DriverType>KMDF</DriverType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|Win32'" Label="Configuration">
+    <TargetVersion>Windows7</TargetVersion>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <ALLOW_DATE_TIME>1</ALLOW_DATE_TIME>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win7 Release|Win32'" Label="Configuration">
+    <TargetVersion>Windows7</TargetVersion>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <ALLOW_DATE_TIME>1</ALLOW_DATE_TIME>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|x64'" Label="Configuration">
+    <TargetVersion>Windows7</TargetVersion>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <ALLOW_DATE_TIME>1</ALLOW_DATE_TIME>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win7 Release|x64'" Label="Configuration">
+    <TargetVersion>Windows7</TargetVersion>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <ALLOW_DATE_TIME>1</ALLOW_DATE_TIME>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|x64'">
+    <TargetName>PnDev_Driver</TargetName>
+    <OutDir>$(SolutionDir)$(ConfigurationName)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)$(ConfigurationName)\$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|Win32'">
+    <TargetName>PnDev_Driver</TargetName>
+    <OutDir>$(SolutionDir)$(ConfigurationName)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)$(ConfigurationName)\$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win7 Release|x64'">
+    <TargetName>PnDev_Driver</TargetName>
+    <OutDir>$(SolutionDir)$(ConfigurationName)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)$(ConfigurationName)\$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Win7 Release|Win32'">
+    <TargetName>PnDev_Driver</TargetName>
+    <IntDir>$(SolutionDir)$(ConfigurationName)\$(Platform)\</IntDir>
+    <OutDir>$(SolutionDir)$(ConfigurationName)\$(Platform)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WppEnabled>true</WppEnabled>
+      <WppScanConfigurationData Condition="'%(ClCompile. ScanConfigurationData)'  == ''">trace.h</WppScanConfigurationData>
+      <WppKernelMode>true</WppKernelMode>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|x64'">PNDEV_DRIVER_SYS;PNDEV_OS_WIN;_WIN64;_AMD64_;AMD64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|x64'">.\;..\..\common;..\..\lsa;..\..\..\..\pnio\src\common;..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel;C:\Program Files (x86)\Windows Kits\8.0\Include\wdf\kmdf\1.11;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|x64'">Level3</WarningLevel>
+      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|x64'">false</TreatWarningAsError>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|Win32'">.\;..\..\common;..\..\lsa;..\..\..\..\pnio\src\common;..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel;C:\Program Files (x86)\Windows Kits\8.0\Include\wdf\kmdf\1.11;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|Win32'">PNDEV_DRIVER_SYS;PNDEV_OS_WIN;X86_=1;i386=1;STD_CALL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|Win32'">Level3</WarningLevel>
+      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|Win32'">false</TreatWarningAsError>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Win7 Release|x64'">.\;..\..\common;..\..\lsa;..\..\..\..\pnio\src\common;..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel;C:\Program Files (x86)\Windows Kits\8.0\Include\wdf\kmdf\1.11;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Win7 Release|x64'">PNDEV_DRIVER_SYS;PNDEV_OS_WIN;_WIN64;_AMD64_;AMD64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Win7 Release|Win32'">.\;..\..\common;..\..\lsa;..\..\..\..\pnio\src\common;..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel;C:\Program Files (x86)\Windows Kits\8.0\Include\wdf\kmdf\1.11;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Win7 Release|Win32'">PNDEV_DRIVER_SYS;PNDEV_OS_WIN;_X86_=1;i386=1;STD_CALL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Win7 Release|x64'">Level3</WarningLevel>
+      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Win7 Release|x64'">false</TreatWarningAsError>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Win7 Release|Win32'">Level3</WarningLevel>
+      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Win7 Release|Win32'">false</TreatWarningAsError>
+    </ClCompile>
+    <Inf>
+      <TimeStamp Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|x64'">2.9.1.1</TimeStamp>
+    </Inf>
+    <Inf>
+      <TimeStamp Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|Win32'">2.9.1.1</TimeStamp>
+    </Inf>
+    <Inf>
+      <TimeStamp Condition="'$(Configuration)|$(Platform)'=='Win7 Release|Win32'">2.9.1.1</TimeStamp>
+    </Inf>
+    <Inf>
+      <TimeStamp Condition="'$(Configuration)|$(Platform)'=='Win7 Release|x64'">2.9.1.1</TimeStamp>
+    </Inf>
+    <BuildLog>
+      <Path Condition="'$(Configuration)|$(Platform)'=='Win7 Release|Win32'">$(SolutionDir)$(ConfigurationName)\$(Platform)\$(MSBuildProjectName).log</Path>
+    </BuildLog>
+    <BuildLog>
+      <Path Condition="'$(Configuration)|$(Platform)'=='Win7 Release|x64'">$(SolutionDir)$(ConfigurationName)\$(Platform)\$(MSBuildProjectName).log</Path>
+    </BuildLog>
+    <BuildLog>
+      <Path Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|Win32'">$(SolutionDir)$(ConfigurationName)\$(Platform)\$(MSBuildProjectName).log</Path>
+    </BuildLog>
+    <BuildLog>
+      <Path Condition="'$(Configuration)|$(Platform)'=='Win7 Debug|x64'">$(SolutionDir)$(ConfigurationName)\$(Platform)\$(MSBuildProjectName).log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <FilesToPackage Include="$(TargetPath)" />
+    <FilesToPackage Include="@(Inf->'%(CopyOutput)')" Condition="'@(Inf)'!=''" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

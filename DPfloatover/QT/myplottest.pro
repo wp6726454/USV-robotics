@@ -19,7 +19,7 @@ INCLUDEPATH+=\
 
 QMAKE_LFLAGS += -m32
 QMAKE_CXXFLAGS += -m32 -std=c++14 \
-                  -march=native -O3 -mavx
+                  -mtune=corei7-avx -march=corei7-avx -O3 -mavx2
 
 LIBS += -L/opt/mosek/7/tools/platform/linux32x86/bin \
         -Wl,-rpath-link,/opt/mosek/7/tools/platform/linux32x86/bin \
@@ -32,7 +32,7 @@ LIBS += -L/opt/mosek/7/tools/platform/linux32x86/bin \
 
 
 # The following define makes your compiler emit warnings if you use
-# any feature of Qt which has been marked as deprecated (the exact warnings
+# any feature of Qt which has been marked as deprecated (the exact warning
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
@@ -81,7 +81,11 @@ HEADERS += \
     ../sql/include/databasecpp.h \
     ../include/realtimedata.h \
     ../joystick/include/gamepadmonitor.h \
-    ../joystick/include/joystick.h
+    ../joystick/include/joystick.h \
+    ../controller/pidcontroller/include/controller.h \
+    ../controller/pidcontroller/include/kalmanfilter.h \
+    ../controller/pidcontroller/include/pidcontroller.h \
+    ../controller/pidcontroller/include/thrusterallocation.h
 
 FORMS += \
         mainwindow.ui \

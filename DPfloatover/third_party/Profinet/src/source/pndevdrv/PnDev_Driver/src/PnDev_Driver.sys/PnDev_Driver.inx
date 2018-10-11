@@ -1,0 +1,142 @@
+;==============================================================================
+; Copyright (c) SIEMENS AG. All rights reserved.
+;
+; Module Name:	PnDev_Driver.inf
+;
+; Abstract:	INF File for PROFINET boards
+;==============================================================================
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class	    = %ClassName%
+ClassGUID   = {E50AB995-39BE-11d3-95E5-006097819F6B}	;SIMATIC NET
+Provider    = %SIEM%
+DriverVer   = mm/dd/yyyy,a.b.c.d
+CatalogFile = PnDev_Driver.cat
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=Class_AddReg     
+
+[Class_AddReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+HKR,,DeviceCharacteristics,0x10001,0x100     ;Use same security checks on relative opens
+HKR,,Security,,"D:P(A;;GA;;;SY)(A;;GA;;;BA)" ;Allow generic all access to system and built-in Admin. 
+
+
+; ================= Device Install section =====================
+
+[ControlFlags]
+ExcludeFromSelect=*
+
+[Manufacturer]
+%SIEM%=SIEM,NT$ARCH$
+
+[SourceDisksFiles]
+PnDev_Driver.sys=1
+
+[SourceDisksNames]
+1=%DISK_NAME%,
+
+; For Win2K
+[SIEM]
+; DisplayName				Section                DeviceId
+; -----------				-------                --------
+%CP1616.DRVDESC%=			PnDev_Driver_Inst,     PCI\VEN_110A&DEV_4036
+%DB_EB400_PCIE.DRVDESC%=	PnDev_Driver_Inst,     PCI\VEN_110A&DEV_408c
+%EB200.DRVDESC%=			PnDev_Driver_Inst,     PCI\VEN_110A&DEV_4039
+%DB_SOC1_PCI.DRVDESC%=		PnDev_Driver_Inst,     PCI\VEN_110A&DEV_403e
+%DB_SOC1_PCIE.DRVDESC%=		PnDev_Driver_Inst,     PCI\VEN_110A&DEV_408a
+%FPGA1_ERTEC400.DRVDESC%=	PnDev_Driver_Inst,     PCI\VEN_110A&DEV_406B&SUBSYS_0002110A
+%FPGA1_ERTEC200.DRVDESC%=	PnDev_Driver_Inst,     PCI\VEN_110A&DEV_406B&SUBSYS_0003110A
+%FPGA1_SOC1.DRVDESC%=		PnDev_Driver_Inst,     PCI\VEN_110A&DEV_406B&SUBSYS_0004110A
+%FPGA1_ERTEC200P.DRVDESC%=	PnDev_Driver_Inst,     PCI\VEN_110A&DEV_406B&SUBSYS_0001110A
+%EB200P.DRVDESC%=			PnDev_Driver_Inst,     PCI\VEN_110A&DEV_4073
+%I210.DRVDESC%=				PnDev_Driver_Inst,     PCI\VEN_8086&DEV_1533
+%I82574.DRVDESC%=			PnDev_Driver_Inst,     PCI\VEN_8086&DEV_10D3
+
+; For XP and later
+[SIEM.NT$ARCH$]
+; DisplayName				Section                DeviceId
+; -----------				-------                --------
+%CP1616.DRVDESC%=			PnDev_Driver_Inst,     PCI\VEN_110A&DEV_4036
+%DB_EB400_PCIE.DRVDESC%=	PnDev_Driver_Inst,     PCI\VEN_110A&DEV_408c
+%EB200.DRVDESC%=			PnDev_Driver_Inst,     PCI\VEN_110A&DEV_4039
+%DB_SOC1_PCI.DRVDESC%=		PnDev_Driver_Inst,     PCI\VEN_110A&DEV_403e
+%DB_SOC1_PCIE.DRVDESC%=		PnDev_Driver_Inst,     PCI\VEN_110A&DEV_408a
+%FPGA1_ERTEC400.DRVDESC%=	PnDev_Driver_Inst,     PCI\VEN_110A&DEV_406B&SUBSYS_0002110A
+%FPGA1_ERTEC200.DRVDESC%=	PnDev_Driver_Inst,     PCI\VEN_110A&DEV_406B&SUBSYS_0003110A
+%FPGA1_SOC1.DRVDESC%=		PnDev_Driver_Inst,     PCI\VEN_110A&DEV_406B&SUBSYS_0004110A
+%FPGA1_ERTEC200P.DRVDESC%=	PnDev_Driver_Inst,     PCI\VEN_110A&DEV_406B&SUBSYS_0001110A
+%EB200P.DRVDESC%=			PnDev_Driver_Inst,     PCI\VEN_110A&DEV_4073
+%I210.DRVDESC%=				PnDev_Driver_Inst,     PCI\VEN_8086&DEV_1533
+%I82574.DRVDESC%=			PnDev_Driver_Inst,     PCI\VEN_8086&DEV_10D3
+
+[PnDev_Driver_Inst.NT]
+CopyFiles=PnDev_Driver.CopyFiles
+
+[PnDev_Driver.CopyFiles]
+PnDev_Driver.sys
+
+[PnDev_Driver_Inst.NT.Services]
+AddService=PnDev_Driver,0x00000002,PnDev_Driver_Service 
+
+[PnDev_Driver_Service]
+DisplayName    = %PnDev_Driver.SVCDESC%                            
+ServiceType    = 1                  	; SERVICE_KERNEL_DRIVER
+StartType      = 3                  	; SERVICE_DEMAND_START
+ErrorControl   = 1                  	; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\PnDev_Driver.sys                            
+AddReg         = PnDev_Driver_Parameters_AddReg
+
+[PnDev_Driver_Parameters_AddReg]
+HKR, Parameters\Wdf, VerboseOn,       0x00010001, 1
+HKR, Parameters\Wdf, VerifierOn,      0x00010001, 1
+HKR, Parameters\Wdf, DbgBreakOnError, 0x00010001, 1
+
+
+;-------------- Coinstaller installation
+[DestinationDirs]
+CoInstaller_CopyFiles = 11
+
+[PnDev_Driver_Inst.NT.CoInstallers]
+AddReg=CoInstaller_AddReg
+CopyFiles=CoInstaller_CopyFiles
+
+[CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[SourceDisksFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
+
+[CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[PnDev_Driver_Inst.NT.Wdf]
+KmdfService = PnDev_Driver, PnDev_Driver_wdfsect
+[PnDev_Driver_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+SIEM                 	= "SIEMENS AG"
+ClassName            	= "SIMATIC NET"
+PnDev_Driver.SVCDESC 	= "Driver Service for the PnDev_Driver"
+CP1616.DRVDESC			= "PnDev - CP1616"
+DB_EB400_PCIE.DRVDESC	= "PnDev - DB-EB400-PCIE"
+EB200.DRVDESC			= "PnDev - EB200"
+DB_SOC1_PCI.DRVDESC		= "PnDev - DB-Soc1-PCI"
+DB_SOC1_PCIE.DRVDESC	= "PnDev - DB-Soc1-PCIe"
+FPGA1_ERTEC400.DRVDESC	= "PnDev - FPGA-Ertec400"
+FPGA1_ERTEC200.DRVDESC	= "PnDev - FPGA-Ertec200"
+FPGA1_SOC1.DRVDESC		= "PnDev - FPGA-Soc1"
+FPGA1_ERTEC200P.DRVDESC	= "PnDev - FPGA-Ertec200P"
+EB200P.DRVDESC			= "PnDev - EB200P"
+I210.DRVDESC			= "PnDev - I210"
+I82574.DRVDESC			= "PnDev - I82574"
+DISK_NAME				= "PnDev - Driver Install Disk"

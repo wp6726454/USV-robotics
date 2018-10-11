@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Driver Files">
+      <UniqueIdentifier>{ba178c72-3b1c-42b6-816a-3e7959d77770}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Program Files (x86)\Windows Kits\8.0\Include\shared\WINERROR.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Program Files (x86)\Windows Kits\8.0\Include\shared\evntrace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Program Files (x86)\Windows Kits\8.0\Include\shared\ntstatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\pnio\src\common\irte_rev05_rsl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\pnio\src\common\irte_rev06_rsl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\pnio\src\common\irte_rev07_rsl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\pnio\src\common\irte_rsl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\pnio\src\common\perif_xrsl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\profinet_diag\Analyzer\Dll\Online\Online.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel\ErtecReg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel\netProfiKernel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel\netProfiKernelStructs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\PnCore_Inc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\PnDev_Driver_Inc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\os_Env.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\PnCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\pndev_adapt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\pndev_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\PnDev_DriverU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lsa\lsa_cfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lsa\lsa_sys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Asic_Irte.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Asic_Pnip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Basic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Board_Irte.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Board_IrtePnip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Board_Pnip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="eddi_irte.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Flash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="os.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="os_SysDll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="precomp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SysDll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\profinet_diag\Analyzer\Drv\NetProfi_Kernel\netProfiKernel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\os_Env.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\PnCore.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\pndev_adapt_sys.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Basic.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Board_Irte.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Board_IrtePnip.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Board_IsrDpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Board_Pnip.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Board_Res.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Device.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Flash.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Flash_Nand.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Flash_Nor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="General.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ioctl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IsrDpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="os.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="String.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Board_Intel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Inf Include="PnDev_Driver.inx">
+      <Filter>Driver Files</Filter>
+    </Inf>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PnDev_Driver.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

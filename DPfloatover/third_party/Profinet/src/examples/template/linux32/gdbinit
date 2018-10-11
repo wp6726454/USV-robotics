@@ -1,0 +1,8 @@
+# Disable the Multi-Thread debug informations
+# otherwise debugging is not possible
+# due to performance reasons
+
+# we are setting the search path to any path
+# where the thread-library could not be found
+
+set libthread-db-search-path /home

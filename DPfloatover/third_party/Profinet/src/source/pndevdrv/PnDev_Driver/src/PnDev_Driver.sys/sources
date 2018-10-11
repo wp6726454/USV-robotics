@@ -1,0 +1,69 @@
+TARGETNAME=PnDev_Driver
+TARGETTYPE=DRIVER
+
+# set DriverVer:
+# - used by stampinf (makefile.inc)
+# - if using * then DriverVer = current time
+#PNDEV_DRIVER_VERSION=*
+PNDEV_DRIVER_VERSION=2.9.1.1
+
+KMDF_VERSION_MAJOR=1
+
+INF_NAME=PnDev_Driver
+
+NTTARGETFILES=$(OBJ_PATH)\$(O)\$(INF_NAME).inf
+
+MISCFILES=$(NTTARGETFILES)
+
+TARGETLIBS=$(TARGETLIBS) \
+		   $(DDK_LIB_PATH)\ntstrsafe.lib
+
+PRECOMPILED_INCLUDE=precomp.h
+PRECOMPILED_PCH=precomp.pch
+PRECOMPILED_OBJ=precomp.obj
+
+#C_DEFINES = $(C_DEFINES) -DASSOC_WRITE_REQUEST_WITH_DMA_TRANSACTION=1
+C_DEFINES = $(C_DEFINES) -DPNDEV_OS_WIN -DPNDEV_DRIVER_SYS
+
+# set IncludePath for HeaderFiles
+INCLUDES=$(INCLUDES);.\;..\..\common;..\..\lsa;..\..\..\..\pnio\src\common
+
+#WDK docu: file "sources": This file is required in each directory that contains source files 
+#          -> if there is code at other directories: copy C-Files from these directories
+SOURCES=	PnDev_Driver.rc		\
+			Basic.c				\
+			Board.c				\
+			Board_Intel.c		\
+			Board_Irte.c		\
+			Board_IrtePnip.c	\
+			Board_IsrDpc.c		\
+			Board_Pnip.c		\
+			Board_Res.c			\
+			Device.c			\
+			Flash.c				\
+			Flash_Nand.c		\
+			Flash_Nor.c			\
+			General.c			\
+			IsrDpc.c			\
+			Ioctl.c				\
+			os.c				\
+			os_Env.c			\
+			PnCore.c			\
+			pndev_adapt_sys.c	\
+			netProfiKernel.c	\
+			String.c
+
+#
+# Generate WPP tracing code
+# $(SOURCES)   -- run software preprocessor on files listed in SOURCES
+# -km          -- use kernel mode
+# -func        -- define function we'll use for tracing
+#                 This would map all TraceEvents calls to 
+#                 DoTraceMessage.
+#
+RUN_WPP= $(SOURCES)                             \
+		 -km                                    \
+		 -func:TraceEvents(LEVEL,FLAGS,MSG,...) \
+		 -gen:{km-WdfDefault.tpl}*.tmh
+		 
+

@@ -1,0 +1,815 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_al.c" />
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_low.c" />
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_opc.c" />
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_rta.c" />
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_sys.c" />
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_tim.c" />
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_usr.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_cl1.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_cl2.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_cl3.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_cl4.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_cmn.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_ep.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_low.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_pnio.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_sc.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_sv.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_sys.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_usr.c" />
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_uuid.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_acp1.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_acp2.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_acp3.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_acp4.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arcb.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arcb_helper.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_argr.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arsm.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arsm1.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arsm2.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arsm3.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl10.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl11.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl12.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl13.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl14.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl15.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl16.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl20.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl21.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl22.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl30.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl31.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl32.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl33.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl40.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl41.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cmn.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_edd.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_edd2.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_gsy.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_md5.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_mrp.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_nare.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_oha.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd1.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd2.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd3.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd4.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd5.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd6.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd7.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd8.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pof.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_res.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_rpc.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_sys.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_test.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_tim.c" />
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_usr.c" />
+    <ClCompile Include="..\..\..\source\dcp\src\core\dcp_low.c" />
+    <ClCompile Include="..\..\..\source\dcp\src\core\dcp_srv.c" />
+    <ClCompile Include="..\..\..\source\dcp\src\core\dcp_sys.c" />
+    <ClCompile Include="..\..\..\source\dcp\src\core\dcp_usr.c" />
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_dbg.c" />
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_dev.c" />
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_gen.c" />
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_glb.c" />
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_isr.c" />
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_prm.c" />
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_sys.c" />
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_tim.c" />
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_tx.c" />
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_usr.c" />
+    <ClCompile Include="..\..\..\source\edds\src\iobuf\edds_iobuf.c" />
+    <ClCompile Include="..\..\..\source\edds\src\nrt\edds_nrt_rcv.c" />
+    <ClCompile Include="..\..\..\source\edds\src\nrt\edds_nrt_snd.c" />
+    <ClCompile Include="..\..\..\source\edds\src\nrt\edds_nrt_usr.c" />
+    <ClCompile Include="..\..\..\source\edds\src\packet32\packet32_edd.c" />
+    <ClCompile Include="..\..\..\source\edds\src\srt\edds_srt_cons.c" />
+    <ClCompile Include="..\..\..\source\edds\src\srt\edds_srt_prov.c" />
+    <ClCompile Include="..\..\..\source\edds\src\srt\edds_srt_usr.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_comp.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_dev.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_int.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_mem_ring.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_pipe.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_acp.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_clrpc.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_cm.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_dcp.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_edd.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_gsy.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_hif.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_ioh.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_lldp.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_mrp.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_nare.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_oha.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_psi.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_snmpx.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_sock.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_sr.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_sys.c" />
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_usr.c" />
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_edd.c" />
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_glb.c" />
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_sys.c" />
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_tim.c" />
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_tlv.c" />
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_usr.c" />
+    <ClCompile Include="..\..\..\source\mem3\common\src\mem3if.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4512;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\common\src\mem3vers.cpp" />
+    <ClCompile Include="..\..\..\source\mem3\common\src\memansi.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4512;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\common\src\memifdef.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4512;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\createifc\src\pooltype.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4800;4512;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4800;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\doubledyn\src\fft2bound.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4512;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\doubledyn\src\memcombi.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4512;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\fixraster\src\classmem.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4512;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\fixraster\src\memfix.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4512;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\universal\src\mem3trc.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4800;4512;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4800;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\universal\src\memtool.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4800;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4800;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level2</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level2</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\universal\src\memuni.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4800;4512;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4800;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\universal\src\mergemem.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4800;4512;4245;4512;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4800;4512;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_dbg.c" />
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_dcp.c" />
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_edd.c" />
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_glb.c" />
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_sck.c" />
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_sys.c" />
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_tim.c" />
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_usr.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_agnt.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_asn1.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_db.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_db_l.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_dcp.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_dcp1.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_dcp2.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_dcpu.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_edd.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_lib.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_lldp.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_lldu.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_mibs.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_mrp.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_mrpr.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_nare.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_prm.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_rema.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_snmp.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_snmx.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_sock.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_socu.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_sys.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_tim.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_topo.c" />
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_usr.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\mem3\cfg\mem3cfg.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\plf\eps_plf_windows.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\pntrc\pntrc_cfg.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg_edd.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg_edds.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg_hif.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg_sock.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\windows\posix2win.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_cp_hw.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_cp_mem.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_events.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_hif_drv_if.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_hif_short_drv.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_isr.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_locks.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_mem.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_noshmdrv.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_pn_drv_if.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_shm_if.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_sys.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_tasks.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_timer.c" />
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_wpcapdrv.c" />
+    <ClCompile Include="..\..\..\source\pnio\src\src\pnio_version.c" />
+    <ClCompile Include="..\..\..\source\pntrc\src\src\pntrc_sys.c" />
+    <ClCompile Include="..\..\..\source\pntrc\src\src\pntrc_tbb.c" />
+    <ClCompile Include="..\..\..\source\pntrc\src\src\pntrc_usr.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\acp\acp_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_cfg_lib.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_acp.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_edd.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_gsy.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_lib.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_mrp.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_nare.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_oha.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_pof.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_rpc.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\dcp\dcp_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\edds\edds_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\hif\hif_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\lldp\lldp_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\nare\nare_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\oha\oha_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\pnio\edd_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\sock\sock_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\sock\sock_cfg_tcip.c" />
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\tcip\tcip_cfg.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_acp.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_clrpc.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_cm.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_dcp.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_edds.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_hd.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_hif.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_ld.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_lldp.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_mbx.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_nare.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_oha.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_res_calc.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_sock.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_sys.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_tcip.c" />
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_usr.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_bsdvxw.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_cmn.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_fusion.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_iniche.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_linux.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_mib2.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_snmp.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_socket.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_sun.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_sys.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_tcp.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_udp.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_usr.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_vxworks.c" />
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_winsock.c" />
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_edd.c" />
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_iniche.c" />
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_mib.c" />
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_recv.c" />
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_send.c" />
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_sys.c" />
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_usr.c" />
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_var.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\allports\allports.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\allports\timeouts.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp2.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp_cmn.c">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4244;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ipmc\ipopt.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\et_arp.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\icmp.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\iface.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ip.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipdemux.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipmc.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipnet.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipport.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipraw.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\iproute.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipstart.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ip_reasm.c">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4244;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\pmtu.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\udp.c">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4244;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\misclib\cksum.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\misclib\tcpcksum.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\net\macloop.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\net\pktalloc.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\net\q.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\net\udp_open.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\snmp_age.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\snmp_aut.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\trap_in.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\trap_out.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\v1port.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\v1sock.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\asn1.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\rfc1213.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\snmp.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\snmpport.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\snmputil.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\snmpvars.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\specific.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\in_pcb.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\nptcp.c">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4244;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\rawsock.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\sockcall.c">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4244;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\socket.c">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4244;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\socket2.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\soselect.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcpport.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcpsack.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_in.c">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;4244;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_out.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_subr.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_timr.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_usr.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_zio.c" />
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\udpsock.c">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4996;4127;4310;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4996;4127;4310;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\agent\pnd_agent.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\agent\pnd_mbx.c" />
+    <ClCompile Include="..\..\..\source\pnd\src\agent\pnd_sys.c" />
+    <ClCompile Include="..\..\..\source\pnd\src\agent\pnd_tasks.c" />
+    <ClCompile Include="..\..\..\source\pnd\src\cfg\pnd_eps_app.c" />
+    <ClCompile Include="..\..\..\source\pnd\src\io_base_core\pnd_iob_core.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\io_base_core\pnd_iob_usr.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\io_base_core\pnd_iodu.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\io_base_core\pnd_iodu_edds.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\params\config_xml\pnd_XmlParamStore.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_cfg.c" />
+    <ClCompile Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_helper.c" />
+    <ClCompile Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_std_interface.c" />
+    <ClCompile Include="..\..\..\source\pnd\src\params\pnd_ParamStore.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Utils.c" />
+    <ClCompile Include="..\..\..\source\pnd\src\params\xml_parser\src\PARS_XML_Parser.c" />
+    <ClCompile Include="..\..\..\source\pnd\src\params\xml_parser\src\PARS_XML_Support.c" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_BgzdStore.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_UserNode.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_UserStore.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_ValueHelper.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCAr.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCDevice.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCEventHandler.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCSlot.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCSubslot.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCUser.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\oha\pnd_OHAEventHandler.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\oha\pnd_OHAUser.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDEventHandler.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDSubslot.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDUser.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pnd_PnioUserCoreApp.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pnd_pnio_user_core.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pnstack\pnd_cm.cpp" />
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pnstack\pnd_oha.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\source\acp\src\common\acp_low.h" />
+    <ClInclude Include="..\..\..\source\acp\src\common\acp_pls.h" />
+    <ClInclude Include="..\..\..\source\acp\src\common\acp_sys.h" />
+    <ClInclude Include="..\..\..\source\acp\src\common\acp_trc.h" />
+    <ClInclude Include="..\..\..\source\acp\src\common\acp_usr.h" />
+    <ClInclude Include="..\..\..\source\acp\src\inc\acp_int.h" />
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_lib.h" />
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_low.h" />
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_pls.h" />
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_sys.h" />
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_trc.h" />
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_usr.h" />
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_uuid.h" />
+    <ClInclude Include="..\..\..\source\clrpc\src\inc\clrpc_icl.h" />
+    <ClInclude Include="..\..\..\source\clrpc\src\inc\clrpc_int.h" />
+    <ClInclude Include="..\..\..\source\clrpc\src\inc\clrpc_isv.h" />
+    <ClInclude Include="..\..\..\source\clrpc\src\inc\clrpc_pdu.h" />
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_arcb.h" />
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_arcb_helper.h" />
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_err.h" />
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_lib.h" />
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_list.h" />
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_low.h" />
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_pls.h" />
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_sys.h" />
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_trc.h" />
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_usr.h" />
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_argr.h" />
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_icl.h" />
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_iclar.h" />
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_int.h" />
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_ipd.h" />
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_pdu.h" />
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_prm.h" />
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_rpc.h" />
+    <ClInclude Include="..\..\..\source\dcp\src\common\dcp_low.h" />
+    <ClInclude Include="..\..\..\source\dcp\src\common\dcp_pls.h" />
+    <ClInclude Include="..\..\..\source\dcp\src\common\dcp_sys.h" />
+    <ClInclude Include="..\..\..\source\dcp\src\common\dcp_trc.h" />
+    <ClInclude Include="..\..\..\source\dcp\src\common\dcp_usr.h" />
+    <ClInclude Include="..\..\..\source\dcp\src\inc\dcp_int.h" />
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_iobuf_out.h" />
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_iobuf_usr.h" />
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_out.h" />
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_sys.h" />
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_trc.h" />
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_usr.h" />
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_dbg.h" />
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_dev.h" />
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_int.h" />
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_iobuf_int.h" />
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_llif.h" />
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_nrt_ext.h" />
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_nrt_inc.h" />
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_pck.h" />
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_srt_ext.h" />
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_srt_inc.h" />
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_toolbox.h" />
+    <ClInclude Include="..\..\..\source\edds\src\packet32\packet32_inc.h" />
+    <ClInclude Include="..\..\..\source\edds\src\packet32\packet32_usr.h" />
+    <ClInclude Include="..\..\..\source\hif\src\common\hif_mem_ring.h" />
+    <ClInclude Include="..\..\..\source\hif\src\common\hif_pls.h" />
+    <ClInclude Include="..\..\..\source\hif\src\common\hif_sys.h" />
+    <ClInclude Include="..\..\..\source\hif\src\common\hif_trc.h" />
+    <ClInclude Include="..\..\..\source\hif\src\common\hif_usr.h" />
+    <ClInclude Include="..\..\..\source\hif\src\inc\hif_int.h" />
+    <ClInclude Include="..\..\..\source\lldp\src\common\lldp_low.h" />
+    <ClInclude Include="..\..\..\source\lldp\src\common\lldp_sys.h" />
+    <ClInclude Include="..\..\..\source\lldp\src\common\lldp_usr.h" />
+    <ClInclude Include="..\..\..\source\lldp\src\inc\lldp_int.h" />
+    <ClInclude Include="..\..\..\source\lldp\src\inc\lldp_trc.h" />
+    <ClInclude Include="..\..\..\source\mem3\common\inc\mem3vers.h" />
+    <ClInclude Include="..\..\..\source\mem3\doubledyn\inc\fft2bound.hpp" />
+    <ClInclude Include="..\..\..\source\mem3\doubledyn\inc\memcombi.hpp" />
+    <ClInclude Include="..\..\..\source\mem3\fixraster\inc\classmem.hpp" />
+    <ClInclude Include="..\..\..\source\mem3\fixraster\inc\memfix.hpp" />
+    <ClInclude Include="..\..\..\source\mem3\inc\mem3if.h" />
+    <ClInclude Include="..\..\..\source\mem3\inc\mem3if.hpp" />
+    <ClInclude Include="..\..\..\source\mem3\universal\inc\mem3trc.hpp" />
+    <ClInclude Include="..\..\..\source\mem3\universal\inc\memtool.hpp" />
+    <ClInclude Include="..\..\..\source\mem3\universal\inc\memuni.hpp" />
+    <ClInclude Include="..\..\..\source\mem3\universal\inc\mergemem.hpp" />
+    <ClInclude Include="..\..\..\source\nare\src\common\nare_low.h" />
+    <ClInclude Include="..\..\..\source\nare\src\common\nare_out.h" />
+    <ClInclude Include="..\..\..\source\nare\src\common\nare_sys.h" />
+    <ClInclude Include="..\..\..\source\nare\src\common\nare_trc.h" />
+    <ClInclude Include="..\..\..\source\nare\src\common\nare_usr.h" />
+    <ClInclude Include="..\..\..\source\nare\src\inc\nare_dbg.h" />
+    <ClInclude Include="..\..\..\source\nare\src\inc\nare_int.h" />
+    <ClInclude Include="..\..\..\source\oha\src\common\oha_lib.h" />
+    <ClInclude Include="..\..\..\source\oha\src\common\oha_low.h" />
+    <ClInclude Include="..\..\..\source\oha\src\common\oha_sys.h" />
+    <ClInclude Include="..\..\..\source\oha\src\common\oha_trc.h" />
+    <ClInclude Include="..\..\..\source\oha\src\common\oha_usr.h" />
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_agnt.h" />
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_asn1.h" />
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_db.h" />
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_int.h" />
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_mibs.h" />
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_snmp.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\posix\eps_posix_cfg_windows.h" />
+    <ClInclude Include="..\..\..\source\pnio\src\common\mem3cfg.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\pntrc\pntrc_cfg.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\pntrc\pntrc_inc.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\pntrc\pntrc_pck.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_inc.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\windows\posix2win.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_cp_hw.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_hif_drv_if.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_hif_short_drv.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_mem.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_noshmdrv.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_plf.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_pn_drv_if.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_register.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_rtos.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_shm_if.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_sys.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_timer.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_timer_trc.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_trc.h" />
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_wpcapdrv.h" />
+    <ClInclude Include="..\..\..\source\pnio\src\common\pntrc_sub.h" />
+    <ClInclude Include="..\..\..\source\pnio\src\inc\pnio_version.h" />
+    <ClInclude Include="..\..\..\source\pntrc\src\common\pntrc_pls.h" />
+    <ClInclude Include="..\..\..\source\pntrc\src\common\pntrc_sys.h" />
+    <ClInclude Include="..\..\..\source\pntrc\src\common\pntrc_trc.h" />
+    <ClInclude Include="..\..\..\source\pntrc\src\common\pntrc_usr.h" />
+    <ClInclude Include="..\..\..\source\pntrc\src\inc\pntrc_int.h" />
+    <ClInclude Include="..\..\..\source\pntrc\src\inc\pntrc_tbb.h" />
+    <ClInclude Include="..\..\..\source\psi\src\common\psi_cfg_eps.h" />
+    <ClInclude Include="..\..\..\source\psi\src\common\psi_sys.h" />
+    <ClInclude Include="..\..\..\source\psi\src\common\psi_trc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\common\psi_usr.h" />
+    <ClInclude Include="..\..\..\source\psi\src\inc\psi_hd.h" />
+    <ClInclude Include="..\..\..\source\psi\src\inc\psi_int.h" />
+    <ClInclude Include="..\..\..\source\psi\src\inc\psi_ld.h" />
+    <ClInclude Include="..\..\..\source\psi\src\inc\psi_pnstack.h" />
+    <ClInclude Include="..\..\..\source\psi\src\inc\psi_res_calc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\acp\acp_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\acp\acp_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\acp\acp_pck.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_pck.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_unpck.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\cm\cm_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\dcp\dcp_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\dcp\dcp_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\edds\edds_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\edds\edds_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\edds\edds_iobuf_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\edds\edds_pck.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\hif\hif_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\hif\hif_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\lldp\lldp_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\lldp\lldp_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\lsa\lsa_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\lsa\lsa_sys.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\lsa\lsa_usr.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\nare\nare_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\nare\nare_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\oha\oha_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\oha\oha_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\oha\oha_pck.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\edd_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\edd_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\pnio_pck1_on.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\pnio_pck2_on.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\pnio_pck4_on.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\pnio_pck_off.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\sock\sock_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\sock\sock_inc.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\tcip\sy_off_pack_2.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\tcip\sy_on_pack_2.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\tcip\tcip_cfg.h" />
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\tcip\tcip_inc.h" />
+    <ClInclude Include="..\..\..\source\sock\src\common\sock_low.h" />
+    <ClInclude Include="..\..\..\source\sock\src\common\sock_pls.h" />
+    <ClInclude Include="..\..\..\source\sock\src\common\sock_sys.h" />
+    <ClInclude Include="..\..\..\source\sock\src\common\sock_trc.h" />
+    <ClInclude Include="..\..\..\source\sock\src\common\sock_usr.h" />
+    <ClInclude Include="..\..\..\source\sock\src\inc\sock_int.h" />
+    <ClInclude Include="..\..\..\source\tcip\src\common\interniche_usr.h" />
+    <ClInclude Include="..\..\..\source\tcip\src\common\tcip_pls.h" />
+    <ClInclude Include="..\..\..\source\tcip\src\common\tcip_sys.h" />
+    <ClInclude Include="..\..\..\source\tcip\src\common\tcip_usr.h" />
+    <ClInclude Include="..\..\..\source\tcip\src\inc\tcip_int.h" />
+    <ClInclude Include="..\..\..\source\tcip\src\inc\tcip_low.h" />
+    <ClInclude Include="..\..\..\source\tcip\src\inc\tcip_trc.h" />
+    <ClInclude Include="..\..\..\source\tcip\src\inc\tcip_var.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\allports\ipport.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\allports\libport.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\allports\tcpport.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\arp.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\bsdsock.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\ether.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\icmp.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\intimers.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\in_utils.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\ip.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\ip6.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\mbuf.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\net.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\netbuf.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\nptcp.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\nptypes.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\pmtu.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\profiler.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\q.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\rfc1213_.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\snmpport.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\snmp_vie.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\sockcall.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\socket.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\socket6.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\sockvar.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\syslog.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\tcp.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\tcpapp.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\udp.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp2.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp_cmn.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\ip\ip_reasm.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\net\heapbuf.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\snmp\asn1.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\snmp\npsnmp.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\snmp\parse.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\snmp\snmp_imp.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\snmp\snmp_var.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\in_pcb.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\protosw.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\tcpip.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_fsm.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_seq.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_timr.h" />
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_var.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\cfg\pnd_psi_cfg_plf_windows_wpcap_interniche.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\common\pndriver_pntrc_sub.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\common\pniobase.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\common\pnioerrx.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\common\pniousrx.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\common\servusrx.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\inc\pnd_int.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\inc\pnd_sys.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\io_base_core\pnd_iob_core.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\io_base_core\pnd_iodu.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\io_base_core\pnd_iodu_edds.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\config_xml\pnd_XmlParamStore.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_cfg.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_helper.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_std_interface.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\pnd_ParamStore.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Config.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Config_default.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Properties.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Types.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Utils.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_XMLTags.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARSP_File.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_ConversionService.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_ErrorCodes.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_FileSystem.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_MCB.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_MemoryService.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_Stream.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_Types.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_Version.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_XML.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_XML_Internal.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_BgzdStore.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_UserNode.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_UserStore.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_ValueHelper.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCAr.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCDevice.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCEventHandler.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCSlot.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCSubslot.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCUser.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\oha\pnd_OHAEventHandler.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\oha\pnd_OHAUser.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDEventHandler.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDSubslot.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDUser.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pnd_PnioUserCoreApp.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pnd_pnio_user_core.h" />
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pnstack\pnd_pnstack.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EBA154E8-D4EA-44F8-9EBD-F7AF339AD2A1}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>pndriver_w32</RootNamespace>
+    <ProjectName>pndriver_w32</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\gen\debug\</OutDir>
+    <IntDir>.\..\gentemp\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>$(ProjectName)</TargetName>
+    <OutDir>.\..\gen\release\</OutDir>
+    <IntDir>.\..\gentemp\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>PNIO_PNDRIVER;EDDS_CFG_HW_PACKET32;TOOL_CHAIN_MICROSOFT;EPS_PSI_CFG_PLATFORM_H=pnd_psi_cfg_plf_windows_wpcap_interniche.h;EPS_RTOS_CFG_INCLUDE_H=eps_posix_cfg_windows.h;PNTRC_CFG_CUSTOM_SUBSYSTEM_HEADER=pndriver_pntrc_sub.h;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;EPS_CFG_DO_NOT_USE_TGROUPS;PNDEV_OS_WIN;PND_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BrowseInformation>true</BrowseInformation>
+      <AdditionalIncludeDirectories>..\..\..\source\pnd\src\common;..\..\..\driver\WpdPack\Include;..\..\..\source\pnboards\eps\epssys\src;..\..\..\source\pnboards\eps\epssys\etc\mem3\cfg;..\..\..\source\pnboards\eps\epssys\etc\lsa;..\..\..\source\pnboards\eps\epssys\cfg;..\..\..\source\pnboards\eps\epssys\etc\timer\cfg;..\..\..\source\pnboards\eps\epssys\etc\psi;..\..\..\source\pnboards\eps\epssys\etc\pncore;..\..\..\source\psi\src\pnstack\lsa;..\..\..\source\psi\src\pnstack\pnio;..\..\..\source\pnio\src\common;..\..\..\source\edds\src\common;..\..\..\source\edds\src\packet32;..\..\..\source\edds\src\inc;..\..\..\source\psi\src\pnstack\edds;..\..\..\source\pnio\src\inc;..\..\..\source\psi\src\pnstack\acp;..\..\..\source\acp\src\common;..\..\..\source\acp\src\inc;..\..\..\source\psi\src\pnstack\cm;..\..\..\source\cm\src\common;..\..\..\source\cm\src\inc;..\..\..\source\psi\src\pnstack\clrpc;..\..\..\source\clrpc\src\common;..\..\..\source\clrpc\src\inc;..\..\..\source\psi\src\pnstack\dcp;..\..\..\source\dcp\src\common;..\..\..\source\dcp\src\inc;..\..\..\source\psi\src\pnstack\hif;..\..\..\source\hif\src\common;..\..\..\source\hif\src\inc;..\..\..\source\psi\src\pnstack\lldp;..\..\..\source\lldp\src\common;..\..\..\source\lldp\src\inc;..\..\..\source\psi\src\pnstack\mrp;..\..\..\source\psi\src\pnstack\nare;..\..\..\source\nare\src\common;..\..\..\source\nare\src\inc;..\..\..\source\psi\src\pnstack\oha;..\..\..\source\oha\src\common;..\..\..\source\oha\src\inc;..\..\..\source\psi\src\common;..\..\..\source\psi\src\inc;..\..\..\source\psi\src\pnstack\sock;..\..\..\source\sock\src\common;..\..\..\source\sock\src\inc;..\..\..\source\psi\src\pnstack\tcip;..\..\..\source\tcip\src\common;..\..\..\source\tcip\src\inc;..\..\..\source\tcip\src_iniche_core\allports;..\..\..\source\tcip\src_iniche_core\h;..\..\..\source\tcip\src_iniche_core\ip;..\..\..\source\tcip\src_iniche_core\snmp;..\..\..\source\tcip\src_iniche_core\snmpv1;..\..\..\source\tcip\src_iniche_core\ipmc;..\..\..\source\tcip\src_iniche_core\tcp;..\..\..\source\mem3\inc;..\..\..\source\mem3\common\inc;..\..\..\source\mem3\createifc\inc;..\..\..\source\mem3\doubledyn\inc;..\..\..\source\mem3\fixraster\inc;..\..\..\source\mem3\incl;..\..\..\source\mem3\universal\inc;..\..\..\source\pnboards\eps\epssys\etc\windows;..\..\..\source\pnboards\eps\epssys\etc\windows\pthreads;..\..\..\source\pnboards\eps\epssys\etc\pntrc;..\..\..\source\pntrc\src\common;..\..\..\source\pntrc\src\inc;..\..\..\source\pnd\src\inc;..\..\..\source\pnd\src\cfg;..\..\..\source\pnd\src\params;..\..\..\source\pnd\src\params\xml_parser\cfg;..\..\..\source\pnd\src\params\xml_parser\h;..\..\..\source\pnd\src\params\config_ini;..\..\..\source\pnd\src\params\config_xml;..\..\..\source\pnd\src\io_base_core;..\..\..\source\pnd\src\pnio_user_core;..\..\..\source\pnd\src\pnio_user_core\base;..\..\..\source\pnd\src\pnio_user_core\ioc;..\..\..\source\pnd\src\pnio_user_core\iodu;..\..\..\source\pnd\src\pnio_user_core\oha;..\..\..\source\pnd\src\pnio_user_core\pd;..\..\..\source\pnd\src\pnio_user_core\pnstack;..\test;..\..\..\source\pndevdrv\imcea\src;..\..\..\source\pnboards\eps\epssys\etc\posix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4996;4127;4310;4201%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <AdditionalDependencies>winmm.lib;Ws2_32.lib;wpcap.lib;packet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <AdditionalLibraryDirectories>..\WpdPack\Lib\</AdditionalLibraryDirectories>
+    </Link>
+    <Bscmake>
+      <OutputFile>$(IntDir)pnd_eps_w32.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>PNIO_PNDRIVER;EDDS_CFG_HW_PACKET32;TOOL_CHAIN_MICROSOFT;EPS_PSI_CFG_PLATFORM_H=pnd_psi_cfg_plf_windows_wpcap_interniche.h;EPS_RTOS_CFG_INCLUDE_H=eps_posix_cfg_windows.h;PNTRC_CFG_CUSTOM_SUBSYSTEM_HEADER=pndriver_pntrc_sub.h;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;EPS_CFG_DO_NOT_USE_TGROUPS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\driver\WpdPack\Include;..\..\..\source\pnboards\eps\epssys\src;..\..\..\source\pnboards\eps\epssys\etc\mem3\cfg;..\..\..\source\pnboards\eps\epssys\etc\lsa;..\..\..\source\pnboards\eps\epssys\cfg;..\..\..\source\pnboards\eps\epssys\etc\timer\cfg;..\..\..\source\pnboards\eps\epssys\etc\psi;..\..\..\source\pnboards\eps\epssys\etc\pncore;..\..\..\source\psi\src\pnstack\lsa;..\..\..\source\psi\src\pnstack\pnio;..\..\..\source\pnio\src\common;..\..\..\source\edds\src\common;..\..\..\source\edds\src\packet32;..\..\..\source\edds\src\inc;..\..\..\source\psi\src\pnstack\edds;..\..\..\source\pnio\src\inc;..\..\..\source\psi\src\pnstack\acp;..\..\..\source\acp\src\common;..\..\..\source\acp\src\inc;..\..\..\source\psi\src\pnstack\cm;..\..\..\source\cm\src\common;..\..\..\source\cm\src\inc;..\..\..\source\psi\src\pnstack\clrpc;..\..\..\source\clrpc\src\common;..\..\..\source\clrpc\src\inc;..\..\..\source\psi\src\pnstack\dcp;..\..\..\source\dcp\src\common;..\..\..\source\dcp\src\inc;..\..\..\source\psi\src\pnstack\hif;..\..\..\source\hif\src\common;..\..\..\source\hif\src\inc;..\..\..\source\psi\src\pnstack\lldp;..\..\..\source\lldp\src\common;..\..\..\source\lldp\src\inc;..\..\..\source\psi\src\pnstack\mrp;..\..\..\source\psi\src\pnstack\nare;..\..\..\source\nare\src\common;..\..\..\source\nare\src\inc;..\..\..\source\psi\src\pnstack\oha;..\..\..\source\oha\src\common;..\..\..\source\oha\src\inc;..\..\..\source\psi\src\common;..\..\..\source\psi\src\inc;..\..\..\source\psi\src\pnstack\sock;..\..\..\source\sock\src\common;..\..\..\source\sock\src\inc;..\..\..\source\psi\src\pnstack\tcip;..\..\..\source\tcip\src\common;..\..\..\source\tcip\src\inc;..\..\..\source\tcip\src_iniche_core\allports;..\..\..\source\tcip\src_iniche_core\h;..\..\..\source\tcip\src_iniche_core\ip;..\..\..\source\tcip\src_iniche_core\snmp;..\..\..\source\tcip\src_iniche_core\snmpv1;..\..\..\source\tcip\src_iniche_core\ipmc;..\..\..\source\tcip\src_iniche_core\tcp;..\..\..\source\mem3\inc;..\..\..\source\mem3\common\inc;..\..\..\source\mem3\createifc\inc;..\..\..\source\mem3\doubledyn\inc;..\..\..\source\mem3\fixraster\inc;..\..\..\source\mem3\incl;..\..\..\source\mem3\universal\inc;..\..\..\source\pnboards\eps\epssys\etc\windows;..\..\..\source\pnboards\eps\epssys\etc\windows\pthreads;..\..\..\source\pnboards\eps\epssys\etc\pntrc;..\..\..\source\pntrc\src\common;..\..\..\source\pntrc\src\inc;..\..\..\source\pnd\src\common;..\..\..\source\pnd\src\inc;..\..\..\source\pnd\src\cfg;..\..\..\source\pnd\src\params;..\..\..\source\pnd\src\params\xml_parser\cfg;..\..\..\source\pnd\src\params\xml_parser\h;..\..\..\source\pnd\src\params\config_ini;..\..\..\source\pnd\src\params\config_xml;..\..\..\source\pnd\src\io_base_core;..\..\..\source\pnd\src\pnio_user_core;..\..\..\source\pnd\src\pnio_user_core\base;..\..\..\source\pnd\src\pnio_user_core\ioc;..\..\..\source\pnd\src\pnio_user_core\iodu;..\..\..\source\pnd\src\pnio_user_core\oha;..\..\..\source\pnd\src\pnio_user_core\pd;..\..\..\source\pnd\src\pnio_user_core\pnstack;..\test;..\..\..\source\pndevdrv\imcea\src;..\..\..\source\pnboards\eps\epssys\etc\posix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DisableSpecificWarnings>4996;4127;4310;4201%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;winmm.lib;Ws2_32.lib;wpcap.lib;packet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <AdditionalLibraryDirectories>..\WpdPack\Lib</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -505,7 +505,7 @@ class threadloop {
               boost::posix_time::second_clock::local_time();
           boost::posix_time::time_duration t_elapsed = t_end - t_start;
           long int mt_elapsed = t_elapsed.total_milliseconds();
-          if (mt_elapsed > 20) {
+          if (mt_elapsed > 50) {
             if (FILEORNOT) {
               myfile = fopen(logsavepath.c_str(), "a+");
               fprintf(myfile, "First: Take too long for QP!\n");
@@ -514,7 +514,7 @@ class threadloop {
               perror("First: Take too long for QP");
           } else {
             std::this_thread::sleep_for(
-                std::chrono::milliseconds(20 - mt_elapsed));
+                std::chrono::milliseconds(50 - mt_elapsed));
           }
 
           // send message to clients only
@@ -528,7 +528,6 @@ class threadloop {
               perror("First: send");
           }
 
-          std::this_thread::sleep_for(std::chrono::milliseconds(20));
         } else {
           // send message to clients only
           if (send(sockfd, recv_buf, nbytes, 0) == -1) {
@@ -609,7 +608,7 @@ class threadloop {
               boost::posix_time::second_clock::local_time();
           boost::posix_time::time_duration t_elapsed = t_end - t_start;
           long int mt_elapsed = t_elapsed.total_milliseconds();
-          if (mt_elapsed > 20) {
+          if (mt_elapsed > 50) {
             if (FILEORNOT) {
               myfile = fopen(logsavepath.c_str(), "a+");
               fprintf(myfile, "Second: Take too long for QP!\n");
@@ -618,7 +617,7 @@ class threadloop {
               perror("Second: Take too long for QP");
           } else {
             std::this_thread::sleep_for(
-                std::chrono::milliseconds(20 - mt_elapsed));
+                std::chrono::milliseconds(50 - mt_elapsed));
           }
 
           // send message to clients only

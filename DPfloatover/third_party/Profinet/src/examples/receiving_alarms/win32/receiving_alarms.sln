@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pndriver_w32", "..\..\shared\win32\pndriver_w32.vcxproj", "{EBA154E8-D4EA-44F8-9EBD-F7AF339AD2A1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "receiving_alarms", "receiving_alarms.vcxproj", "{35CA81A8-ACC0-4AAC-B284-5807AA44AA44}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBA154E8-D4EA-44F8-9EBD-F7AF339AD2A1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EBA154E8-D4EA-44F8-9EBD-F7AF339AD2A1}.Debug|Win32.Build.0 = Debug|Win32
+		{EBA154E8-D4EA-44F8-9EBD-F7AF339AD2A1}.Release|Win32.ActiveCfg = Release|Win32
+		{EBA154E8-D4EA-44F8-9EBD-F7AF339AD2A1}.Release|Win32.Build.0 = Release|Win32
+		{35CA81A8-ACC0-4AAC-B284-5807AA44AA44}.Debug|Win32.ActiveCfg = Debug|Win32
+		{35CA81A8-ACC0-4AAC-B284-5807AA44AA44}.Debug|Win32.Build.0 = Debug|Win32
+		{35CA81A8-ACC0-4AAC-B284-5807AA44AA44}.Release|Win32.ActiveCfg = Release|Win32
+		{35CA81A8-ACC0-4AAC-B284-5807AA44AA44}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

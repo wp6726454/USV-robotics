@@ -1,0 +1,2325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="acp">
+      <UniqueIdentifier>{beb616c3-cc1a-4041-881c-c25e040af564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="acp\acp_src">
+      <UniqueIdentifier>{3cdc8afe-ecc5-4597-b964-81195f2307e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="acp\acp_inc">
+      <UniqueIdentifier>{f219a043-c847-4d0e-8855-2e34de04c381}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="acp\acp_cfg">
+      <UniqueIdentifier>{392c6fdd-40dc-4c1c-8072-97fafbb594a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="acp\acp_cfg_orig">
+      <UniqueIdentifier>{1f1fc71f-30e8-4ef6-9abc-2b9420255d47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="acp\acp_common">
+      <UniqueIdentifier>{32755956-7a37-46b4-998e-08c393061e7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="clrpc">
+      <UniqueIdentifier>{47f23ed7-b7f8-4415-b070-dbad3974da0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="clrpc\clrpc_src">
+      <UniqueIdentifier>{f84a3f8b-12b6-4f31-8983-9e62550b2dd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="clrpc\clrpc_inc">
+      <UniqueIdentifier>{9cd91192-aaca-44b6-bb07-3348d8820bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="clrpc\clrpc_cfg">
+      <UniqueIdentifier>{4bb78a7e-02c8-4237-bc9d-2c531960f17c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="clrpc\clrpc_cfg_orig">
+      <UniqueIdentifier>{22c6d9c2-dc07-4ceb-a570-c15cba690c54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="clrpc\clrpc_common">
+      <UniqueIdentifier>{378e64f4-b3fd-46e4-8882-17961d8f8f60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cm">
+      <UniqueIdentifier>{4215ff8c-9bf0-4a77-9b83-fcda96d91337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cm\cm_src">
+      <UniqueIdentifier>{55e71122-b70e-42af-b908-57edda7fd33e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cm\cm_inc">
+      <UniqueIdentifier>{53c362ca-643e-43d1-a801-0c767d1f32fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cm\cm_cfg">
+      <UniqueIdentifier>{f0fc6769-d8d2-4614-b734-1a40dfac84c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cm\cm_cfg_orig">
+      <UniqueIdentifier>{3b9f0c9f-0f79-4112-aac2-bfb3335b1d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dcp">
+      <UniqueIdentifier>{4a368a9a-18a2-4767-977c-46162cd71b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dcp\dcp_src">
+      <UniqueIdentifier>{7ad71556-7315-482e-8964-ba3936091881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dcp\dcp_inc">
+      <UniqueIdentifier>{e5d871f7-0fbd-4373-967d-78977e219fd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dcp\dcp_cfg">
+      <UniqueIdentifier>{ed2ac362-df1e-482e-a85c-dd05feab6715}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dcp\dcp_cfg_orig">
+      <UniqueIdentifier>{e659ee3a-490c-453f-b09c-51800e881f47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dcp\dcp_common">
+      <UniqueIdentifier>{31d0778e-ef8b-4f65-a75d-48d84c89c89f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps">
+      <UniqueIdentifier>{5e78b422-b44c-4bd3-8ece-e447460d2abf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_cfg">
+      <UniqueIdentifier>{554a5754-acdf-443f-b4f7-8beccbcd3d47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc">
+      <UniqueIdentifier>{5918f8d9-c16e-4ad7-abc8-f2dcd2674fb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_src_core">
+      <UniqueIdentifier>{1b500100-2c6a-4b94-95a4-f95f938281e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_src_platforms">
+      <UniqueIdentifier>{6a738a12-ec6c-4b07-a3d9-bfdb254e3f68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_src_pn_driver">
+      <UniqueIdentifier>{9f4ddabd-0248-4da0-9e74-cad6f3c1dba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\Windows">
+      <UniqueIdentifier>{8f76b413-b074-49f0-9660-5b7901778bf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hif">
+      <UniqueIdentifier>{5bea7579-50bf-4f2b-9d8e-7250f72e45fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hif\hif_cfg">
+      <UniqueIdentifier>{5ffacd6c-86aa-416e-abfb-e253da4e15a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hif\hif_cfg_orig">
+      <UniqueIdentifier>{7de86cb5-6751-4e09-af06-4efe5c38c93d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hif\hif_inc">
+      <UniqueIdentifier>{cd313b27-d911-4d5d-aa34-979c82516432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hif\hif_src">
+      <UniqueIdentifier>{adb84197-a79a-4bee-94ef-da9eb76d817f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lldp">
+      <UniqueIdentifier>{3def7712-68ec-4055-a6b2-60ade1e10510}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lldp\lldp_src">
+      <UniqueIdentifier>{ae7a26e5-117a-4b8f-b7f0-6ab9cadaaced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lldp\lldp_inc">
+      <UniqueIdentifier>{5af1c123-ba27-4935-9593-7192ae2c4bf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lldp\lldp_cfg">
+      <UniqueIdentifier>{f7373954-46ce-4140-a362-8a7676a076f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lldp\lldp_cfg_orig">
+      <UniqueIdentifier>{f1e0183f-d669-41eb-a274-be66fb532523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lldp\lldp_common">
+      <UniqueIdentifier>{efe3d219-4667-4cbb-ba74-a9b9e59417cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LSA">
+      <UniqueIdentifier>{5f4224cb-a69b-4b02-9d78-7b1b723bda7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mem3">
+      <UniqueIdentifier>{8a259c0a-255b-424e-a918-35498f4e3999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mem3\mem3_cfg">
+      <UniqueIdentifier>{a6f1f500-e255-4bb6-ba5a-9cb198f25b41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mem3\mem3_cfg_org">
+      <UniqueIdentifier>{2c170fee-69ec-4c2c-9414-a759e1172155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mem3\mem3_inc">
+      <UniqueIdentifier>{cd33fb93-342b-4244-8916-d1219eedcdb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mem3\mem3_src">
+      <UniqueIdentifier>{a956a086-88d6-4582-8e97-8b3814382324}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nare">
+      <UniqueIdentifier>{5705aa10-b2d7-4757-8568-a438f875ccc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nare\nare_src">
+      <UniqueIdentifier>{8008e66e-d3de-466a-9ec4-c19cb9796005}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nare\nare_inc">
+      <UniqueIdentifier>{e98e771f-ef3a-4225-99ad-0b52a2b285de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nare\nare_cfg">
+      <UniqueIdentifier>{6259c392-42ba-4725-b4dc-2f4dd7bd56bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nare\nare_cfg_orig">
+      <UniqueIdentifier>{5b95195b-b7a4-474b-8c73-054723d6e3a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nare\nare_common">
+      <UniqueIdentifier>{34910664-4395-4177-b1df-860123dc1977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oha">
+      <UniqueIdentifier>{da97a791-740b-4790-9f39-5fde4e96b6b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oha\oha_src">
+      <UniqueIdentifier>{67482ade-f111-4c30-ad21-0509f57caf7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oha\oha_inc">
+      <UniqueIdentifier>{b38ddd59-d735-43cb-a826-b9dec1661da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oha\oha_cfg">
+      <UniqueIdentifier>{6baf58dc-b1ae-42d9-8106-44a7d9b4e4a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oha\oha_cfg_orig">
+      <UniqueIdentifier>{f3994c4b-35cc-4a7d-9a90-821ddc5133e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oha\oha_common">
+      <UniqueIdentifier>{f41b0183-e7f0-4ae2-88d2-6152582ba8f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnio">
+      <UniqueIdentifier>{8c7aeb4e-86fc-40e1-a7cf-339c3d344d88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnio\pnio_src">
+      <UniqueIdentifier>{2084b730-f80f-49b3-aec2-925a3f8b5451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnio\pnio_cfg">
+      <UniqueIdentifier>{5cace64d-36e8-4d9e-b1d2-ee08e2acbbe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnio\pnio_cfg_orig">
+      <UniqueIdentifier>{619b265f-ed58-4fdb-8ad1-09b3b6295627}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnio\pnio_inc">
+      <UniqueIdentifier>{cf2be037-5d91-4732-92e2-57794fff3828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pntrc">
+      <UniqueIdentifier>{c4cbbd55-995d-48f4-bfaf-ed9e36d23804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pntrc\pntrc_cfg">
+      <UniqueIdentifier>{00ef7b35-8786-4a4b-8ee8-ea83c7ad8e19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pntrc\pntrc_cfg_orig">
+      <UniqueIdentifier>{3340b486-408c-460d-a5e6-7acc256158e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pntrc\pntrc_src">
+      <UniqueIdentifier>{9a5a1868-ca67-482e-80c7-ba5ba8455676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pntrc\pntrc_inc">
+      <UniqueIdentifier>{c87e7cf7-19dc-42f0-9263-393d13b6a114}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pntrc\pntrc_common">
+      <UniqueIdentifier>{225bdb5c-0cf1-4239-80bd-a4aa1e5610c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psi">
+      <UniqueIdentifier>{344b1e99-3f52-4fbb-84f0-825584ffa84f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psi\psi_cfg">
+      <UniqueIdentifier>{0e95cc1b-19d0-402a-87fa-7064e6f27a7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psi\psi_cfg_orig">
+      <UniqueIdentifier>{2f9dab1a-f488-4b97-9924-89ef25e6de62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psi\psi_inc">
+      <UniqueIdentifier>{f693d522-391e-4e61-abfe-86679e27d620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psi\psi_src_core">
+      <UniqueIdentifier>{7529791e-6bf7-499b-9cd6-0df3b9174760}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="psi\psi_common">
+      <UniqueIdentifier>{b8f69857-9cb5-4455-9378-d477668596da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sock">
+      <UniqueIdentifier>{7f13e5b8-7e62-46b5-af36-d2b65051e9c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sock\sock_src">
+      <UniqueIdentifier>{bf74768e-3fe0-4fa8-89f7-bf4e63397f06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sock\sock_inc">
+      <UniqueIdentifier>{078e6e74-a3d1-47da-9f3a-0df5b155ef29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sock\sock_cfg">
+      <UniqueIdentifier>{1439dbed-9ea0-4fe3-bdeb-c9bfe8ef75ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sock\sock_cfg_orig">
+      <UniqueIdentifier>{4360c90b-6661-475b-b1b9-416eec2e4cad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sock\sock_common">
+      <UniqueIdentifier>{819c3844-c475-4299-9dfe-7efb9ddaebac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip">
+      <UniqueIdentifier>{994d2fcb-74aa-4bb1-b2c7-ab6c2aa63919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_src_iniche">
+      <UniqueIdentifier>{449b3e20-74c3-4740-be19-0b5428e26090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_src_iniche\allports">
+      <UniqueIdentifier>{a8f8525f-782d-4ca3-9dec-8894fb4d700b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_src_iniche\ip">
+      <UniqueIdentifier>{51aabaaf-9fa5-48b2-afca-1576ff773e7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_src_iniche\misclib">
+      <UniqueIdentifier>{61b19529-7f43-42bc-8e97-444fad6629f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_src_iniche\net">
+      <UniqueIdentifier>{8babda78-a2e0-4a14-9012-8a92c7dc37b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_src_iniche\snmp">
+      <UniqueIdentifier>{91758302-0e1e-4d40-b92e-2a3b25b6abe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_src_iniche\snmp1">
+      <UniqueIdentifier>{e5930bf2-a494-4ce1-b28e-f81590f23b0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_src_iniche\tcp">
+      <UniqueIdentifier>{172b4c56-7064-48a6-bd25-d66ca12b41fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_src_iniche\ipmc">
+      <UniqueIdentifier>{d481c24a-f3e3-40a8-9731-a5714dc3c960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_src_iniche\h">
+      <UniqueIdentifier>{79ef23c1-19ed-444f-86f5-aa700f773241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_cfg">
+      <UniqueIdentifier>{4e9f05d9-aa01-4f5a-a161-5740d9aa9a04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_cfg_orig">
+      <UniqueIdentifier>{7eb96c9c-6b33-49a7-9ca0-3ae2a55083b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_inc">
+      <UniqueIdentifier>{7e525d5d-2026-4173-903a-b5384a9d2517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_src">
+      <UniqueIdentifier>{a3a156a6-6f28-4b2e-939d-8ad2e27bd338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcip\tcip_common">
+      <UniqueIdentifier>{5142e42f-93de-48c5-94d4-bc79a45778c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd">
+      <UniqueIdentifier>{d0e0bb22-8418-48ae-bb77-9da79c7a6a40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\agent">
+      <UniqueIdentifier>{2efbd54c-4d2e-4b7f-b272-64a9e4ba5a2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\common">
+      <UniqueIdentifier>{2fca3724-f992-493a-bd0e-b46f87f9e8c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\inc">
+      <UniqueIdentifier>{a8fd0540-e396-4d1f-9535-91cce92f020b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\io_base_core">
+      <UniqueIdentifier>{13a84f3f-5123-4d44-8933-1a9b2cb65a27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\params">
+      <UniqueIdentifier>{fc7af589-359a-4dc8-b244-1c24c2e2f1a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\pnio_user_core">
+      <UniqueIdentifier>{7b68458c-af68-4ea2-8239-ea1b03e36a00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\pnio_user_core\base">
+      <UniqueIdentifier>{58a900d1-ef41-4b51-adb9-bee190ff9b65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\pnio_user_core\ioc">
+      <UniqueIdentifier>{b77719eb-723d-4394-8931-49f739fcc183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\pnio_user_core\oha">
+      <UniqueIdentifier>{278fe7f1-b6f6-4ed7-a831-8f610b6c277a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\pnio_user_core\pd">
+      <UniqueIdentifier>{3a47c4cb-a776-416c-826e-945e8e26e379}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\params\xml_parser">
+      <UniqueIdentifier>{0671f114-08cc-4472-9072-5452def21665}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\params\xml_parser\src">
+      <UniqueIdentifier>{394be089-f788-402b-b643-c69d70093b18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\params\xml_parser\cfg">
+      <UniqueIdentifier>{59c8653d-d8c3-4a12-9c9a-444f94ca3e9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\params\xml_parser\h">
+      <UniqueIdentifier>{9642d133-dc84-4362-be88-88cb6ea8475c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cm\cm_src_cl">
+      <UniqueIdentifier>{09c70f5f-57eb-4781-9acb-112417bb329b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cm\cm_src_pd">
+      <UniqueIdentifier>{f53b0d21-fa29-4091-ba98-9cabf570d2e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\params\xml_config">
+      <UniqueIdentifier>{3aa33c68-6944-4423-9dce-099d1842f54d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pnd\pnio_user_core\pnstack">
+      <UniqueIdentifier>{59baea78-39ae-4498-a96c-1799f7eba030}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\posix">
+      <UniqueIdentifier>{c5626c3a-e293-48bb-8023-3308ec6d8061}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\plf">
+      <UniqueIdentifier>{e164bb5c-9940-4a1b-90d9-a76f16eae1f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc\edds">
+      <UniqueIdentifier>{81a5d68f-f749-4959-a73f-78052f348b4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc\edds\edds_cfg">
+      <UniqueIdentifier>{7952acdd-3ab2-47c7-b976-d8f5da708318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc\edds\edds_cfg_orig">
+      <UniqueIdentifier>{67f0bcdd-de2f-4e3d-9857-25d361b6ab6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc\edds\edds_src">
+      <UniqueIdentifier>{1c4f5db5-e61b-4dc2-9db5-daa628ad139f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc\edds\edds_src\srt">
+      <UniqueIdentifier>{751d843f-53f3-4cc9-ad3c-6238c3cb2f4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc\edds\edds_src\srt\packet32">
+      <UniqueIdentifier>{27cd5aaa-ff7c-4af5-8dba-c3fe00dc531a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc\edds\edds_src\srt\packet32\nrt">
+      <UniqueIdentifier>{a35604eb-c3c9-471e-bafb-91630fe1ccd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc\edds\edds_src\core">
+      <UniqueIdentifier>{f1d48806-5572-4812-a935-e7d5e8f144f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc\edds\edds_src\inc">
+      <UniqueIdentifier>{535565b9-c17d-4158-b7ca-92a6aee00466}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc\edds\edds_src\common">
+      <UniqueIdentifier>{e4567d76-c061-4ea0-a875-381644f47dcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eps\eps_inc\edds\edds_src\iobuf">
+      <UniqueIdentifier>{32302e90-14fe-4306-936b-1eebcfeca150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hif\hif_common">
+      <UniqueIdentifier>{ba72aec9-ea0c-42ff-a9d2-273c50833e3e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_UserNode.cpp">
+      <Filter>pnd\pnio_user_core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_ValueHelper.cpp">
+      <Filter>pnd\pnio_user_core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_BgzdStore.cpp">
+      <Filter>pnd\pnio_user_core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_UserStore.cpp">
+      <Filter>pnd\pnio_user_core\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\params\pnd_ParamStore.cpp">
+      <Filter>pnd\params</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\agent\pnd_mbx.c">
+      <Filter>pnd\agent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\agent\pnd_sys.c">
+      <Filter>pnd\agent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\agent\pnd_tasks.c">
+      <Filter>pnd\agent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\params\config_xml\pnd_XmlParamStore.cpp">
+      <Filter>pnd\params\xml_config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\io_base_core\pnd_iob_core.cpp">
+      <Filter>pnd\io_base_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\agent\pnd_agent.cpp">
+      <Filter>pnd\agent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_helper.c">
+      <Filter>pnd\params\xml_config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_std_interface.c">
+      <Filter>pnd\params\xml_config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pnd_pnio_user_core.cpp">
+      <Filter>pnd\pnio_user_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\io_base_core\pnd_iob_usr.cpp">
+      <Filter>pnd\io_base_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_cfg.c">
+      <Filter>pnd\params\xml_config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pnstack\pnd_cm.cpp">
+      <Filter>pnd\pnio_user_core\pnstack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pnstack\pnd_oha.cpp">
+      <Filter>pnd\pnio_user_core\pnstack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pnd_PnioUserCoreApp.cpp">
+      <Filter>pnd\pnio_user_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\io_base_core\pnd_iodu.cpp">
+      <Filter>pnd\io_base_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDEventHandler.cpp">
+      <Filter>pnd\pnio_user_core\pd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDSubslot.cpp">
+      <Filter>pnd\pnio_user_core\pd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDUser.cpp">
+      <Filter>pnd\pnio_user_core\pd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\oha\pnd_OHAEventHandler.cpp">
+      <Filter>pnd\pnio_user_core\oha</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\oha\pnd_OHAUser.cpp">
+      <Filter>pnd\pnio_user_core\oha</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCAr.cpp">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCDevice.cpp">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCEventHandler.cpp">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCSubslot.cpp">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCUser.cpp">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\io_base_core\pnd_iodu_edds.cpp">
+      <Filter>pnd\io_base_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Utils.c">
+      <Filter>pnd\params\xml_parser\cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\params\xml_parser\src\PARS_XML_Parser.c">
+      <Filter>pnd\params\xml_parser\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\params\xml_parser\src\PARS_XML_Support.c">
+      <Filter>pnd\params\xml_parser\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCSlot.cpp">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnd\src\cfg\pnd_eps_app.c">
+      <Filter>eps\eps_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\acp\acp_cfg.c">
+      <Filter>acp\acp_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_al.c">
+      <Filter>acp\acp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_low.c">
+      <Filter>acp\acp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_opc.c">
+      <Filter>acp\acp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_rta.c">
+      <Filter>acp\acp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_sys.c">
+      <Filter>acp\acp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_tim.c">
+      <Filter>acp\acp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\acp\src\src\acp_usr.c">
+      <Filter>acp\acp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_cfg.c">
+      <Filter>clrpc\clrpc_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_cfg_lib.c">
+      <Filter>clrpc\clrpc_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_cl1.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_cl2.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_cl3.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_cl4.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_cmn.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_ep.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_low.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_pnio.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_sc.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_sv.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_sys.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_usr.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\clrpc\src\src\clrpc_uuid.c">
+      <Filter>clrpc\clrpc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg.c">
+      <Filter>cm\cm_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_acp.c">
+      <Filter>cm\cm_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_edd.c">
+      <Filter>cm\cm_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_gsy.c">
+      <Filter>cm\cm_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_lib.c">
+      <Filter>cm\cm_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_mrp.c">
+      <Filter>cm\cm_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_nare.c">
+      <Filter>cm\cm_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_oha.c">
+      <Filter>cm\cm_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_pof.c">
+      <Filter>cm\cm_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg_rpc.c">
+      <Filter>cm\cm_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_acp1.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_acp2.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_acp3.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_acp4.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arcb.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arcb_helper.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_argr.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arsm.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arsm1.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arsm2.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_arsm3.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cmn.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_edd.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_edd2.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_gsy.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_md5.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_mrp.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_nare.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_oha.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pof.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_res.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_rpc.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_sys.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_test.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_tim.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_usr.c">
+      <Filter>cm\cm_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl10.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl11.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl12.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl13.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl14.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl15.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl16.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl20.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl21.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl22.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl30.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl31.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl32.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl33.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl40.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_cl41.c">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd1.c">
+      <Filter>cm\cm_src_pd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd2.c">
+      <Filter>cm\cm_src_pd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd3.c">
+      <Filter>cm\cm_src_pd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd4.c">
+      <Filter>cm\cm_src_pd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd5.c">
+      <Filter>cm\cm_src_pd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd6.c">
+      <Filter>cm\cm_src_pd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd7.c">
+      <Filter>cm\cm_src_pd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\cm\src\src\cm_pd8.c">
+      <Filter>cm\cm_src_pd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\dcp\dcp_cfg.c">
+      <Filter>dcp\dcp_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\dcp\src\core\dcp_usr.c">
+      <Filter>dcp\dcp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\dcp\src\core\dcp_sys.c">
+      <Filter>dcp\dcp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\dcp\src\core\dcp_srv.c">
+      <Filter>dcp\dcp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\dcp\src\core\dcp_low.c">
+      <Filter>dcp\dcp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_dbg.c">
+      <Filter>eps\eps_inc\edds\edds_src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_dev.c">
+      <Filter>eps\eps_inc\edds\edds_src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_gen.c">
+      <Filter>eps\eps_inc\edds\edds_src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_glb.c">
+      <Filter>eps\eps_inc\edds\edds_src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_isr.c">
+      <Filter>eps\eps_inc\edds\edds_src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_prm.c">
+      <Filter>eps\eps_inc\edds\edds_src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_sys.c">
+      <Filter>eps\eps_inc\edds\edds_src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_tim.c">
+      <Filter>eps\eps_inc\edds\edds_src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_tx.c">
+      <Filter>eps\eps_inc\edds\edds_src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\core\edds_usr.c">
+      <Filter>eps\eps_inc\edds\edds_src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\iobuf\edds_iobuf.c">
+      <Filter>eps\eps_inc\edds\edds_src\iobuf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\nrt\edds_nrt_rcv.c">
+      <Filter>eps\eps_inc\edds\edds_src\srt\packet32\nrt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\nrt\edds_nrt_snd.c">
+      <Filter>eps\eps_inc\edds\edds_src\srt\packet32\nrt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\nrt\edds_nrt_usr.c">
+      <Filter>eps\eps_inc\edds\edds_src\srt\packet32\nrt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\packet32\packet32_edd.c">
+      <Filter>eps\eps_inc\edds\edds_src\srt\packet32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\srt\edds_srt_usr.c">
+      <Filter>eps\eps_inc\edds\edds_src\srt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\srt\edds_srt_prov.c">
+      <Filter>eps\eps_inc\edds\edds_src\srt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\edds\src\srt\edds_srt_cons.c">
+      <Filter>eps\eps_inc\edds\edds_src\srt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\edds\edds_cfg.c">
+      <Filter>eps\eps_inc\edds\edds_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_pn_drv_if.c">
+      <Filter>eps\eps_inc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_shm_if.c">
+      <Filter>eps\eps_inc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_timer.c">
+      <Filter>eps\eps_inc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_cp_hw.c">
+      <Filter>eps\eps_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_cp_mem.c">
+      <Filter>eps\eps_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_events.c">
+      <Filter>eps\eps_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_hif_drv_if.c">
+      <Filter>eps\eps_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_hif_short_drv.c">
+      <Filter>eps\eps_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_isr.c">
+      <Filter>eps\eps_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_locks.c">
+      <Filter>eps\eps_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_mem.c">
+      <Filter>eps\eps_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_noshmdrv.c">
+      <Filter>eps\eps_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_sys.c">
+      <Filter>eps\eps_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_tasks.c">
+      <Filter>eps\eps_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\src\eps_wpcapdrv.c">
+      <Filter>eps\eps_src_pn_driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\plf\eps_plf_windows.c">
+      <Filter>eps\plf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\windows\posix2win.c">
+      <Filter>eps\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\hif\hif_cfg.c">
+      <Filter>hif\hif_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_comp.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_dev.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_int.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_pipe.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_acp.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_clrpc.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_cm.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_dcp.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_edd.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_gsy.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_hif.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_ioh.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_lldp.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_mrp.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_nare.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_oha.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_psi.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_snmpx.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_ser_sock.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_sr.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_sys.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_usr.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\lldp\lldp_cfg.c">
+      <Filter>lldp\lldp_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_edd.c">
+      <Filter>lldp\lldp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_glb.c">
+      <Filter>lldp\lldp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_sys.c">
+      <Filter>lldp\lldp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_tim.c">
+      <Filter>lldp\lldp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_tlv.c">
+      <Filter>lldp\lldp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\lldp\src\src\lldp_usr.c">
+      <Filter>lldp\lldp_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\mem3\cfg\mem3cfg.c">
+      <Filter>mem3\mem3_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\fixraster\src\classmem.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\doubledyn\src\fft2bound.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\common\src\mem3if.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\universal\src\mem3trc.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\common\src\mem3vers.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\common\src\memansi.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\doubledyn\src\memcombi.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\fixraster\src\memfix.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\common\src\memifdef.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\universal\src\memtool.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\universal\src\memuni.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\universal\src\mergemem.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\mem3\createifc\src\pooltype.cpp">
+      <Filter>mem3\mem3_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\nare\nare_cfg.c">
+      <Filter>nare\nare_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_dbg.c">
+      <Filter>nare\nare_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_dcp.c">
+      <Filter>nare\nare_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_edd.c">
+      <Filter>nare\nare_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_glb.c">
+      <Filter>nare\nare_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_sck.c">
+      <Filter>nare\nare_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_sys.c">
+      <Filter>nare\nare_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_tim.c">
+      <Filter>nare\nare_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nare\src\src\nare_usr.c">
+      <Filter>nare\nare_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\oha\oha_cfg.c">
+      <Filter>oha\oha_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_agnt.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_asn1.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_db.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_db_l.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_dcp.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_dcp1.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_dcp2.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_dcpu.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_edd.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_lib.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_lldp.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_lldu.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_mibs.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_mrp.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_mrpr.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_nare.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_prm.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_rema.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_snmp.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_snmx.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_sock.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_socu.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_sys.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_tim.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_topo.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\oha\src\src\oha_usr.c">
+      <Filter>oha\oha_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\pnio\edd_cfg.c">
+      <Filter>pnio\pnio_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnio\src\src\pnio_version.c">
+      <Filter>pnio\pnio_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\pntrc\pntrc_cfg.c">
+      <Filter>pntrc\pntrc_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pntrc\src\src\pntrc_sys.c">
+      <Filter>pntrc\pntrc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pntrc\src\src\pntrc_tbb.c">
+      <Filter>pntrc\pntrc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pntrc\src\src\pntrc_usr.c">
+      <Filter>pntrc\pntrc_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg.c">
+      <Filter>psi\psi_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg_edd.c">
+      <Filter>psi\psi_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg_edds.c">
+      <Filter>psi\psi_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg_hif.c">
+      <Filter>psi\psi_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg_sock.c">
+      <Filter>psi\psi_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_acp.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_clrpc.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_cm.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_dcp.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_edds.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_hd.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_hif.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_ld.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_lldp.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_mbx.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_nare.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_oha.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_res_calc.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_sock.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_sys.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_tcip.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\src\psi_usr.c">
+      <Filter>psi\psi_src_core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\sock\sock_cfg.c">
+      <Filter>sock\sock_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\sock\sock_cfg_tcip.c">
+      <Filter>sock\sock_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_bsdvxw.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_cmn.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_fusion.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_iniche.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_linux.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_mib2.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_snmp.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_socket.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_sun.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_sys.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_tcp.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_udp.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_usr.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_vxworks.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\sock\src\src\sock_winsock.c">
+      <Filter>sock\sock_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\psi\src\pnstack\tcip\tcip_cfg.c">
+      <Filter>tcip\tcip_cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_edd.c">
+      <Filter>tcip\tcip_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_iniche.c">
+      <Filter>tcip\tcip_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_mib.c">
+      <Filter>tcip\tcip_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_recv.c">
+      <Filter>tcip\tcip_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_send.c">
+      <Filter>tcip\tcip_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_sys.c">
+      <Filter>tcip\tcip_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_usr.c">
+      <Filter>tcip\tcip_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src\src\tcip_var.c">
+      <Filter>tcip\tcip_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\allports\allports.c">
+      <Filter>tcip\tcip_src_iniche\allports</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\allports\timeouts.c">
+      <Filter>tcip\tcip_src_iniche\allports</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\et_arp.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\icmp.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\iface.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ip.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ip_reasm.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipdemux.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipmc.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipnet.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipport.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipraw.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\iproute.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\ipstart.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\pmtu.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ip\udp.c">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp.c">
+      <Filter>tcip\tcip_src_iniche\ipmc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp2.c">
+      <Filter>tcip\tcip_src_iniche\ipmc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp_cmn.c">
+      <Filter>tcip\tcip_src_iniche\ipmc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\ipmc\ipopt.c">
+      <Filter>tcip\tcip_src_iniche\ipmc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\misclib\cksum.c">
+      <Filter>tcip\tcip_src_iniche\misclib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\misclib\tcpcksum.c">
+      <Filter>tcip\tcip_src_iniche\misclib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\net\macloop.c">
+      <Filter>tcip\tcip_src_iniche\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\net\pktalloc.c">
+      <Filter>tcip\tcip_src_iniche\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\net\q.c">
+      <Filter>tcip\tcip_src_iniche\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\net\udp_open.c">
+      <Filter>tcip\tcip_src_iniche\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\asn1.c">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\rfc1213.c">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\snmp.c">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\snmpport.c">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\snmputil.c">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\snmpvars.c">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmp\specific.c">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\snmp_age.c">
+      <Filter>tcip\tcip_src_iniche\snmp1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\snmp_aut.c">
+      <Filter>tcip\tcip_src_iniche\snmp1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\trap_in.c">
+      <Filter>tcip\tcip_src_iniche\snmp1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\trap_out.c">
+      <Filter>tcip\tcip_src_iniche\snmp1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\v1port.c">
+      <Filter>tcip\tcip_src_iniche\snmp1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\snmpv1\v1sock.c">
+      <Filter>tcip\tcip_src_iniche\snmp1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\in_pcb.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\nptcp.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\rawsock.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\sockcall.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\socket.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\socket2.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\soselect.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_in.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_out.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_subr.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_timr.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_usr.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_zio.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcpport.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\tcpsack.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\tcip\src_iniche_core\tcp\udpsock.c">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\hif\src\src\hif_mem_ring.c">
+      <Filter>hif\hif_src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_UserNode.h">
+      <Filter>pnd\pnio_user_core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_ValueHelper.h">
+      <Filter>pnd\pnio_user_core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_BgzdStore.h">
+      <Filter>pnd\pnio_user_core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\base\pnd_UserStore.h">
+      <Filter>pnd\pnio_user_core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\inc\pnd_int.h">
+      <Filter>pnd\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\pnd_ParamStore.h">
+      <Filter>pnd\params</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\inc\pnd_sys.h">
+      <Filter>pnd\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\common\pniobase.h">
+      <Filter>pnd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\common\pnioerrx.h">
+      <Filter>pnd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\common\pniousrx.h">
+      <Filter>pnd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\common\servusrx.h">
+      <Filter>pnd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\config_xml\pnd_XmlParamStore.h">
+      <Filter>pnd\params\xml_config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\io_base_core\pnd_iob_core.h">
+      <Filter>pnd\io_base_core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_cfg.h">
+      <Filter>pnd\params\xml_config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_helper.h">
+      <Filter>pnd\params\xml_config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\config_xml\pnd_xml_std_interface.h">
+      <Filter>pnd\params\xml_config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pnd_pnio_user_core.h">
+      <Filter>pnd\pnio_user_core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pnstack\pnd_pnstack.h">
+      <Filter>pnd\pnio_user_core\pnstack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pnd_PnioUserCoreApp.h">
+      <Filter>pnd\pnio_user_core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\io_base_core\pnd_iodu.h">
+      <Filter>pnd\io_base_core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDEventHandler.h">
+      <Filter>pnd\pnio_user_core\pd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDSubslot.h">
+      <Filter>pnd\pnio_user_core\pd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\pd\pnd_PDUser.h">
+      <Filter>pnd\pnio_user_core\pd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\oha\pnd_OHAUser.h">
+      <Filter>pnd\pnio_user_core\oha</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\oha\pnd_OHAEventHandler.h">
+      <Filter>pnd\pnio_user_core\oha</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCUser.h">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCAr.h">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCDevice.h">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCEventHandler.h">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCSubslot.h">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\io_base_core\pnd_iodu_edds.h">
+      <Filter>pnd\io_base_core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Config.h">
+      <Filter>pnd\params\xml_parser\cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Config_default.h">
+      <Filter>pnd\params\xml_parser\cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Properties.h">
+      <Filter>pnd\params\xml_parser\cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Types.h">
+      <Filter>pnd\params\xml_parser\cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_Utils.h">
+      <Filter>pnd\params\xml_parser\cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\cfg\PARSP_XMLTags.h">
+      <Filter>pnd\params\xml_parser\cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_ConversionService.h">
+      <Filter>pnd\params\xml_parser\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_ErrorCodes.h">
+      <Filter>pnd\params\xml_parser\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_FileSystem.h">
+      <Filter>pnd\params\xml_parser\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_MCB.h">
+      <Filter>pnd\params\xml_parser\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_MemoryService.h">
+      <Filter>pnd\params\xml_parser\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_Stream.h">
+      <Filter>pnd\params\xml_parser\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_Types.h">
+      <Filter>pnd\params\xml_parser\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_Version.h">
+      <Filter>pnd\params\xml_parser\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_XML.h">
+      <Filter>pnd\params\xml_parser\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARS_XML_Internal.h">
+      <Filter>pnd\params\xml_parser\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\params\xml_parser\h\PARSP_File.h">
+      <Filter>pnd\params\xml_parser\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\pnio_user_core\ioc\pnd_IOCSlot.h">
+      <Filter>pnd\pnio_user_core\ioc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\cfg\pnd_psi_cfg_plf_windows_wpcap_interniche.h">
+      <Filter>eps\eps_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\acp\acp_cfg.h">
+      <Filter>acp\acp_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\acp\acp_inc.h">
+      <Filter>acp\acp_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\acp\acp_pck.h">
+      <Filter>acp\acp_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\acp\src\common\acp_pls.h">
+      <Filter>acp\acp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\acp\src\common\acp_sys.h">
+      <Filter>acp\acp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\acp\src\common\acp_trc.h">
+      <Filter>acp\acp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\acp\src\common\acp_usr.h">
+      <Filter>acp\acp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\acp\src\common\acp_low.h">
+      <Filter>acp\acp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\acp\src\inc\acp_int.h">
+      <Filter>acp\acp_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_cfg.h">
+      <Filter>clrpc\clrpc_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_inc.h">
+      <Filter>clrpc\clrpc_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_pck.h">
+      <Filter>clrpc\clrpc_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\clrpc\clrpc_unpck.h">
+      <Filter>clrpc\clrpc_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_lib.h">
+      <Filter>clrpc\clrpc_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_low.h">
+      <Filter>clrpc\clrpc_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_pls.h">
+      <Filter>clrpc\clrpc_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_sys.h">
+      <Filter>clrpc\clrpc_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_trc.h">
+      <Filter>clrpc\clrpc_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_usr.h">
+      <Filter>clrpc\clrpc_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\clrpc\src\common\clrpc_uuid.h">
+      <Filter>clrpc\clrpc_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\clrpc\src\inc\clrpc_icl.h">
+      <Filter>clrpc\clrpc_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\clrpc\src\inc\clrpc_int.h">
+      <Filter>clrpc\clrpc_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\clrpc\src\inc\clrpc_isv.h">
+      <Filter>clrpc\clrpc_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\clrpc\src\inc\clrpc_pdu.h">
+      <Filter>clrpc\clrpc_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\cm\cm_cfg.h">
+      <Filter>cm\cm_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\cm\cm_inc.h">
+      <Filter>cm\cm_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_arcb.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_arcb_helper.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_argr.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_err.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_int.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_lib.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_list.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_low.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_pdu.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_pls.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_prm.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_sys.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_rpc.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_trc.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\common\cm_usr.h">
+      <Filter>cm\cm_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_icl.h">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_iclar.h">
+      <Filter>cm\cm_src_cl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\cm\src\inc\cm_ipd.h">
+      <Filter>cm\cm_src_pd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\dcp\dcp_cfg.h">
+      <Filter>dcp\dcp_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\dcp\dcp_inc.h">
+      <Filter>dcp\dcp_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\dcp\src\common\dcp_pls.h">
+      <Filter>dcp\dcp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\dcp\src\common\dcp_low.h">
+      <Filter>dcp\dcp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\dcp\src\common\dcp_sys.h">
+      <Filter>dcp\dcp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\dcp\src\common\dcp_trc.h">
+      <Filter>dcp\dcp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\dcp\src\inc\dcp_int.h">
+      <Filter>dcp\dcp_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\dcp\src\common\dcp_usr.h">
+      <Filter>dcp\dcp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_iobuf_out.h">
+      <Filter>eps\eps_inc\edds\edds_src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_iobuf_usr.h">
+      <Filter>eps\eps_inc\edds\edds_src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_sys.h">
+      <Filter>eps\eps_inc\edds\edds_src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_trc.h">
+      <Filter>eps\eps_inc\edds\edds_src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_usr.h">
+      <Filter>eps\eps_inc\edds\edds_src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\common\edds_out.h">
+      <Filter>eps\eps_inc\edds\edds_src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_dbg.h">
+      <Filter>eps\eps_inc\edds\edds_src\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_dev.h">
+      <Filter>eps\eps_inc\edds\edds_src\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_iobuf_int.h">
+      <Filter>eps\eps_inc\edds\edds_src\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_int.h">
+      <Filter>eps\eps_inc\edds\edds_src\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_llif.h">
+      <Filter>eps\eps_inc\edds\edds_src\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_nrt_ext.h">
+      <Filter>eps\eps_inc\edds\edds_src\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_nrt_inc.h">
+      <Filter>eps\eps_inc\edds\edds_src\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_pck.h">
+      <Filter>eps\eps_inc\edds\edds_src\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_srt_ext.h">
+      <Filter>eps\eps_inc\edds\edds_src\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_srt_inc.h">
+      <Filter>eps\eps_inc\edds\edds_src\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\inc\edds_toolbox.h">
+      <Filter>eps\eps_inc\edds\edds_src\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\packet32\packet32_inc.h">
+      <Filter>eps\eps_inc\edds\edds_src\srt\packet32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\edds\src\packet32\packet32_usr.h">
+      <Filter>eps\eps_inc\edds\edds_src\srt\packet32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\edds\edds_cfg.h">
+      <Filter>eps\eps_inc\edds\edds_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\edds\edds_inc.h">
+      <Filter>eps\eps_inc\edds\edds_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\edds\edds_iobuf_inc.h">
+      <Filter>eps\eps_inc\edds\edds_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\edds\edds_pck.h">
+      <Filter>eps\eps_inc\edds\edds_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_cp_hw.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_hif_drv_if.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_hif_short_drv.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_mem.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_noshmdrv.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_pn_drv_if.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_register.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_rtos.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_shm_if.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_sys.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_timer.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_timer_trc.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_trc.h">
+      <Filter>eps\eps_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_plf.h">
+      <Filter>eps\eps_src_platforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\src\eps_wpcapdrv.h">
+      <Filter>eps\eps_src_pn_driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\posix\eps_posix_cfg_windows.h">
+      <Filter>eps\posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\windows\posix2win.h">
+      <Filter>eps\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\hif\hif_cfg.h">
+      <Filter>hif\hif_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\hif\hif_inc.h">
+      <Filter>hif\hif_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\hif\src\common\hif_pls.h">
+      <Filter>hif\hif_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\hif\src\common\hif_sys.h">
+      <Filter>hif\hif_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\hif\src\common\hif_trc.h">
+      <Filter>hif\hif_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\hif\src\common\hif_usr.h">
+      <Filter>hif\hif_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\hif\src\inc\hif_int.h">
+      <Filter>hif\hif_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\lldp\lldp_inc.h">
+      <Filter>lldp\lldp_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\lldp\lldp_cfg.h">
+      <Filter>lldp\lldp_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\lldp\src\common\lldp_low.h">
+      <Filter>lldp\lldp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\lldp\src\common\lldp_sys.h">
+      <Filter>lldp\lldp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\lldp\src\common\lldp_usr.h">
+      <Filter>lldp\lldp_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\lldp\src\inc\lldp_int.h">
+      <Filter>lldp\lldp_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\lldp\src\inc\lldp_trc.h">
+      <Filter>lldp\lldp_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\lsa\lsa_cfg.h">
+      <Filter>LSA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\lsa\lsa_sys.h">
+      <Filter>LSA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\lsa\lsa_usr.h">
+      <Filter>LSA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnio\src\common\mem3cfg.h">
+      <Filter>mem3\mem3_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\mem3\fixraster\inc\classmem.hpp">
+      <Filter>mem3\mem3_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\mem3\doubledyn\inc\fft2bound.hpp">
+      <Filter>mem3\mem3_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\mem3\universal\inc\mergemem.hpp">
+      <Filter>mem3\mem3_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\mem3\inc\mem3if.h">
+      <Filter>mem3\mem3_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\mem3\inc\mem3if.hpp">
+      <Filter>mem3\mem3_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\mem3\universal\inc\mem3trc.hpp">
+      <Filter>mem3\mem3_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\mem3\common\inc\mem3vers.h">
+      <Filter>mem3\mem3_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\mem3\doubledyn\inc\memcombi.hpp">
+      <Filter>mem3\mem3_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\mem3\fixraster\inc\memfix.hpp">
+      <Filter>mem3\mem3_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\mem3\universal\inc\memtool.hpp">
+      <Filter>mem3\mem3_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\mem3\universal\inc\memuni.hpp">
+      <Filter>mem3\mem3_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\nare\nare_cfg.h">
+      <Filter>nare\nare_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\nare\nare_inc.h">
+      <Filter>nare\nare_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nare\src\common\nare_low.h">
+      <Filter>nare\nare_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nare\src\common\nare_out.h">
+      <Filter>nare\nare_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nare\src\common\nare_sys.h">
+      <Filter>nare\nare_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nare\src\common\nare_trc.h">
+      <Filter>nare\nare_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nare\src\common\nare_usr.h">
+      <Filter>nare\nare_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nare\src\inc\nare_dbg.h">
+      <Filter>nare\nare_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nare\src\inc\nare_int.h">
+      <Filter>nare\nare_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\oha\oha_cfg.h">
+      <Filter>oha\oha_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\oha\oha_inc.h">
+      <Filter>oha\oha_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\oha\oha_pck.h">
+      <Filter>oha\oha_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\oha\src\common\oha_lib.h">
+      <Filter>oha\oha_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\oha\src\common\oha_low.h">
+      <Filter>oha\oha_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\oha\src\common\oha_sys.h">
+      <Filter>oha\oha_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\oha\src\common\oha_trc.h">
+      <Filter>oha\oha_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\oha\src\common\oha_usr.h">
+      <Filter>oha\oha_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_agnt.h">
+      <Filter>oha\oha_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_asn1.h">
+      <Filter>oha\oha_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_db.h">
+      <Filter>oha\oha_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_int.h">
+      <Filter>oha\oha_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_mibs.h">
+      <Filter>oha\oha_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\oha\src\inc\oha_snmp.h">
+      <Filter>oha\oha_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\edd_cfg.h">
+      <Filter>pnio\pnio_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\edd_inc.h">
+      <Filter>pnio\pnio_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\pnio_pck1_on.h">
+      <Filter>pnio\pnio_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\pnio_pck2_on.h">
+      <Filter>pnio\pnio_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\pnio_pck4_on.h">
+      <Filter>pnio\pnio_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\pnio\pnio_pck_off.h">
+      <Filter>pnio\pnio_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnio\src\inc\pnio_version.h">
+      <Filter>pnio\pnio_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\pntrc\pntrc_cfg.h">
+      <Filter>pntrc\pntrc_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\pntrc\pntrc_pck.h">
+      <Filter>pntrc\pntrc_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\pntrc\pntrc_inc.h">
+      <Filter>pntrc\pntrc_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pntrc\src\inc\pntrc_int.h">
+      <Filter>pntrc\pntrc_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pntrc\src\common\pntrc_pls.h">
+      <Filter>pntrc\pntrc_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pntrc\src\common\pntrc_trc.h">
+      <Filter>pntrc\pntrc_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pntrc\src\common\pntrc_usr.h">
+      <Filter>pntrc\pntrc_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pntrc\src\inc\pntrc_tbb.h">
+      <Filter>pntrc\pntrc_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pntrc\src\common\pntrc_sys.h">
+      <Filter>pntrc\pntrc_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_cfg.h">
+      <Filter>psi\psi_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnboards\eps\epssys\etc\psi\psi_inc.h">
+      <Filter>psi\psi_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\common\psi_cfg_eps.h">
+      <Filter>psi\psi_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\common\psi_sys.h">
+      <Filter>psi\psi_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\common\psi_trc.h">
+      <Filter>psi\psi_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\common\psi_usr.h">
+      <Filter>psi\psi_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\inc\psi_hd.h">
+      <Filter>psi\psi_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\inc\psi_int.h">
+      <Filter>psi\psi_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\inc\psi_ld.h">
+      <Filter>psi\psi_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\inc\psi_pnstack.h">
+      <Filter>psi\psi_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\inc\psi_res_calc.h">
+      <Filter>psi\psi_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\sock\sock_inc.h">
+      <Filter>sock\sock_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\sock\sock_cfg.h">
+      <Filter>sock\sock_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\sock\src\common\sock_low.h">
+      <Filter>sock\sock_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\sock\src\common\sock_pls.h">
+      <Filter>sock\sock_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\sock\src\common\sock_sys.h">
+      <Filter>sock\sock_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\sock\src\common\sock_trc.h">
+      <Filter>sock\sock_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\sock\src\common\sock_usr.h">
+      <Filter>sock\sock_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\sock\src\inc\sock_int.h">
+      <Filter>sock\sock_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\tcip\sy_off_pack_2.h">
+      <Filter>tcip\tcip_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\tcip\sy_on_pack_2.h">
+      <Filter>tcip\tcip_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\tcip\tcip_cfg.h">
+      <Filter>tcip\tcip_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\psi\src\pnstack\tcip\tcip_inc.h">
+      <Filter>tcip\tcip_cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src\common\interniche_usr.h">
+      <Filter>tcip\tcip_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src\common\tcip_pls.h">
+      <Filter>tcip\tcip_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src\common\tcip_sys.h">
+      <Filter>tcip\tcip_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src\common\tcip_usr.h">
+      <Filter>tcip\tcip_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src\inc\tcip_int.h">
+      <Filter>tcip\tcip_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src\inc\tcip_low.h">
+      <Filter>tcip\tcip_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src\inc\tcip_trc.h">
+      <Filter>tcip\tcip_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src\inc\tcip_var.h">
+      <Filter>tcip\tcip_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\allports\ipport.h">
+      <Filter>tcip\tcip_src_iniche\allports</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\allports\libport.h">
+      <Filter>tcip\tcip_src_iniche\allports</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\allports\tcpport.h">
+      <Filter>tcip\tcip_src_iniche\allports</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\arp.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\bsdsock.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\ether.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\icmp.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\in_utils.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\intimers.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\ip.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\ip6.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\mbuf.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\net.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\netbuf.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\nptcp.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\nptypes.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\pmtu.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\profiler.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\q.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\rfc1213_.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\snmp_vie.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\snmpport.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\sockcall.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\socket.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\socket6.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\sockvar.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\syslog.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\tcp.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\tcpapp.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\h\udp.h">
+      <Filter>tcip\tcip_src_iniche\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\ip\ip_reasm.h">
+      <Filter>tcip\tcip_src_iniche\ip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp.h">
+      <Filter>tcip\tcip_src_iniche\ipmc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp2.h">
+      <Filter>tcip\tcip_src_iniche\ipmc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\ipmc\igmp_cmn.h">
+      <Filter>tcip\tcip_src_iniche\ipmc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\net\heapbuf.h">
+      <Filter>tcip\tcip_src_iniche\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\snmp\asn1.h">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\snmp\npsnmp.h">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\snmp\parse.h">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\snmp\snmp_imp.h">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\snmp\snmp_var.h">
+      <Filter>tcip\tcip_src_iniche\snmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\in_pcb.h">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\protosw.h">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_fsm.h">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_seq.h">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_timr.h">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\tcp_var.h">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\tcip\src_iniche_core\tcp\tcpip.h">
+      <Filter>tcip\tcip_src_iniche\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnd\src\common\pndriver_pntrc_sub.h">
+      <Filter>pnd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\pnio\src\common\pntrc_sub.h">
+      <Filter>pnio\pnio_inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\hif\src\common\hif_mem_ring.h">
+      <Filter>hif\hif_common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
