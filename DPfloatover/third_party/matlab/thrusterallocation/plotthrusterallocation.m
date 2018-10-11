@@ -2,8 +2,8 @@ clear;
 close all;
 
 % copy csv file
-name='Third';
-path='/home/scar1et/Coding/CPP1X/USV/DPfloatover/controller/pidcontroller/example/';
+name='Second';
+path='/home/skloe/Coding/CPP1X/USV/DPfloatover/controller/pidcontroller/example/';
 path=strcat(path,name);
 Rtau=csvread(strcat(path,'_Balpha.csv'));
 u=csvread(strcat(path,'_u.csv'));

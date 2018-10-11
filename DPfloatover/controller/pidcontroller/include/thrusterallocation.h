@@ -45,7 +45,28 @@ class thrusterallocation_first {
  public:
   explicit thrusterallocation_first(const vessel_first &_vessel_first,
                                     realtimevessel_first &_realtimevessel)
-      : index_twice_bow(0),
+      : m(_vessel_first.m),
+        n(_vessel_first.n),
+        numvar(_vessel_first.numvar),
+        num_constraints(_vessel_first.num_constraints),
+        Kbar_positive(_vessel_first.Kbar_positive),
+        Kbar_negative(_vessel_first.Kbar_negative),
+        max_delta_rotation_bow(_vessel_first.max_delta_rotation_bow),
+        max_rotation_bow(_vessel_first.max_rotation_bow),
+        max_thrust_bow_positive(_vessel_first.max_thrust_bow_positive),
+        max_thrust_bow_negative(_vessel_first.max_thrust_bow_negative),
+        K_left(_vessel_first.K_left),
+        K_right(_vessel_first.K_right),
+        max_delta_rotation_azimuth(_vessel_first.max_delta_rotation_azimuth),
+        max_rotation_azimuth(_vessel_first.max_rotation_azimuth),
+        max_thrust_azimuth_left(_vessel_first.max_thrust_azimuth_left),
+        max_thrust_azimuth_right(_vessel_first.max_thrust_azimuth_right),
+        max_delta_alpha_azimuth(_vessel_first.max_delta_alpha_azimuth),
+        max_alpha_azimuth_left(_vessel_first.max_alpha_azimuth_left),
+        min_alpha_azimuth_left(_vessel_first.min_alpha_azimuth_left),
+        max_alpha_azimuth_right(_vessel_first.max_alpha_azimuth_right),
+        min_alpha_azimuth_right(_vessel_first.min_alpha_azimuth_right),
+        index_twice_bow(0),
         upper_delta_alpha_left(0),
         lower_delta_alpha_left(0),
         upper_delta_u_left(0),
@@ -79,24 +100,23 @@ class thrusterallocation_first {
   }
 
   // log file output
-  void onestepthrusterallocation(const vessel_first &_vessel_first,
-                                 realtimevessel_first &_realtimevessel,
+  void onestepthrusterallocation(realtimevessel_first &_realtimevessel,
                                  FILE *t_file = stdout) {
-    updateTAparameters(_vessel_first, _realtimevessel);
+    updateTAparameters(_realtimevessel);
 
     int index = 0;
     if (index_twice_bow) {
-      updateMosekparameters(_vessel_first, 0);
-      onestepmosek(_vessel_first, t_file, 0);
-      updateMosekparameters(_vessel_first, 1);
-      onestepmosek(_vessel_first, t_file, 1);
-      index = comparebowthruster(_vessel_first);
+      updateMosekparameters(0);
+      onestepmosek(t_file, 0);
+      updateMosekparameters(1);
+      onestepmosek(t_file, 1);
+      index = comparebowthruster();
 
     } else {
-      updateMosekparameters(_vessel_first);
-      onestepmosek(_vessel_first, t_file);
+      updateMosekparameters();
+      onestepmosek(t_file);
     }
-    updateNextstep(_vessel_first, _realtimevessel, index);
+    updateNextstep(_realtimevessel, index);
   }
 
   void test_multiplethrusterallocation(savefile &_savefile,
@@ -130,7 +150,7 @@ class thrusterallocation_first {
       // update tau
       _realtimevessel.tau = _savefile.save_tau.col(i);
       // thruster allocation
-      onestepthrusterallocation(_vessel_first, _realtimevessel);
+      onestepthrusterallocation(_realtimevessel);
       // save variables
       _savefile.save_u.col(i) = _realtimevessel.u;
       _savefile.save_alpha.col(i) = _realtimevessel.alpha;
@@ -141,6 +161,31 @@ class thrusterallocation_first {
   }
 
  private:
+  // constants of the first vessel
+  int m;
+  int n;
+  int numvar;
+  int num_constraints;         // the number of constraints
+  double Kbar_positive;        // alpha=90
+  double Kbar_negative;        // alpha=-90
+  int max_delta_rotation_bow;  // rpm
+  int max_rotation_bow;        // rpm
+  double max_thrust_bow_positive;
+  double max_thrust_bow_negative;
+
+  // relationship between rotation and thrust of azimuth thruster
+  double K_left;
+  double K_right;
+  int max_delta_rotation_azimuth;  // rpm
+  int max_rotation_azimuth;        // rpm
+  double max_thrust_azimuth_left;
+  double max_thrust_azimuth_right;
+  double max_delta_alpha_azimuth;  // rad
+  double max_alpha_azimuth_left;   // rad
+  double min_alpha_azimuth_left;   // rad
+  double max_alpha_azimuth_right;  // rad
+  double min_alpha_azimuth_right;  // rad
+
   // real time constraints of bow thruster
   int index_twice_bow;
   Eigen::Vector2d upper_delta_alpha_bow;
@@ -228,10 +273,10 @@ class thrusterallocation_first {
     results.setZero();
     initializeQuadraticObjective();
 
-    calculaterotation(_vessel_first, _realtimevessel);
+    calculaterotation(_realtimevessel);
     // update BalphaU
-    _realtimevessel.BalphaU = calculateBalphau(
-        _vessel_first, _realtimevessel.alpha, _realtimevessel.u);
+    _realtimevessel.BalphaU =
+        calculateBalphau(_realtimevessel.alpha, _realtimevessel.u);
     initializeMosekAPI(_vessel_first);
   }
 
@@ -266,83 +311,80 @@ class thrusterallocation_first {
   }
   // calculate the contraints of bow thruster
   void calculateconstrains_bowthruster(
-      const vessel_first &_vessel,
       const realtimevessel_first &_realtimevessel) {
     if (0 < _realtimevessel.rotation(0) &&
-        _realtimevessel.rotation(0) <= _vessel.max_delta_rotation_bow) {
+        _realtimevessel.rotation(0) <= max_delta_rotation_bow) {
       // specify the first case
       upper_delta_alpha_bow(0) = 0;
       lower_delta_alpha_bow(0) = 0;
       lower_delta_u_bow(0) = -_realtimevessel.u(0);
       upper_delta_u_bow(0) =
-          _vessel.Kbar_positive *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) -
+          Kbar_positive *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
           _realtimevessel.u(0);
       upper_delta_alpha_bow(1) = -M_PI;
       lower_delta_alpha_bow(1) = -M_PI;
       lower_delta_u_bow(1) = -_realtimevessel.u(0);
       upper_delta_u_bow(1) =
-          _vessel.Kbar_negative *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) -
+          Kbar_negative *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
           _realtimevessel.u(0);
 
       // specify whether two optimization problems are solved or not
       index_twice_bow = 1;
-    } else if (-_vessel.max_delta_rotation_bow <= _realtimevessel.rotation(0) &&
+    } else if (-max_delta_rotation_bow <= _realtimevessel.rotation(0) &&
                _realtimevessel.rotation(0) < 0) {
       // specify the first case
       upper_delta_alpha_bow(0) = 0;
       lower_delta_alpha_bow(0) = 0;
       lower_delta_u_bow(0) = -_realtimevessel.u(0);
       upper_delta_u_bow(0) =
-          _vessel.Kbar_negative *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) -
+          Kbar_negative *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
           _realtimevessel.u(0);
       // specify the second case
       upper_delta_alpha_bow(1) = M_PI;
       lower_delta_alpha_bow(1) = M_PI;
       lower_delta_u_bow(1) = -_realtimevessel.u(0);
       upper_delta_u_bow(1) =
-          _vessel.Kbar_positive *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) -
+          Kbar_positive *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
           _realtimevessel.u(0);
       // specify whether two optimization problems are solved or not
       index_twice_bow = 1;
-    } else if (_realtimevessel.rotation(0) > _vessel.max_delta_rotation_bow) {
+    } else if (_realtimevessel.rotation(0) > max_delta_rotation_bow) {
       lower_delta_alpha_bow(0) = 0;
       upper_delta_alpha_bow(0) = 0;
-      upper_delta_u_bow(0) =
-          std::min(_vessel.max_thrust_bow_positive - _realtimevessel.u(0),
-                   _vessel.Kbar_positive * (_realtimevessel.rotation(0) +
-                                            _vessel.max_delta_rotation_bow) *
-                           (_realtimevessel.rotation(0) +
-                            _vessel.max_delta_rotation_bow) -
-                       _realtimevessel.u(0));
+      upper_delta_u_bow(0) = std::min(
+          max_thrust_bow_positive - _realtimevessel.u(0),
+          Kbar_positive *
+                  (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+                  (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
+              _realtimevessel.u(0));
       lower_delta_u_bow(0) =
-          _vessel.Kbar_positive *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) -
+          Kbar_positive *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
           _realtimevessel.u(0);
       // specify whether two optimization problems are solved or not
       index_twice_bow = 0;
     } else {
       lower_delta_alpha_bow(0) = 0;
       upper_delta_alpha_bow(0) = 0;
-      upper_delta_u_bow(0) =
-          std::min(_vessel.Kbar_negative * (_realtimevessel.rotation(0) -
-                                            _vessel.max_delta_rotation_bow) *
-                           (_realtimevessel.rotation(0) -
-                            _vessel.max_delta_rotation_bow) -
-                       _realtimevessel.u(0),
-                   _vessel.max_thrust_bow_negative - _realtimevessel.u(0));
+      upper_delta_u_bow(0) = std::min(
+          Kbar_negative *
+                  (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+                  (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
+              _realtimevessel.u(0),
+          max_thrust_bow_negative - _realtimevessel.u(0));
       lower_delta_u_bow(0) =
-          _vessel.Kbar_negative *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) -
+          Kbar_negative *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
           _realtimevessel.u(0);
       // specify whether two optimization problems are solved or not
       index_twice_bow = 0;
@@ -350,71 +392,60 @@ class thrusterallocation_first {
   }
   // calculate the consraints of azimuth thruster
   void calculateconstrains_azimuth(
-      const vessel_first &_vessel,
       const realtimevessel_first &_realtimevessel) {
     // specify constriants on left azimuth
     upper_delta_alpha_left =
-        std::min(_vessel.max_delta_alpha_azimuth,
-                 _vessel.max_alpha_azimuth_left - _realtimevessel.alpha(1));
+        std::min(max_delta_alpha_azimuth,
+                 max_alpha_azimuth_left - _realtimevessel.alpha(1));
     lower_delta_alpha_left =
-        std::max(-_vessel.max_delta_alpha_azimuth,
-                 _vessel.min_alpha_azimuth_left - _realtimevessel.alpha(1));
+        std::max(-max_delta_alpha_azimuth,
+                 min_alpha_azimuth_left - _realtimevessel.alpha(1));
 
-    double thrust_azimuth_left = _vessel.K_left * _realtimevessel.rotation(1) *
-                                 _realtimevessel.rotation(1);
-    upper_delta_u_left =
-        std::min(_vessel.K_left * (_realtimevessel.rotation(1) +
-                                   _vessel.max_delta_rotation_azimuth) *
-                         (_realtimevessel.rotation(1) +
-                          _vessel.max_delta_rotation_azimuth) -
-                     thrust_azimuth_left,
-                 _vessel.max_thrust_azimuth_left - thrust_azimuth_left);
-    if (_realtimevessel.rotation(1) <= _vessel.max_delta_rotation_azimuth)
+    double thrust_azimuth_left =
+        K_left * _realtimevessel.rotation(1) * _realtimevessel.rotation(1);
+    upper_delta_u_left = std::min(
+        K_left * (_realtimevessel.rotation(1) + max_delta_rotation_azimuth) *
+                (_realtimevessel.rotation(1) + max_delta_rotation_azimuth) -
+            thrust_azimuth_left,
+        max_thrust_azimuth_left - thrust_azimuth_left);
+    if (_realtimevessel.rotation(1) <= max_delta_rotation_azimuth)
       lower_delta_u_left = -thrust_azimuth_left;
     else
-      lower_delta_u_left = _vessel.K_left *
-                               (_realtimevessel.rotation(1) -
-                                _vessel.max_delta_rotation_azimuth) *
-                               (_realtimevessel.rotation(1) -
-                                _vessel.max_delta_rotation_azimuth) -
-                           thrust_azimuth_left;
+      lower_delta_u_left =
+          K_left * (_realtimevessel.rotation(1) - max_delta_rotation_azimuth) *
+              (_realtimevessel.rotation(1) - max_delta_rotation_azimuth) -
+          thrust_azimuth_left;
 
     // specify constraints on right azimuth
     upper_delta_alpha_right =
-        std::min(_vessel.max_delta_alpha_azimuth,
-                 _vessel.max_alpha_azimuth_right - _realtimevessel.alpha(2));
+        std::min(max_delta_alpha_azimuth,
+                 max_alpha_azimuth_right - _realtimevessel.alpha(2));
     lower_delta_alpha_right =
-        std::max(-_vessel.max_delta_alpha_azimuth,
-                 _vessel.min_alpha_azimuth_right - _realtimevessel.alpha(2));
-    double thrust_azimuth_right = _vessel.K_right *
-                                  _realtimevessel.rotation(2) *
-                                  _realtimevessel.rotation(2);
-    upper_delta_u_right =
-        std::min(_vessel.K_right * (_realtimevessel.rotation(2) +
-                                    _vessel.max_delta_rotation_azimuth) *
-                         (_realtimevessel.rotation(2) +
-                          _vessel.max_delta_rotation_azimuth) -
-                     thrust_azimuth_right,
-                 _vessel.max_thrust_azimuth_right - thrust_azimuth_right);
-    if (_realtimevessel.rotation(2) <= _vessel.max_delta_rotation_azimuth)
+        std::max(-max_delta_alpha_azimuth,
+                 min_alpha_azimuth_right - _realtimevessel.alpha(2));
+    double thrust_azimuth_right =
+        K_right * _realtimevessel.rotation(2) * _realtimevessel.rotation(2);
+    upper_delta_u_right = std::min(
+        K_right * (_realtimevessel.rotation(2) + max_delta_rotation_azimuth) *
+                (_realtimevessel.rotation(2) + max_delta_rotation_azimuth) -
+            thrust_azimuth_right,
+        max_thrust_azimuth_right - thrust_azimuth_right);
+    if (_realtimevessel.rotation(2) <= max_delta_rotation_azimuth)
       lower_delta_u_right = -thrust_azimuth_right;
     else
-      lower_delta_u_right = _vessel.K_right *
-                                (_realtimevessel.rotation(2) -
-                                 _vessel.max_delta_rotation_azimuth) *
-                                (_realtimevessel.rotation(2) -
-                                 _vessel.max_delta_rotation_azimuth) -
-                            thrust_azimuth_right;
+      lower_delta_u_right =
+          K_right * (_realtimevessel.rotation(2) - max_delta_rotation_azimuth) *
+              (_realtimevessel.rotation(2) - max_delta_rotation_azimuth) -
+          thrust_azimuth_right;
   }
 
   // calculate Balpha as function of alpha
-  Eigen::Matrix3d calculateBalpha(const vessel_first &_vessel_first,
-                                  const Eigen::Vector3d &t_alpha) {
+  Eigen::Matrix3d calculateBalpha(const Eigen::Vector3d &t_alpha) {
     Eigen::Matrix3d _B_alpha = Eigen::Matrix3d::Zero();
     double angle = 0;
     double t_cos = 0;
     double t_sin = 0;
-    for (int i = 0; i != _vessel_first.m; ++i) {
+    for (int i = 0; i != m; ++i) {
       angle = t_alpha(i);
       t_cos = cos(angle);
       t_sin = sin(angle);
@@ -425,43 +456,39 @@ class thrusterallocation_first {
     return _B_alpha;
   }
   // calculate the rho term in thruster allocation
-  double calculateRhoTerm(const vessel_first &_vessel_first,
-                          const Eigen::Vector3d &t_alpha, double epsilon = 0.01,
+  double calculateRhoTerm(const Eigen::Vector3d &t_alpha, double epsilon = 0.01,
                           double rho = 10) {
-    auto _B_alpha = calculateBalpha(_vessel_first, t_alpha);
+    auto _B_alpha = calculateBalpha(t_alpha);
     Eigen::Matrix3d BBT = _B_alpha * _B_alpha.transpose();
     return rho / (epsilon + BBT.determinant());
   }
   // calculate Jacobian using central difference
-  void calculateJocobianRhoTerm(const vessel_first &_vessel_first,
-                                const Eigen::Vector3d &t_alpha) {
-    for (int i = 0; i != _vessel_first.m; ++i) {
+  void calculateJocobianRhoTerm(const Eigen::Vector3d &t_alpha) {
+    for (int i = 0; i != m; ++i) {
       auto alpha_plus = t_alpha;
       auto alpha_minus = t_alpha;
       alpha_plus(i) += derivative_dx;
       alpha_minus(i) -= derivative_dx;
-      d_rho(i) = centraldifference(calculateRhoTerm(_vessel_first, alpha_plus),
-                                   calculateRhoTerm(_vessel_first, alpha_minus),
-                                   derivative_dx);
+      d_rho(i) =
+          centraldifference(calculateRhoTerm(alpha_plus),
+                            calculateRhoTerm(alpha_minus), derivative_dx);
     }
   }
   // calculate the Balpha u term
-  Eigen::Vector3d calculateBalphau(const vessel_first &_vessel_first,
-                                   const Eigen::Vector3d &t_alpha,
+  Eigen::Vector3d calculateBalphau(const Eigen::Vector3d &t_alpha,
                                    const Eigen::Vector3d &t_u) {
-    return calculateBalpha(_vessel_first, t_alpha) * t_u;
+    return calculateBalpha(t_alpha) * t_u;
   }
   // calculate derivative of Balpha times u
-  void calculateJocobianBalphaU(const vessel_first &_vessel_first,
-                                const Eigen::Vector3d &t_alpha,
+  void calculateJocobianBalphaU(const Eigen::Vector3d &t_alpha,
                                 const Eigen::Vector3d &t_u) {
-    for (int i = 0; i != _vessel_first.m; ++i) {
+    for (int i = 0; i != m; ++i) {
       auto alpha_plus = t_alpha;
       auto alpha_minus = t_alpha;
       alpha_plus(i) += derivative_dx;
       alpha_minus(i) -= derivative_dx;
-      d_Balpha_u.col(i) = (calculateBalphau(_vessel_first, alpha_plus, t_u) -
-                           calculateBalphau(_vessel_first, alpha_minus, t_u)) /
+      d_Balpha_u.col(i) = (calculateBalphau(alpha_plus, t_u) -
+                           calculateBalphau(alpha_minus, t_u)) /
                           (2 * derivative_dx);
     }
   }
@@ -479,18 +506,17 @@ class thrusterallocation_first {
     b = _realtimevessel.tau - _realtimevessel.BalphaU;
   }
   // update parameters in thruster allocation for each time step
-  void updateTAparameters(const vessel_first &_vessel,
-                          const realtimevessel_first &_realtimevessel) {
-    B_alpha = calculateBalpha(_vessel, _realtimevessel.alpha);
-    calculateJocobianRhoTerm(_vessel, _realtimevessel.alpha);
-    calculateJocobianBalphaU(_vessel, _realtimevessel.alpha, _realtimevessel.u);
+  void updateTAparameters(const realtimevessel_first &_realtimevessel) {
+    B_alpha = calculateBalpha(_realtimevessel.alpha);
+    calculateJocobianRhoTerm(_realtimevessel.alpha);
+    calculateJocobianBalphaU(_realtimevessel.alpha, _realtimevessel.u);
     calculateDeltauQ(_realtimevessel.u);
     calculateb(_realtimevessel);
-    calculateconstrains_bowthruster(_vessel, _realtimevessel);
-    calculateconstrains_azimuth(_vessel, _realtimevessel);
+    calculateconstrains_bowthruster(_realtimevessel);
+    calculateconstrains_azimuth(_realtimevessel);
   }
 
-  void updateMosekparameters(const vessel_first &_vessel, int index = 0) {
+  void updateMosekparameters(int index = 0) {
     // update A values
     aval[0] = B_alpha(0, 0);
     aval[1] = B_alpha(1, 0);
@@ -512,7 +538,7 @@ class thrusterallocation_first {
     aval[17] = d_Balpha_u(2, 2);
 
     // update linear constraints
-    for (int i = 0; i != _vessel.num_constraints; ++i) {
+    for (int i = 0; i != num_constraints; ++i) {
       blc[i] = b(i);
       buc[i] = b(i);
     }
@@ -542,17 +568,16 @@ class thrusterallocation_first {
 
     // The lower triangular part of the quadratic objective Q matrix in the
     // objective is specified.
-    for (int i = 0; i != _vessel.n; ++i) qval[i] = Q_deltau(i, i);
+    for (int i = 0; i != n; ++i) qval[i] = Q_deltau(i, i);
   }
 
   // update parameters in QP for each time step
-  void onestepmosek(const vessel_first &_vessel_first, FILE *t_file,
-                    int index = 0) {
+  void onestepmosek(FILE *t_file, int index = 0) {
     MSKint32t i, j;
-    double t_results[_vessel_first.numvar];
+    double t_results[numvar];
 
     if (r == MSK_RES_OK) {
-      for (j = 0; j < _vessel_first.numvar; ++j) {
+      for (j = 0; j < numvar; ++j) {
         /* Set the linear term g_j in the objective.*/
         r = MSK_putcj(task, j, g[j]);
 
@@ -574,7 +599,7 @@ class thrusterallocation_first {
 
       /* Set the bounds on constraints.
          for i=1, ...,NUMCON : blc[i] <= constraint i <= buc[i] */
-      for (i = 0; i < _vessel_first.num_constraints; ++i)
+      for (i = 0; i < num_constraints; ++i)
         r = MSK_putconbound(task, i, /* Index of constraint.*/
                             bkc[i],  /* Bound key.*/
                             blc[i],  /* Numerical value of lower bound.*/
@@ -605,7 +630,7 @@ class thrusterallocation_first {
               MSK_getxx(task, MSK_SOL_ITR, /* Request the interior solution. */
                         t_results);
 
-              for (j = 0; j < _vessel_first.numvar; ++j) {
+              for (j = 0; j < numvar; ++j) {
                 results(j, index) = t_results[j];
               }
 
@@ -656,9 +681,9 @@ class thrusterallocation_first {
     }
   }
   // compare two scenario for bow thruster
-  int comparebowthruster(const vessel_first &_vessel) {
-    Eigen::Vector3d S1 = results.block(2 * _vessel.m, 0, _vessel.n, 1);
-    Eigen::Vector3d S2 = results.block(2 * _vessel.m, 1, _vessel.n, 1);
+  int comparebowthruster() {
+    Eigen::Vector3d S1 = results.block(2 * m, 0, n, 1);
+    Eigen::Vector3d S2 = results.block(2 * m, 1, n, 1);
 
     double position_residual1 = S1.transpose() * (Q * S1);
     double position_residual2 = S2.transpose() * (Q * S2);
@@ -670,21 +695,20 @@ class thrusterallocation_first {
   }
 
   // calculate vessel parameters at the next time step
-  void updateNextstep(const vessel_first &_vessel,
-                      realtimevessel_first &_realtimevessel, int index) {
+  void updateNextstep(realtimevessel_first &_realtimevessel, int index) {
     // calculate delta variable using Mosek results
-    delta_u = results.block(0, index, _vessel.m, 1);
-    delta_alpha = results.block(_vessel.m, index, _vessel.m, 1);
+    delta_u = results.block(0, index, m, 1);
+    delta_alpha = results.block(m, index, m, 1);
 
     // update alpha and u
     updateAlphaandU(_realtimevessel);
     // convert the double alpha(rad) to int alpha(deg)
-    convertdoublealpha2int(_vessel, _realtimevessel);
+    convertdoublealpha2int(_realtimevessel);
     // update rotation speed
-    calculaterotation(_vessel, _realtimevessel);
+    calculaterotation(_realtimevessel);
     // update BalphaU
     _realtimevessel.BalphaU =
-        calculateBalphau(_vessel, _realtimevessel.alpha, _realtimevessel.u);
+        calculateBalphau(_realtimevessel.alpha, _realtimevessel.u);
   }
 
   // update alpha and u using computed delta_alpha and delta_u
@@ -693,49 +717,45 @@ class thrusterallocation_first {
     _realtimevessel.alpha += delta_alpha;
   }
   // the precision of alpha of each azimuth thruster is 1 deg
-  void convertdoublealpha2int(const vessel_first &_vessel,
-                              realtimevessel_first &_realtimevessel) {
-    for (int i = 0; i != _vessel.m; ++i) {
+  void convertdoublealpha2int(realtimevessel_first &_realtimevessel) {
+    for (int i = 0; i != m; ++i) {
       _realtimevessel.alpha_deg(i) =
           (int)(_realtimevessel.alpha(i) * 180 / M_PI);  // round to int (deg)
       _realtimevessel.alpha(i) = _realtimevessel.alpha_deg(i) * M_PI / 180;
     }
   }
   // calcuate rotation speed of each thruster based on thrust
-  void calculaterotation(const vessel_first &_vessel,
-                         realtimevessel_first &_realtimevessel) {
+  void calculaterotation(realtimevessel_first &_realtimevessel) {
     int t_rotation = 0;
     // bow thruster
     if (_realtimevessel.alpha(0) < 0) {
-      t_rotation =
-          (int)(sqrt(abs(_realtimevessel.u(0)) / _vessel.Kbar_negative));
+      t_rotation = (int)(sqrt(abs(_realtimevessel.u(0)) / Kbar_negative));
       if (t_rotation == 0) {
         _realtimevessel.rotation(0) = -1;  // prevent zero
-        _realtimevessel.u(0) = _vessel.Kbar_negative;
+        _realtimevessel.u(0) = Kbar_negative;
       } else
         _realtimevessel.rotation(0) = -t_rotation;
 
     } else {
-      t_rotation =
-          (int)(sqrt(abs(_realtimevessel.u(0)) / _vessel.Kbar_positive));
+      t_rotation = (int)(sqrt(abs(_realtimevessel.u(0)) / Kbar_positive));
       if (t_rotation == 0) {
         _realtimevessel.rotation(0) = 1;  // prevent zero
-        _realtimevessel.u(0) = _vessel.Kbar_positive;
+        _realtimevessel.u(0) = Kbar_positive;
       } else
         _realtimevessel.rotation(0) = t_rotation;
     }
     // azimuth thruster Left
-    t_rotation = (int)(sqrt(abs(_realtimevessel.u(1)) / _vessel.K_left));
+    t_rotation = (int)(sqrt(abs(_realtimevessel.u(1)) / K_left));
     if (t_rotation == 0) {
       _realtimevessel.rotation(1) = 1;
-      _realtimevessel.u(1) = _vessel.K_left;
+      _realtimevessel.u(1) = K_left;
     } else
       _realtimevessel.rotation(1) = t_rotation;
     // azimuth thruster Right
-    t_rotation = (int)(sqrt(abs(_realtimevessel.u(2)) / _vessel.K_right));
+    t_rotation = (int)(sqrt(abs(_realtimevessel.u(2)) / K_right));
     if (t_rotation == 0) {
       _realtimevessel.rotation(2) = 1;
-      _realtimevessel.u(2) = _vessel.K_right;
+      _realtimevessel.u(2) = K_right;
     } else
       _realtimevessel.rotation(2) = t_rotation;
   }
@@ -759,7 +779,28 @@ class thrusterallocation_second {
  public:
   explicit thrusterallocation_second(const vessel_second &_vessel_second,
                                      realtimevessel_second &_realtimevessel)
-      : index_twice_bow(0),
+      : m(_vessel_second.m),
+        n(_vessel_second.n),
+        numvar(_vessel_second.numvar),
+        num_constraints(_vessel_second.num_constraints),
+        Kbar_positive(_vessel_second.Kbar_positive),
+        Kbar_negative(_vessel_second.Kbar_negative),
+        max_delta_rotation_bow(_vessel_second.max_delta_rotation_bow),
+        max_rotation_bow(_vessel_second.max_rotation_bow),
+        max_thrust_bow_positive(_vessel_second.max_thrust_bow_positive),
+        max_thrust_bow_negative(_vessel_second.max_thrust_bow_negative),
+        K_left(_vessel_second.K_left),
+        K_right(_vessel_second.K_right),
+        max_delta_rotation_azimuth(_vessel_second.max_delta_rotation_azimuth),
+        max_rotation_azimuth(_vessel_second.max_rotation_azimuth),
+        max_thrust_azimuth_left(_vessel_second.max_thrust_azimuth_left),
+        max_thrust_azimuth_right(_vessel_second.max_thrust_azimuth_right),
+        max_delta_alpha_azimuth(_vessel_second.max_delta_alpha_azimuth),
+        max_alpha_azimuth_left(_vessel_second.max_alpha_azimuth_left),
+        min_alpha_azimuth_left(_vessel_second.min_alpha_azimuth_left),
+        max_alpha_azimuth_right(_vessel_second.max_alpha_azimuth_right),
+        min_alpha_azimuth_right(_vessel_second.min_alpha_azimuth_right),
+        index_twice_bow(0),
         upper_delta_alpha_left(0),
         lower_delta_alpha_left(0),
         upper_delta_u_left(0),
@@ -792,24 +833,23 @@ class thrusterallocation_second {
     MSK_deleteenv(&env);
   }
 
-  void onestepthrusterallocation(const vessel_second &_vessel_second,
-                                 realtimevessel_second &_realtimevessel,
+  void onestepthrusterallocation(realtimevessel_second &_realtimevessel,
                                  FILE *t_file = stdout) {
-    updateTAparameters(_vessel_second, _realtimevessel);
+    updateTAparameters(_realtimevessel);
 
     int index = 0;
     if (index_twice_bow) {
-      updateMosekparameters(_vessel_second, 0);
-      onestepmosek(_vessel_second, t_file, 0);
-      updateMosekparameters(_vessel_second, 1);
-      onestepmosek(_vessel_second, t_file, 1);
-      index = comparebowthruster(_vessel_second);
+      updateMosekparameters(0);
+      onestepmosek(t_file, 0);
+      updateMosekparameters(1);
+      onestepmosek(t_file, 1);
+      index = comparebowthruster();
 
     } else {
-      updateMosekparameters(_vessel_second);
-      onestepmosek(_vessel_second, t_file);
+      updateMosekparameters();
+      onestepmosek(t_file);
     }
-    updateNextstep(_vessel_second, _realtimevessel, index);
+    updateNextstep(_realtimevessel, index);
   }
 
   void test_multiplethrusterallocation(savefile &_savefile,
@@ -844,7 +884,7 @@ class thrusterallocation_second {
       // update tau
       _realtimevessel.tau = _savefile.save_tau.col(i);
       // thruster allocation
-      onestepthrusterallocation(_vessel_second, _realtimevessel);
+      onestepthrusterallocation(_realtimevessel);
       // save variables
       _savefile.save_u.col(i) = _realtimevessel.u;
       _savefile.save_alpha.col(i) = _realtimevessel.alpha;
@@ -855,6 +895,31 @@ class thrusterallocation_second {
   }
 
  private:
+  // constants of the first vessel
+  int m;
+  int n;
+  int numvar;
+  int num_constraints;         // the number of constraints
+  double Kbar_positive;        // alpha=90
+  double Kbar_negative;        // alpha=-90
+  int max_delta_rotation_bow;  // rpm
+  int max_rotation_bow;        // rpm
+  double max_thrust_bow_positive;
+  double max_thrust_bow_negative;
+
+  // relationship between rotation and thrust of azimuth thruster
+  double K_left;
+  double K_right;
+  int max_delta_rotation_azimuth;  // rpm
+  int max_rotation_azimuth;        // rpm
+  double max_thrust_azimuth_left;
+  double max_thrust_azimuth_right;
+  double max_delta_alpha_azimuth;  // rad
+  double max_alpha_azimuth_left;   // rad
+  double min_alpha_azimuth_left;   // rad
+  double max_alpha_azimuth_right;  // rad
+  double min_alpha_azimuth_right;  // rad
+
   // real time constraints of bow thruster
   int index_twice_bow;
   Eigen::Vector2d upper_delta_alpha_bow;
@@ -942,10 +1007,10 @@ class thrusterallocation_second {
     results.setZero();
     initializeQuadraticObjective();
 
-    calculaterotation(_vessel_second, _realtimevessel);
+    calculaterotation(_realtimevessel);
     // update BalphaU
-    _realtimevessel.BalphaU = calculateBalphau(
-        _vessel_second, _realtimevessel.alpha, _realtimevessel.u);
+    _realtimevessel.BalphaU =
+        calculateBalphau(_realtimevessel.alpha, _realtimevessel.u);
     initializeMosekAPI(_vessel_second);
   }
 
@@ -980,83 +1045,80 @@ class thrusterallocation_second {
   }
   // calculate the contraints of bow thruster
   void calculateconstrains_bowthruster(
-      const vessel_second &_vessel,
       const realtimevessel_second &_realtimevessel) {
     if (0 < _realtimevessel.rotation(0) &&
-        _realtimevessel.rotation(0) <= _vessel.max_delta_rotation_bow) {
+        _realtimevessel.rotation(0) <= max_delta_rotation_bow) {
       // specify the first case
       upper_delta_alpha_bow(0) = 0;
       lower_delta_alpha_bow(0) = 0;
       lower_delta_u_bow(0) = -_realtimevessel.u(0);
       upper_delta_u_bow(0) =
-          _vessel.Kbar_positive *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) -
+          Kbar_positive *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
           _realtimevessel.u(0);
       upper_delta_alpha_bow(1) = -M_PI;
       lower_delta_alpha_bow(1) = -M_PI;
       lower_delta_u_bow(1) = -_realtimevessel.u(0);
       upper_delta_u_bow(1) =
-          _vessel.Kbar_negative *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) -
+          Kbar_negative *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
           _realtimevessel.u(0);
 
       // specify whether two optimization problems are solved or not
       index_twice_bow = 1;
-    } else if (-_vessel.max_delta_rotation_bow <= _realtimevessel.rotation(0) &&
+    } else if (-max_delta_rotation_bow <= _realtimevessel.rotation(0) &&
                _realtimevessel.rotation(0) < 0) {
       // specify the first case
       upper_delta_alpha_bow(0) = 0;
       lower_delta_alpha_bow(0) = 0;
       lower_delta_u_bow(0) = -_realtimevessel.u(0);
       upper_delta_u_bow(0) =
-          _vessel.Kbar_negative *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) -
+          Kbar_negative *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
           _realtimevessel.u(0);
       // specify the second case
       upper_delta_alpha_bow(1) = M_PI;
       lower_delta_alpha_bow(1) = M_PI;
       lower_delta_u_bow(1) = -_realtimevessel.u(0);
       upper_delta_u_bow(1) =
-          _vessel.Kbar_positive *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) -
+          Kbar_positive *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
           _realtimevessel.u(0);
       // specify whether two optimization problems are solved or not
       index_twice_bow = 1;
-    } else if (_realtimevessel.rotation(0) > _vessel.max_delta_rotation_bow) {
+    } else if (_realtimevessel.rotation(0) > max_delta_rotation_bow) {
       lower_delta_alpha_bow(0) = 0;
       upper_delta_alpha_bow(0) = 0;
-      upper_delta_u_bow(0) =
-          std::min(_vessel.max_thrust_bow_positive - _realtimevessel.u(0),
-                   _vessel.Kbar_positive * (_realtimevessel.rotation(0) +
-                                            _vessel.max_delta_rotation_bow) *
-                           (_realtimevessel.rotation(0) +
-                            _vessel.max_delta_rotation_bow) -
-                       _realtimevessel.u(0));
+      upper_delta_u_bow(0) = std::min(
+          max_thrust_bow_positive - _realtimevessel.u(0),
+          Kbar_positive *
+                  (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+                  (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
+              _realtimevessel.u(0));
       lower_delta_u_bow(0) =
-          _vessel.Kbar_positive *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) - _vessel.max_delta_rotation_bow) -
+          Kbar_positive *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
           _realtimevessel.u(0);
       // specify whether two optimization problems are solved or not
       index_twice_bow = 0;
     } else {
       lower_delta_alpha_bow(0) = 0;
       upper_delta_alpha_bow(0) = 0;
-      upper_delta_u_bow(0) =
-          std::min(_vessel.Kbar_negative * (_realtimevessel.rotation(0) -
-                                            _vessel.max_delta_rotation_bow) *
-                           (_realtimevessel.rotation(0) -
-                            _vessel.max_delta_rotation_bow) -
-                       _realtimevessel.u(0),
-                   _vessel.max_thrust_bow_negative - _realtimevessel.u(0));
+      upper_delta_u_bow(0) = std::min(
+          Kbar_negative *
+                  (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+                  (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
+              _realtimevessel.u(0),
+          max_thrust_bow_negative - _realtimevessel.u(0));
       lower_delta_u_bow(0) =
-          _vessel.Kbar_negative *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) *
-              (_realtimevessel.rotation(0) + _vessel.max_delta_rotation_bow) -
+          Kbar_negative *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
           _realtimevessel.u(0);
       // specify whether two optimization problems are solved or not
       index_twice_bow = 0;
@@ -1064,71 +1126,60 @@ class thrusterallocation_second {
   }
   // calculate the consraints of azimuth thruster
   void calculateconstrains_azimuth(
-      const vessel_second &_vessel,
       const realtimevessel_second &_realtimevessel) {
     // specify constriants on left azimuth
     upper_delta_alpha_left =
-        std::min(_vessel.max_delta_alpha_azimuth,
-                 _vessel.max_alpha_azimuth_left - _realtimevessel.alpha(1));
+        std::min(max_delta_alpha_azimuth,
+                 max_alpha_azimuth_left - _realtimevessel.alpha(1));
     lower_delta_alpha_left =
-        std::max(-_vessel.max_delta_alpha_azimuth,
-                 _vessel.min_alpha_azimuth_left - _realtimevessel.alpha(1));
+        std::max(-max_delta_alpha_azimuth,
+                 min_alpha_azimuth_left - _realtimevessel.alpha(1));
 
-    double thrust_azimuth_left = _vessel.K_left * _realtimevessel.rotation(1) *
-                                 _realtimevessel.rotation(1);
-    upper_delta_u_left =
-        std::min(_vessel.K_left * (_realtimevessel.rotation(1) +
-                                   _vessel.max_delta_rotation_azimuth) *
-                         (_realtimevessel.rotation(1) +
-                          _vessel.max_delta_rotation_azimuth) -
-                     thrust_azimuth_left,
-                 _vessel.max_thrust_azimuth_left - thrust_azimuth_left);
-    if (_realtimevessel.rotation(1) <= _vessel.max_delta_rotation_azimuth)
+    double thrust_azimuth_left =
+        K_left * _realtimevessel.rotation(1) * _realtimevessel.rotation(1);
+    upper_delta_u_left = std::min(
+        K_left * (_realtimevessel.rotation(1) + max_delta_rotation_azimuth) *
+                (_realtimevessel.rotation(1) + max_delta_rotation_azimuth) -
+            thrust_azimuth_left,
+        max_thrust_azimuth_left - thrust_azimuth_left);
+    if (_realtimevessel.rotation(1) <= max_delta_rotation_azimuth)
       lower_delta_u_left = -thrust_azimuth_left;
     else
-      lower_delta_u_left = _vessel.K_left *
-                               (_realtimevessel.rotation(1) -
-                                _vessel.max_delta_rotation_azimuth) *
-                               (_realtimevessel.rotation(1) -
-                                _vessel.max_delta_rotation_azimuth) -
-                           thrust_azimuth_left;
+      lower_delta_u_left =
+          K_left * (_realtimevessel.rotation(1) - max_delta_rotation_azimuth) *
+              (_realtimevessel.rotation(1) - max_delta_rotation_azimuth) -
+          thrust_azimuth_left;
 
     // specify constraints on right azimuth
     upper_delta_alpha_right =
-        std::min(_vessel.max_delta_alpha_azimuth,
-                 _vessel.max_alpha_azimuth_right - _realtimevessel.alpha(2));
+        std::min(max_delta_alpha_azimuth,
+                 max_alpha_azimuth_right - _realtimevessel.alpha(2));
     lower_delta_alpha_right =
-        std::max(-_vessel.max_delta_alpha_azimuth,
-                 _vessel.min_alpha_azimuth_right - _realtimevessel.alpha(2));
-    double thrust_azimuth_right = _vessel.K_right *
-                                  _realtimevessel.rotation(2) *
-                                  _realtimevessel.rotation(2);
-    upper_delta_u_right =
-        std::min(_vessel.K_right * (_realtimevessel.rotation(2) +
-                                    _vessel.max_delta_rotation_azimuth) *
-                         (_realtimevessel.rotation(2) +
-                          _vessel.max_delta_rotation_azimuth) -
-                     thrust_azimuth_right,
-                 _vessel.max_thrust_azimuth_right - thrust_azimuth_right);
-    if (_realtimevessel.rotation(2) <= _vessel.max_delta_rotation_azimuth)
+        std::max(-max_delta_alpha_azimuth,
+                 min_alpha_azimuth_right - _realtimevessel.alpha(2));
+    double thrust_azimuth_right =
+        K_right * _realtimevessel.rotation(2) * _realtimevessel.rotation(2);
+    upper_delta_u_right = std::min(
+        K_right * (_realtimevessel.rotation(2) + max_delta_rotation_azimuth) *
+                (_realtimevessel.rotation(2) + max_delta_rotation_azimuth) -
+            thrust_azimuth_right,
+        max_thrust_azimuth_right - thrust_azimuth_right);
+    if (_realtimevessel.rotation(2) <= max_delta_rotation_azimuth)
       lower_delta_u_right = -thrust_azimuth_right;
     else
-      lower_delta_u_right = _vessel.K_right *
-                                (_realtimevessel.rotation(2) -
-                                 _vessel.max_delta_rotation_azimuth) *
-                                (_realtimevessel.rotation(2) -
-                                 _vessel.max_delta_rotation_azimuth) -
-                            thrust_azimuth_right;
+      lower_delta_u_right =
+          K_right * (_realtimevessel.rotation(2) - max_delta_rotation_azimuth) *
+              (_realtimevessel.rotation(2) - max_delta_rotation_azimuth) -
+          thrust_azimuth_right;
   }
 
   // calculate Balpha as function of alpha
-  Eigen::Matrix3d calculateBalpha(const vessel_second &_vessel_second,
-                                  const Eigen::Vector3d &t_alpha) {
+  Eigen::Matrix3d calculateBalpha(const Eigen::Vector3d &t_alpha) {
     Eigen::Matrix3d _B_alpha = Eigen::Matrix3d::Zero();
     double angle = 0;
     double t_cos = 0;
     double t_sin = 0;
-    for (int i = 0; i != _vessel_second.m; ++i) {
+    for (int i = 0; i != m; ++i) {
       angle = t_alpha(i);
       t_cos = cos(angle);
       t_sin = sin(angle);
@@ -1139,43 +1190,39 @@ class thrusterallocation_second {
     return _B_alpha;
   }
   // calculate the rho term in thruster allocation
-  double calculateRhoTerm(const vessel_second &_vessel_second,
-                          const Eigen::Vector3d &t_alpha, double epsilon = 0.01,
+  double calculateRhoTerm(const Eigen::Vector3d &t_alpha, double epsilon = 0.01,
                           double rho = 10) {
-    auto _B_alpha = calculateBalpha(_vessel_second, t_alpha);
+    auto _B_alpha = calculateBalpha(t_alpha);
     Eigen::Matrix3d BBT = _B_alpha * _B_alpha.transpose();
     return rho / (epsilon + BBT.determinant());
   }
   // calculate Jacobian using central difference
-  void calculateJocobianRhoTerm(const vessel_second &_vessel_second,
-                                const Eigen::Vector3d &t_alpha) {
-    for (int i = 0; i != _vessel_second.m; ++i) {
+  void calculateJocobianRhoTerm(const Eigen::Vector3d &t_alpha) {
+    for (int i = 0; i != m; ++i) {
       auto alpha_plus = t_alpha;
       auto alpha_minus = t_alpha;
       alpha_plus(i) += derivative_dx;
       alpha_minus(i) -= derivative_dx;
-      d_rho(i) = centraldifference(
-          calculateRhoTerm(_vessel_second, alpha_plus),
-          calculateRhoTerm(_vessel_second, alpha_minus), derivative_dx);
+      d_rho(i) =
+          centraldifference(calculateRhoTerm(alpha_plus),
+                            calculateRhoTerm(alpha_minus), derivative_dx);
     }
   }
   // calculate the Balpha u term
-  Eigen::Vector3d calculateBalphau(const vessel_second &_vessel_second,
-                                   const Eigen::Vector3d &t_alpha,
+  Eigen::Vector3d calculateBalphau(const Eigen::Vector3d &t_alpha,
                                    const Eigen::Vector3d &t_u) {
-    return calculateBalpha(_vessel_second, t_alpha) * t_u;
+    return calculateBalpha(t_alpha) * t_u;
   }
   // calculate derivative of Balpha times u
-  void calculateJocobianBalphaU(const vessel_second &_vessel_second,
-                                const Eigen::Vector3d &t_alpha,
+  void calculateJocobianBalphaU(const Eigen::Vector3d &t_alpha,
                                 const Eigen::Vector3d &t_u) {
-    for (int i = 0; i != _vessel_second.m; ++i) {
+    for (int i = 0; i != m; ++i) {
       auto alpha_plus = t_alpha;
       auto alpha_minus = t_alpha;
       alpha_plus(i) += derivative_dx;
       alpha_minus(i) -= derivative_dx;
-      d_Balpha_u.col(i) = (calculateBalphau(_vessel_second, alpha_plus, t_u) -
-                           calculateBalphau(_vessel_second, alpha_minus, t_u)) /
+      d_Balpha_u.col(i) = (calculateBalphau(alpha_plus, t_u) -
+                           calculateBalphau(alpha_minus, t_u)) /
                           (2 * derivative_dx);
     }
   }
@@ -1193,18 +1240,17 @@ class thrusterallocation_second {
     b = _realtimevessel.tau - _realtimevessel.BalphaU;
   }
   // update parameters in thruster allocation for each time step
-  void updateTAparameters(const vessel_second &_vessel,
-                          const realtimevessel_second &_realtimevessel) {
-    B_alpha = calculateBalpha(_vessel, _realtimevessel.alpha);
-    calculateJocobianRhoTerm(_vessel, _realtimevessel.alpha);
-    calculateJocobianBalphaU(_vessel, _realtimevessel.alpha, _realtimevessel.u);
+  void updateTAparameters(const realtimevessel_second &_realtimevessel) {
+    B_alpha = calculateBalpha(_realtimevessel.alpha);
+    calculateJocobianRhoTerm(_realtimevessel.alpha);
+    calculateJocobianBalphaU(_realtimevessel.alpha, _realtimevessel.u);
     calculateDeltauQ(_realtimevessel.u);
     calculateb(_realtimevessel);
-    calculateconstrains_bowthruster(_vessel, _realtimevessel);
-    calculateconstrains_azimuth(_vessel, _realtimevessel);
+    calculateconstrains_bowthruster(_realtimevessel);
+    calculateconstrains_azimuth(_realtimevessel);
   }
 
-  void updateMosekparameters(const vessel_second &_vessel, int index = 0) {
+  void updateMosekparameters(int index = 0) {
     // update A values
     aval[0] = B_alpha(0, 0);
     aval[1] = B_alpha(1, 0);
@@ -1226,7 +1272,7 @@ class thrusterallocation_second {
     aval[17] = d_Balpha_u(2, 2);
 
     // update linear constraints
-    for (int i = 0; i != _vessel.num_constraints; ++i) {
+    for (int i = 0; i != num_constraints; ++i) {
       blc[i] = b(i);
       buc[i] = b(i);
     }
@@ -1256,17 +1302,16 @@ class thrusterallocation_second {
 
     // The lower triangular part of the quadratic objective Q matrix in the
     // objective is specified.
-    for (int i = 0; i != _vessel.n; ++i) qval[i] = Q_deltau(i, i);
+    for (int i = 0; i != n; ++i) qval[i] = Q_deltau(i, i);
   }
 
   // update parameters in QP for each time step
-  void onestepmosek(const vessel_second &_vessel_second, FILE *t_file,
-                    int index = 0) {
+  void onestepmosek(FILE *t_file, int index = 0) {
     MSKint32t i, j;
-    double t_results[_vessel_second.numvar];
+    double t_results[numvar];
 
     if (r == MSK_RES_OK) {
-      for (j = 0; j < _vessel_second.numvar; ++j) {
+      for (j = 0; j < numvar; ++j) {
         /* Set the linear term g_j in the objective.*/
         r = MSK_putcj(task, j, g[j]);
 
@@ -1288,7 +1333,7 @@ class thrusterallocation_second {
 
       /* Set the bounds on constraints.
          for i=1, ...,NUMCON : blc[i] <= constraint i <= buc[i] */
-      for (i = 0; i < _vessel_second.num_constraints; ++i)
+      for (i = 0; i < num_constraints; ++i)
         r = MSK_putconbound(task, i, /* Index of constraint.*/
                             bkc[i],  /* Bound key.*/
                             blc[i],  /* Numerical value of lower bound.*/
@@ -1319,7 +1364,7 @@ class thrusterallocation_second {
               MSK_getxx(task, MSK_SOL_ITR, /* Request the interior solution. */
                         t_results);
 
-              for (j = 0; j < _vessel_second.numvar; ++j) {
+              for (j = 0; j < numvar; ++j) {
                 results(j, index) = t_results[j];
               }
 
@@ -1369,9 +1414,9 @@ class thrusterallocation_second {
     }
   }
   // compare two scenario for bow thruster
-  int comparebowthruster(const vessel_second &_vessel) {
-    Eigen::Vector3d S1 = results.block(2 * _vessel.m, 0, _vessel.n, 1);
-    Eigen::Vector3d S2 = results.block(2 * _vessel.m, 1, _vessel.n, 1);
+  int comparebowthruster() {
+    Eigen::Vector3d S1 = results.block(2 * m, 0, n, 1);
+    Eigen::Vector3d S2 = results.block(2 * m, 1, n, 1);
 
     double position_residual1 = S1.transpose() * (Q * S1);
     double position_residual2 = S2.transpose() * (Q * S2);
@@ -1383,21 +1428,20 @@ class thrusterallocation_second {
   }
 
   // calculate vessel parameters at the next time step
-  void updateNextstep(const vessel_second &_vessel,
-                      realtimevessel_second &_realtimevessel, int index) {
+  void updateNextstep(realtimevessel_second &_realtimevessel, int index) {
     // calculate delta variable using Mosek results
-    delta_u = results.block(0, index, _vessel.m, 1);
-    delta_alpha = results.block(_vessel.m, index, _vessel.m, 1);
+    delta_u = results.block(0, index, m, 1);
+    delta_alpha = results.block(m, index, m, 1);
 
     // update alpha and u
     updateAlphaandU(_realtimevessel);
     // convert the double alpha(rad) to int alpha(deg)
-    convertdoublealpha2int(_vessel, _realtimevessel);
+    convertdoublealpha2int(_realtimevessel);
     // update rotation speed
-    calculaterotation(_vessel, _realtimevessel);
+    calculaterotation(_realtimevessel);
     // update BalphaU
     _realtimevessel.BalphaU =
-        calculateBalphau(_vessel, _realtimevessel.alpha, _realtimevessel.u);
+        calculateBalphau(_realtimevessel.alpha, _realtimevessel.u);
   }
 
   // update alpha and u using computed delta_alpha and delta_u
@@ -1406,49 +1450,45 @@ class thrusterallocation_second {
     _realtimevessel.alpha += delta_alpha;
   }
   // the precision of alpha of each azimuth thruster is 1 deg
-  void convertdoublealpha2int(const vessel_second &_vessel,
-                              realtimevessel_second &_realtimevessel) {
-    for (int i = 0; i != _vessel.m; ++i) {
+  void convertdoublealpha2int(realtimevessel_second &_realtimevessel) {
+    for (int i = 0; i != m; ++i) {
       _realtimevessel.alpha_deg(i) =
           (int)(_realtimevessel.alpha(i) * 180 / M_PI);  // round to int (deg)
       _realtimevessel.alpha(i) = _realtimevessel.alpha_deg(i) * M_PI / 180;
     }
   }
   // calcuate rotation speed of each thruster based on thrust
-  void calculaterotation(const vessel_second &_vessel,
-                         realtimevessel_second &_realtimevessel) {
+  void calculaterotation(realtimevessel_second &_realtimevessel) {
     int t_rotation = 0;
     // bow thruster
     if (_realtimevessel.alpha(0) < 0) {
-      t_rotation =
-          (int)(sqrt(abs(_realtimevessel.u(0)) / _vessel.Kbar_negative));
+      t_rotation = (int)(sqrt(abs(_realtimevessel.u(0)) / Kbar_negative));
       if (t_rotation == 0) {
         _realtimevessel.rotation(0) = -1;  // prevent zero
-        _realtimevessel.u(0) = _vessel.Kbar_negative;
+        _realtimevessel.u(0) = Kbar_negative;
       } else
         _realtimevessel.rotation(0) = -t_rotation;
 
     } else {
-      t_rotation =
-          (int)(sqrt(abs(_realtimevessel.u(0)) / _vessel.Kbar_positive));
+      t_rotation = (int)(sqrt(abs(_realtimevessel.u(0)) / Kbar_positive));
       if (t_rotation == 0) {
         _realtimevessel.rotation(0) = 1;  // prevent zero
-        _realtimevessel.u(0) = _vessel.Kbar_positive;
+        _realtimevessel.u(0) = Kbar_positive;
       } else
         _realtimevessel.rotation(0) = t_rotation;
     }
     // azimuth thruster Left
-    t_rotation = (int)(sqrt(abs(_realtimevessel.u(1)) / _vessel.K_left));
+    t_rotation = (int)(sqrt(abs(_realtimevessel.u(1)) / K_left));
     if (t_rotation == 0) {
       _realtimevessel.rotation(1) = 1;
-      _realtimevessel.u(1) = _vessel.K_left;
+      _realtimevessel.u(1) = K_left;
     } else
       _realtimevessel.rotation(1) = t_rotation;
     // azimuth thruster Right
-    t_rotation = (int)(sqrt(abs(_realtimevessel.u(2)) / _vessel.K_right));
+    t_rotation = (int)(sqrt(abs(_realtimevessel.u(2)) / K_right));
     if (t_rotation == 0) {
       _realtimevessel.rotation(2) = 1;
-      _realtimevessel.u(2) = _vessel.K_right;
+      _realtimevessel.u(2) = K_right;
     } else
       _realtimevessel.rotation(2) = t_rotation;
   }

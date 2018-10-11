@@ -30,22 +30,18 @@ class controller_first {
   controller_first() = delete;
   ~controller_first() {}
   // automatic control using kalman, pid controller, and QP thruster allocation
-  void pidcontrolleronestep(const vessel_first &_vessel_first,
-                            realtimevessel_first &_realtimedata,
+  void pidcontrolleronestep(realtimevessel_first &_realtimedata,
                             const Vector6d &_measuredstate,
                             const Eigen::Vector3d &_setpoints) {
     mykalmanfilter.kalmanonestep(_realtimedata, _measuredstate, _setpoints(2));
     mypidcontroller.calculategeneralizeforce(_realtimedata, _setpoints);
-    mythrusterallocation.onestepthrusterallocation(_vessel_first,
-                                                   _realtimedata);
+    mythrusterallocation.onestepthrusterallocation(_realtimedata);
   }
-  void pidcontrolleronestep(const vessel_first &_vessel_first,
-                            realtimevessel_first &_realtimedata,
+  void pidcontrolleronestep(realtimevessel_first &_realtimedata,
                             const Eigen::Vector3d &_setpoints) {
     mykalmanfilter.kalmanonestep(_realtimedata, _setpoints(2));
     mypidcontroller.calculategeneralizeforce(_realtimedata, _setpoints);
-    mythrusterallocation.onestepthrusterallocation(_vessel_first,
-                                                   _realtimedata);
+    mythrusterallocation.onestepthrusterallocation(_realtimedata);
   }
   // automatic heading control, and manual control in x, y direction
   void headingcontrolleronestep(const vessel_first &_vessel_first,
@@ -56,8 +52,7 @@ class controller_first {
     mykalmanfilter.kalmanonestep(_realtimedata, _measuredstate, _setpoints(2));
     mypidcontroller.calculategeneralizeforce(_realtimedata, _setpoints);
     setGeneralizeForce(_vessel_first, _realtimedata, xforce, yforce);
-    mythrusterallocation.onestepthrusterallocation(_vessel_first,
-                                                   _realtimedata);
+    mythrusterallocation.onestepthrusterallocation(_realtimedata);
   }
   void headingcontrolleronestep(const vessel_first &_vessel_first,
                                 realtimevessel_first &_realtimedata,
@@ -66,8 +61,7 @@ class controller_first {
     mykalmanfilter.kalmanonestep(_realtimedata, _setpoints(2));
     mypidcontroller.calculategeneralizeforce(_realtimedata, _setpoints);
     setGeneralizeForce(_vessel_first, _realtimedata, xforce, yforce);
-    mythrusterallocation.onestepthrusterallocation(_vessel_first,
-                                                   _realtimedata);
+    mythrusterallocation.onestepthrusterallocation(_realtimedata);
   }
 
   // manual control in x,y and Mz direction
@@ -76,8 +70,7 @@ class controller_first {
                              realtimevessel_first &_realtimedata,
                              FILE *t_file) {
     setGeneralizeForce(_vessel_first, _realtimedata, xforce, yforce, zmoment);
-    mythrusterallocation.onestepthrusterallocation(_vessel_first, _realtimedata,
-                                                   t_file);
+    mythrusterallocation.onestepthrusterallocation(_realtimedata, t_file);
   }
 
  private:
@@ -141,20 +134,18 @@ class controller_second {
   controller_second() = delete;
   ~controller_second() {}
   // automatic control using kalman, pid controller, and QP thruster allocation
-  void pidcontrolleronestep(const vessel_second &_vessel,
-                            realtimevessel_second &_realtimedata,
+  void pidcontrolleronestep(realtimevessel_second &_realtimedata,
                             const Vector6d &_measuredstate,
                             const Eigen::Vector3d &_setpoints) {
     mykalmanfilter.kalmanonestep(_realtimedata, _measuredstate, _setpoints(2));
     mypidcontroller.calculategeneralizeforce(_realtimedata, _setpoints);
-    mythrusterallocation.onestepthrusterallocation(_vessel, _realtimedata);
+    mythrusterallocation.onestepthrusterallocation(_realtimedata);
   }
-  void pidcontrolleronestep(const vessel_second &_vessel,
-                            realtimevessel_second &_realtimedata,
+  void pidcontrolleronestep(realtimevessel_second &_realtimedata,
                             const Eigen::Vector3d &_setpoints) {
     mykalmanfilter.kalmanonestep(_realtimedata, _setpoints(2));
     mypidcontroller.calculategeneralizeforce(_realtimedata, _setpoints);
-    mythrusterallocation.onestepthrusterallocation(_vessel, _realtimedata);
+    mythrusterallocation.onestepthrusterallocation(_realtimedata);
   }
   // automatic heading control, and manual control in x, y direction
   void headingcontrolleronestep(const vessel_second &_vessel,
@@ -165,7 +156,7 @@ class controller_second {
     mykalmanfilter.kalmanonestep(_realtimedata, _measuredstate, _setpoints(2));
     mypidcontroller.calculategeneralizeforce(_realtimedata, _setpoints);
     setGeneralizeForce(_vessel, _realtimedata, xforce, yforce);
-    mythrusterallocation.onestepthrusterallocation(_vessel, _realtimedata);
+    mythrusterallocation.onestepthrusterallocation(_realtimedata);
   }
   void headingcontrolleronestep(const vessel_second &_vessel,
                                 realtimevessel_second &_realtimedata,
@@ -174,7 +165,7 @@ class controller_second {
     mykalmanfilter.kalmanonestep(_realtimedata, _setpoints(2));
     mypidcontroller.calculategeneralizeforce(_realtimedata, _setpoints);
     setGeneralizeForce(_vessel, _realtimedata, xforce, yforce);
-    mythrusterallocation.onestepthrusterallocation(_vessel, _realtimedata);
+    mythrusterallocation.onestepthrusterallocation(_realtimedata);
   }
   // manual control in x,y and Mz direction
   void fullymanualcontroller(int xforce, int yforce, int zmoment,
@@ -182,8 +173,7 @@ class controller_second {
                              realtimevessel_second &_realtimedata,
                              FILE *t_file) {
     setGeneralizeForce(_vessel, _realtimedata, xforce, yforce, zmoment);
-    mythrusterallocation.onestepthrusterallocation(_vessel, _realtimedata,
-                                                   t_file);
+    mythrusterallocation.onestepthrusterallocation(_realtimedata, t_file);
   }
 
  private:

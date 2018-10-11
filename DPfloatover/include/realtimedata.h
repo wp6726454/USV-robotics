@@ -12,6 +12,7 @@
 #ifndef _REALTIMEDATA_H_
 #define _REALTIMEDATA_H_
 #include <Eigen/Core>
+#include <Eigen/Dense>
 
 typedef Eigen::Matrix<double, 6, 6> Matrix66d;
 typedef Eigen::Matrix<double, 6, 3> Matrix63d;

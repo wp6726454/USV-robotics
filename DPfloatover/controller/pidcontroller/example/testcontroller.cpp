@@ -212,8 +212,8 @@ int main() {
                          B_first * (sample_normal_R_first.col(i) +
                                     myrealtimevessel_first.BalphaU);
     myrealtimevessel_first.Measurement = z_first.col(i + 1);
-    mycontroller_first.pidcontrolleronestep(
-        myvessel_first, myrealtimevessel_first, setpoints_first);
+    mycontroller_first.pidcontrolleronestep(myrealtimevessel_first,
+                                            setpoints_first);
     // updateKalmanA(myrealtimevessel);
     save_x_first.col(i + 1) = myrealtimevessel_first.State;
     save_u_first.col(i + 1) = myrealtimevessel_first.u;
@@ -312,8 +312,7 @@ int main() {
                           B_second * (sample_normal_R_second.col(i) +
                                       myrealtimevessel_second.BalphaU);
     mycontroller_second.pidcontrolleronestep(
-        myvessel_second, myrealtimevessel_second, z_second.col(i + 1),
-        setpoints_second);
+        myrealtimevessel_second, z_second.col(i + 1), setpoints_second);
     // updateKalmanA(myrealtimevessel);
     save_x_second.col(i + 1) = myrealtimevessel_second.State;
     save_u_second.col(i + 1) = myrealtimevessel_second.u;
