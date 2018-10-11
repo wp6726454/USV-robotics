@@ -129,6 +129,29 @@ char *get_string_from_stdio(char *buffer, int buffer_length) {
   return buffer;
 }
 
+void my_pnd_test_network_adapter_selection(PNIO_CP_ID_TYPE *cp_id,
+                                           PNIO_CP_ID_PTR_TYPE cp_list,
+                                           PNIO_UINT8 nrofcp, FILE *_file) {
+  PNIO_CP_ID_PTR_TYPE pCpList = cp_list;
+  PNIO_CP_ID_PTR_TYPE pDevice;
+
+  if (nrofcp == 0) {
+    fprintf(_file, "\nNo network adapter found!");
+    return;
+  }
+
+  pDevice = (PNIO_CP_ID_PTR_TYPE)&pCpList[0];
+
+  if (pDevice->CpSelection == PNIO_CP_SELECT_WITH_MAC_ADDRESS) {
+    fprintf(_file, "\r\n %d ... %02x:%02x:%02x:%02x:%02x:%02x  -  %s", 0,
+            pDevice->CpMacAddr[0], pDevice->CpMacAddr[1], pDevice->CpMacAddr[2],
+            pDevice->CpMacAddr[3], pDevice->CpMacAddr[4], pDevice->CpMacAddr[5],
+            pDevice->Description);
+  }
+  // only one network board
+  memcpy(cp_id, &pCpList[0], sizeof(PNIO_CP_ID_TYPE));
+}
+
 void pnd_test_network_adapter_selection(PNIO_CP_ID_TYPE *cp_id,
                                         PNIO_CP_ID_PTR_TYPE cp_list,
                                         PNIO_UINT8 nrofcp) {

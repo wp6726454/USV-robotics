@@ -39,6 +39,7 @@ void pnd_test_set_trace_level_done(void);
 extern "C" {
 #endif
 
+#include <stdio.h>
 // pnd_test functions
 void pnd_test_set_mode(PNIO_MODE_TYPE mode);
 void pnd_test_controller_open(PNIO_DEBUG_SETTINGS_PTR_TYPE DebugSettings);
@@ -63,6 +64,9 @@ void pnd_test_register_interface_set_ip_and_nos(void);
 void pnd_test_register_interface_rema_read(void);
 PNIO_UINT32 pnd_test_interface_data_read();
 void pnd_test_interface_set_ip_and_nos(void);
+void my_pnd_test_network_adapter_selection(PNIO_CP_ID_TYPE *cp_id,
+                                           PNIO_CP_ID_PTR_TYPE cp_list,
+                                           PNIO_UINT8 nrofcp, FILE *_file);
 void pnd_test_network_adapter_selection(PNIO_CP_ID_TYPE *cp_id,
                                         PNIO_CP_ID_PTR_TYPE cp_list,
                                         PNIO_UINT8 nrofcp);

@@ -145,8 +145,7 @@ SOURCES += main.cpp\
     ../../src/examples/test_app/src/pnd_test_pduser.cpp \
     ../../src/examples/test_app/src/pnd_test_helper.c \
     ../../src/examples/test_app/src/pnd_test_iodu.c \
-    ../../src/examples/test_app/src/pnd_test_pntrc.c \
-    pntest.c
+    ../../src/examples/test_app/src/pnd_test_pntrc.c
 
 HEADERS  += mainwindow.h         \
     ../../src/examples/test_app/src/pnd_test.h \

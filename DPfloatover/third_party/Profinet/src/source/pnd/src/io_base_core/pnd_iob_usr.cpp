@@ -29,17 +29,15 @@
 /*                                                                           */
 /*****************************************************************************/
 
-#define LTRC_ACT_MODUL_ID   1120
-#define PND_MODULE_ID	    1120
+#define LTRC_ACT_MODUL_ID 1120
+#define PND_MODULE_ID 1120
 
-
-
-#include "pniobase.h"
-#include "pniousrx.h"
+#include "pnd_int.h"
 #include "pnd_int.h"
 #include "pnd_sys.h"
 #include "pnd_trc.h"
-#include "pnd_int.h"
+#include "pniobase.h"
+#include "pniousrx.h"
 
 /* StdLib++ */
 #include <vector>
@@ -48,8 +46,6 @@ using namespace std;
 
 #include "pnd_iob_core.h"
 #include "pnd_iodu.h"
-
-
 
 /*===========================================================================
 * FUNCTION : PNIO_controller_open
@@ -65,7 +61,8 @@ using namespace std;
 *           		 among others the following parameters can be
 *           		 applied via the OR logical operator:PNIO_MODE_CTRL
 *           cbf_RecReadConf - Callback function for signaling the results
-							   of data set read tasks
+                                                           of data set read
+tasks
 *           cbf_RecWriteConf - Callback function for signaling the results
 *           				   of data set write tasks
 *           cbf_AlarmInd - Callback function for signaling alarms
@@ -78,46 +75,48 @@ using namespace std;
 *           function for all call back events. The function pointers must
 *           not be NULL, except for Alarm (cbf_AlarmInd)
 *==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR
-PNIO_controller_open(PNIO_UINT32 CpIndex,
-	PNIO_UINT32 ExtPar,
-	PNIO_CBF cbf_RecReadConf,
-	PNIO_CBF cbf_RecWriteConf,
-	PNIO_CBF cbf_AlarmInd,
-	PNIO_UINT32 * pApplHandle)
-{
-	PNIO_UINT32 Ret = PNIO_OK;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_controller_open(PNIO_UINT32 CpIndex,
+                                                PNIO_UINT32 ExtPar,
+                                                PNIO_CBF cbf_RecReadConf,
+                                                PNIO_CBF cbf_RecWriteConf,
+                                                PNIO_CBF cbf_AlarmInd,
+                                                PNIO_UINT32 *pApplHandle) {
+  PNIO_UINT32 Ret = PNIO_OK;
 
-    IController *pThis = 0;
+  IController *pThis = 0;
 
-    if(!pApplHandle)
-        return PNIO_ERR_PRM_HND;
+  if (!pApplHandle) return PNIO_ERR_PRM_HND;
 
-    CpIndex--; // Internally CpIndex Starts with 0
+  CpIndex--;  // Internally CpIndex Starts with 0
 
-    Ret = IController::get_handle_by_index(CpIndex);
-    if (Ret == PND_INVALID_HANDLE)
-        return PNIO_ERR_PRM_CP_ID;
+  Ret = IController::get_handle_by_index(CpIndex);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_PRM_CP_ID;
 
-    pThis = IController::get_instance(CpIndex);
-    if (pThis == PNIO_NULL)
-        return PNIO_ERR_SEQUENCE;
+  pThis = IController::get_instance(CpIndex);
+  if (pThis == PNIO_NULL) return PNIO_ERR_SEQUENCE;
 
-	PND_IOB_USR_ENTER
+  PND_IOB_USR_ENTER
 
-	PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_controller_open CpIndex %d", CpIndex);
+  PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH,
+                    "->PNIO_controller_open CpIndex %d", CpIndex);
 
-	PND_IOBC_TRACE_06(0, LSA_TRACE_LEVEL_NOTE_HIGH, "CpIndex= %d, ExtPar=%d cbf_RecReadConf=%d cbf_RecWriteConf=%d cbf_AlarmInd=%d ApplHandle = %d",
-		CpIndex, ExtPar, cbf_RecReadConf, cbf_RecWriteConf, cbf_AlarmInd, pApplHandle);
+  PND_IOBC_TRACE_06(0, LSA_TRACE_LEVEL_NOTE_HIGH,
+                    "CpIndex= %d, ExtPar=%d cbf_RecReadConf=%d "
+                    "cbf_RecWriteConf=%d cbf_AlarmInd=%d ApplHandle = %d",
+                    CpIndex, ExtPar, cbf_RecReadConf, cbf_RecWriteConf,
+                    cbf_AlarmInd, pApplHandle);
 
-	Ret = IController::controller_open(CpIndex, ExtPar,
-		cbf_RecReadConf, cbf_RecWriteConf, cbf_AlarmInd, pApplHandle);
+  Ret =
+      IController::controller_open(CpIndex, ExtPar, cbf_RecReadConf,
+                                   cbf_RecWriteConf, cbf_AlarmInd, pApplHandle);
 
-	PND_IOBC_TRACE_02(0, LSA_TRACE_LEVEL_NOTE_HIGH, "PNIO_controller_open ret= %d, ApplHandle= %d" ,Ret, pApplHandle);
+  PND_IOBC_TRACE_02(0, LSA_TRACE_LEVEL_NOTE_HIGH,
+                    "PNIO_controller_open ret= %d, ApplHandle= %d", Ret,
+                    pApplHandle);
 
-	PND_IOB_USR_EXIT
+  PND_IOB_USR_EXIT
 
-	return Ret;
+  return Ret;
 }
 
 /*===========================================================================
@@ -134,32 +133,27 @@ PNIO_controller_open(PNIO_UINT32 CpIndex,
 * an IO-Controller with PROFInet, which had been previously registered with
 * PNIO_controller_open
 *==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR PNIO_controller_close(PNIO_UINT32 ApplHandle)
-{
-	PNIO_UINT32 Ret = PNIO_OK;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_controller_close(PNIO_UINT32 ApplHandle) {
+  PNIO_UINT32 Ret = PNIO_OK;
 
-    IController *pThis = 0;
+  IController *pThis = 0;
 
-    Ret = IController::get_handle_by_index(ApplHandle);
-    if (Ret == PND_INVALID_HANDLE)
-        return PNIO_ERR_WRONG_HND;
+  Ret = IController::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-    pThis = IController::get_instance(ApplHandle);
-    if (pThis == PNIO_NULL)
-        return PNIO_ERR_WRONG_HND;
+  pThis = IController::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_WRONG_HND;
 
-	PND_IOB_USR_ENTER
+  PND_IOB_USR_ENTER
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_controller_close");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_controller_close");
 
-	Ret = IController::controller_close(ApplHandle);
+  Ret = IController::controller_close(ApplHandle);
 
-	PND_IOB_USR_EXIT
+  PND_IOB_USR_EXIT
 
-	return Ret;
+  return Ret;
 }
-
-
 
 /*===========================================================================
 * FUNCTION : PNIO_set_mode
@@ -175,44 +169,42 @@ PNIO_UINT32 PNIO_CODE_ATTR PNIO_controller_close(PNIO_UINT32 ApplHandle)
 * COMMENTS :
 *==========================================================================*/
 PNIO_UINT32 PNIO_CODE_ATTR PNIO_set_mode(PNIO_UINT32 ApplHandle,
-	PNIO_MODE_TYPE Mode)
-{
-	PNIO_UINT32 Ret;
+                                         PNIO_MODE_TYPE Mode) {
+  PNIO_UINT32 Ret;
 
-    IController *pThis = 0;
+  IController *pThis = 0;
 
-    Ret = IController::get_handle_by_index(ApplHandle);
-    if (Ret == PND_INVALID_HANDLE)
-        return PNIO_ERR_WRONG_HND;
+  Ret = IController::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-    pThis = IController::get_instance(ApplHandle);
-    if (pThis == PNIO_NULL)
-        return PNIO_ERR_SEQUENCE;
+  pThis = IController::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_SEQUENCE;
 
-	PND_IOB_USR_ENTER
+  PND_IOB_USR_ENTER
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_set_mode");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_set_mode");
 
-	PND_IOBC_TRACE_02(0, LSA_TRACE_LEVEL_NOTE_HIGH, "ApplHandle= %d, Mode= %d",ApplHandle, Mode);
+  PND_IOBC_TRACE_02(0, LSA_TRACE_LEVEL_NOTE_HIGH, "ApplHandle= %d, Mode= %d",
+                    ApplHandle, Mode);
 
-    if(pThis) 
-    {
-        Ret = pThis->set_mode(Mode);
-	} else {
-		Ret = PNIO_ERR_WRONG_HND;
-	}
+  if (pThis) {
+    Ret = pThis->set_mode(Mode);
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
-	PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_set_mode, ret= %d" ,Ret);
+  PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_set_mode, ret= %d",
+                    Ret);
 
-	PND_IOB_USR_EXIT
+  PND_IOB_USR_EXIT
 
-	return Ret;
+  return Ret;
 }
 
 /*===========================================================================
 * FUNCTION : PNIO_ctrl_diag_req
 *----------------------------------------------------------------------------
-* PURPOSE  : 
+* PURPOSE  :
 *----------------------------------------------------------------------------
 * RETURNS  : PNIO_OK on success; else PNIO_ERR_WRONG_HND, PNIO_ERR_SEQUENCE
 *----------------------------------------------------------------------------
@@ -222,110 +214,103 @@ PNIO_UINT32 PNIO_CODE_ATTR PNIO_set_mode(PNIO_UINT32 ApplHandle,
 *----------------------------------------------------------------------------
 * COMMENTS :
 *==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR PNIO_ctrl_diag_req(
-	PNIO_UINT32    ApplHandle,
-	PNIO_CTRL_DIAG * pDiagReq)
-{
-	PNIO_UINT32 Ret;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_ctrl_diag_req(PNIO_UINT32 ApplHandle,
+                                              PNIO_CTRL_DIAG *pDiagReq) {
+  PNIO_UINT32 Ret;
 
-	IController *pThis = 0;
+  IController *pThis = 0;
 
-	Ret = IController::get_handle_by_index(ApplHandle);
-	if (Ret == PND_INVALID_HANDLE)
-		return PNIO_ERR_WRONG_HND;
+  Ret = IController::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-	pThis = IController::get_instance(ApplHandle);
-	if (pThis == PNIO_NULL)
-		return PNIO_ERR_SEQUENCE;
+  pThis = IController::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_SEQUENCE;
 
+  PND_IOB_USR_ENTER
 
-	PND_IOB_USR_ENTER
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_ctrl_diag_req");
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_ctrl_diag_req");
+  PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH, "ApplHandle= %d", ApplHandle);
 
-	PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH, "ApplHandle= %d",ApplHandle);
+  if (pThis) {
+    Ret = (PNIO_UINT32)((IController *)pThis)
+              ->ctrl_diag_request((LSA_HANDLE_TYPE)ApplHandle, pDiagReq);
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
-		if(pThis)
-		{
-		Ret = (PNIO_UINT32)((IController *)pThis)->ctrl_diag_request( (LSA_HANDLE_TYPE) ApplHandle, pDiagReq);
-		}
-		else
-		{
-			Ret = PNIO_ERR_WRONG_HND;
-		}
+  PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH,
+                    "<-PNIO_ctrl_diag_req, ret= %d", Ret);
 
-	PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_ctrl_diag_req, ret= %d" ,Ret);
+  PND_IOB_USR_EXIT
 
-	PND_IOB_USR_EXIT
-
-	return Ret;
+  return Ret;
 }
 
 /*===========================================================================
 * FUNCTION : PNIO_iosystem_reconfig
 *----------------------------------------------------------------------------
-* PURPOSE  : 
+* PURPOSE  :
 *----------------------------------------------------------------------------
 * RETURNS  : PNIO_OK on success
 *----------------------------------------------------------------------------
 * INPUTS   : - ApplHandle -  Handle of controller
 *            - Step - Indicates the step that should be executed.
 *                     PNIO_IOS_RECONFIG_MODE_DEACT: Deactivate all IODevices
-*                     PNIO_IOS_RECONFIG_MODE_TAILOR: Start Tailoring and activate appropriate IODevices
-*            - DeviceCnt - Array of logical addresses to IODevices which should be tailored.
-*                          A listed IODevice has to be an optional IODevice. 
+*                     PNIO_IOS_RECONFIG_MODE_TAILOR: Start Tailoring and
+*activate appropriate IODevices
+*            - DeviceCnt - Array of logical addresses to IODevices which should
+*be tailored.
+*                          A listed IODevice has to be an optional IODevice.
 *            - DeviceList  - Number of entries in the DeviceList
-*            - PortInterconnectionCnt - Array of a set of two logical addresses 
-*                                       which lists each port interconnection 
+*            - PortInterconnectionCnt - Array of a set of two logical addresses
+*                                       which lists each port interconnection
 *                                       as a set of two logical addresses.
-*            - PortInterconnectionList - Number of entries in the PortInterconnectionList
+*            - PortInterconnectionList - Number of entries in the
+*PortInterconnectionList
 * OUTPUS   :
 *----------------------------------------------------------------------------
 * COMMENTS :
 *==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR PNIO_iosystem_reconfig(
-        PNIO_UINT32               ApplHandle,                 /* in */
-        PNIO_IOS_RECONFIG_MODE    Mode,                       /* in */
-		PNIO_UINT32               DeviceCnt,                  /* in */
-		PNIO_ADDR*                DeviceList,                 /* in */  
-		PNIO_UINT32               PortInterconnectionCnt,     /* in */
-		PNIO_ADDR*                PortInterconnectionList)
-{
-	PNIO_UINT32 Ret;
+PNIO_UINT32 PNIO_CODE_ATTR
+PNIO_iosystem_reconfig(PNIO_UINT32 ApplHandle,             /* in */
+                       PNIO_IOS_RECONFIG_MODE Mode,        /* in */
+                       PNIO_UINT32 DeviceCnt,              /* in */
+                       PNIO_ADDR *DeviceList,              /* in */
+                       PNIO_UINT32 PortInterconnectionCnt, /* in */
+                       PNIO_ADDR *PortInterconnectionList) {
+  PNIO_UINT32 Ret;
 
-	IController *pThis = 0;
+  IController *pThis = 0;
 
-	Ret = IController::get_handle_by_index(ApplHandle);
-	if (Ret == PND_INVALID_HANDLE)
-		return PNIO_ERR_WRONG_HND;
+  Ret = IController::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-	pThis = IController::get_instance(ApplHandle);
-	if (pThis == PNIO_NULL)
-		return PNIO_ERR_SEQUENCE;
+  pThis = IController::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_SEQUENCE;
 
+  PND_IOB_USR_ENTER
 
-	PND_IOB_USR_ENTER
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_iosystem_reconfig");
 
-		PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_iosystem_reconfig");
+  PND_IOBC_TRACE_02(0, LSA_TRACE_LEVEL_NOTE_HIGH, "ApplHandle= %d, Mode= %d",
+                    ApplHandle, Mode);
 
-		PND_IOBC_TRACE_02(0, LSA_TRACE_LEVEL_NOTE_HIGH, "ApplHandle= %d, Mode= %d", ApplHandle, Mode);
+  if (pThis) {
+    Ret = (PNIO_UINT32)((IController *)pThis)
+              ->iosystem_reconfig(ApplHandle, Mode, DeviceCnt, DeviceList,
+                                  PortInterconnectionCnt,
+                                  PortInterconnectionList);
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
-		if(pThis)
-		{
-			Ret = (PNIO_UINT32)((IController *)pThis)->iosystem_reconfig( ApplHandle, Mode, 
-				                                                          DeviceCnt, DeviceList, 																	  
-																		  PortInterconnectionCnt, PortInterconnectionList);
-		}
-		else
-		{
-			Ret = PNIO_ERR_WRONG_HND;
-		}
+  PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH,
+                    "<-PNIO_iosystem_reconfig, ret= %d", Ret);
 
-		PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_iosystem_reconfig, ret= %d" ,Ret);
+  PND_IOB_USR_EXIT
 
-	PND_IOB_USR_EXIT
-
-	return Ret;
+  return Ret;
 }
 
 /*===========================================================================
@@ -350,79 +335,65 @@ PNIO_UINT32 PNIO_CODE_ATTR PNIO_iosystem_reconfig(
 *
 *
 *==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR
-PNIO_data_read(
-    PNIO_UINT32     ApplHandle,
-	PNIO_ADDR * pAddr,
-	PNIO_UINT32 BufLen,
-	PNIO_UINT32 * pDataLen,
-	PNIO_UINT8 * pBuffer,
-	PNIO_IOXS IOlocState,
-	PNIO_IOXS * pIOremState)
-{
-    PNIO_UINT32 Ret;
-	/*
-	this function is reentrant
-	PND_IOB_USR_ENTER
-	*/
-    Ret = IController::get_handle_by_index(ApplHandle);
-    if (Ret == PND_INVALID_HANDLE)
-    return PNIO_ERR_WRONG_HND;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_data_read(PNIO_UINT32 ApplHandle,
+                                          PNIO_ADDR *pAddr, PNIO_UINT32 BufLen,
+                                          PNIO_UINT32 *pDataLen,
+                                          PNIO_UINT8 *pBuffer,
+                                          PNIO_IOXS IOlocState,
+                                          PNIO_IOXS *pIOremState) {
+  PNIO_UINT32 Ret;
+  /*
+  this function is reentrant
+  PND_IOB_USR_ENTER
+  */
+  Ret = IController::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-    PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE, "-> PNIO_data_read");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE, "-> PNIO_data_read");
 
-    PND_IOBC_TRACE_06(0, LSA_TRACE_LEVEL_NOTE,"ApplHandle=%d pAddr=%d  pDataLen=%d  pBuffer=%d IOlocState=%d  pIOremState=%d ",
-		ApplHandle,pAddr, pDataLen, pBuffer, &IOlocState, pIOremState );
-	
-    IController *pIController = IController::get_instance(ApplHandle);
+  PND_IOBC_TRACE_06(0, LSA_TRACE_LEVEL_NOTE,
+                    "ApplHandle=%d pAddr=%d  pDataLen=%d  pBuffer=%d "
+                    "IOlocState=%d  pIOremState=%d ",
+                    ApplHandle, pAddr, pDataLen, pBuffer, &IOlocState,
+                    pIOremState);
 
-    if(pIController)
-    {
-        if(!pDataLen) 
-        {
-            Ret = PNIO_ERR_PRM_LEN;
-        } 
-        else 
-        {
-            CIODU *pIODU = IController::get_IODU(ApplHandle);
+  IController *pIController = IController::get_instance(ApplHandle);
 
-            if(pIODU) 
-            {
-                Ret = pIODU->data_io_rw(pAddr, PND_ACC_T_READ, &IOlocState, pIOremState, &BufLen, pBuffer);
-			*pDataLen = BufLen;
-            } 
-            else 
-            {
-                Ret = PNIO_ERR_WRONG_HND;
-            }
-        }
-    }
-    else
-    {
+  if (pIController) {
+    if (!pDataLen) {
+      Ret = PNIO_ERR_PRM_LEN;
+    } else {
+      CIODU *pIODU = IController::get_IODU(ApplHandle);
+
+      if (pIODU) {
+        Ret = pIODU->data_io_rw(pAddr, PND_ACC_T_READ, &IOlocState, pIOremState,
+                                &BufLen, pBuffer);
+        *pDataLen = BufLen;
+      } else {
         Ret = PNIO_ERR_WRONG_HND;
+      }
     }
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
+  if (Ret == PNIO_OK && pBuffer) {
+    PND_IOBC_TRACE_03(
+        0, LSA_TRACE_LEVEL_NOTE_HIGH,
+        "<- PNIO_data_read, ret= %d, pBuffer=0x%08x, *pDataLen=%d", Ret,
+        pBuffer, *pDataLen);
+  } else {
+    PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_data_read, ret= %d",
+                      Ret);
+  }
 
-    if(Ret == PNIO_OK && pBuffer)
-    {
-        PND_IOBC_TRACE_03(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<- PNIO_data_read, ret= %d, pBuffer=0x%08x, *pDataLen=%d" ,Ret , pBuffer, *pDataLen);
-    } 
-    else 
-    {
-	PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_data_read, ret= %d" ,Ret);
-    }
+  /*
+  this function is reentrant
+  PND_IOB_USR_EXIT
+  */
 
-
-    /*
-    this function is reentrant
-    PND_IOB_USR_EXIT
-    */
-
-    return Ret;
+  return Ret;
 }
-
-
-
 
 /*===========================================================================
 * FUNCTION : PNIO_data_write
@@ -446,57 +417,46 @@ PNIO_data_read(
 *
 *
 *==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR
-PNIO_data_write(PNIO_UINT32 ApplHandle,
-	PNIO_ADDR * pAddr,
-	PNIO_UINT32 BufLen,
-	PNIO_UINT8 * pBuffer,
-	PNIO_IOXS IOlocState,
-	PNIO_IOXS * pIOremState)
-{
-    PNIO_UINT32 Ret;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_data_write(PNIO_UINT32 ApplHandle,
+                                           PNIO_ADDR *pAddr, PNIO_UINT32 BufLen,
+                                           PNIO_UINT8 *pBuffer,
+                                           PNIO_IOXS IOlocState,
+                                           PNIO_IOXS *pIOremState) {
+  PNIO_UINT32 Ret;
 
-	/*
-	this function is reentrant
-	PND_IOB_USR_ENTER
-	*/
+  /*
+  this function is reentrant
+  PND_IOB_USR_ENTER
+  */
 
-    Ret = IController::get_handle_by_index(ApplHandle);
-    if (Ret == PND_INVALID_HANDLE)
-    return PNIO_ERR_WRONG_HND;
+  Ret = IController::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_data_write");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_data_write");
 
-	
-	if(pBuffer)
-	{
-		PND_IOBC_TRACE_02(0, LSA_TRACE_LEVEL_NOTE_HIGH,"pBuffer, BufLen %d, %d", pBuffer, BufLen);
-	}
-	else 
-	{
-        PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "pBuffer == NULL");
-	}
+  if (pBuffer) {
+    PND_IOBC_TRACE_02(0, LSA_TRACE_LEVEL_NOTE_HIGH, "pBuffer, BufLen %d, %d",
+                      pBuffer, BufLen);
+  } else {
+    PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "pBuffer == NULL");
+  }
 
-	
-    CIODU *pIODU = IController::get_IODU(ApplHandle);
+  CIODU *pIODU = IController::get_IODU(ApplHandle);
 
-    if(pIODU) 
-    {
-        Ret = pIODU->data_io_rw(pAddr, PND_ACC_T_WRITE, &IOlocState, pIOremState, &BufLen, pBuffer);
-    } 
-    else
-    {
-        Ret = PNIO_ERR_WRONG_HND;
-    }
+  if (pIODU) {
+    Ret = pIODU->data_io_rw(pAddr, PND_ACC_T_WRITE, &IOlocState, pIOremState,
+                            &BufLen, pBuffer);
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
-    PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, " <- PNIO_data_write");
-	/*
-	PND_IOB_USR_EXIT
-	*/
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, " <- PNIO_data_write");
+  /*
+  PND_IOB_USR_EXIT
+  */
 
-	return Ret;
+  return Ret;
 }
-
 
 /*===========================================================================
 * FUNCTION : PNIO_register_cbf
@@ -513,38 +473,34 @@ PNIO_data_write(PNIO_UINT32 ApplHandle,
 *----------------------------------------------------------------------------
 * COMMENTS :
 *==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR
-PNIO_register_cbf(PNIO_UINT32 ApplHandle,
-	PNIO_CBE_TYPE CbeType,
-	PNIO_CBF Cbf)
-{
-    PNIO_UINT32 Ret;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_register_cbf(PNIO_UINT32 ApplHandle,
+                                             PNIO_CBE_TYPE CbeType,
+                                             PNIO_CBF Cbf) {
+  PNIO_UINT32 Ret;
 
-    IController *pThis;
+  IController *pThis;
 
-    Ret = IController::get_handle_by_index(ApplHandle);
-    if (Ret == PND_INVALID_HANDLE)
-        return PNIO_ERR_WRONG_HND;
+  Ret = IController::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-    pThis = IController::get_instance(ApplHandle);
-    if (pThis == PNIO_NULL)
-        return PNIO_ERR_SEQUENCE;
+  pThis = IController::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_SEQUENCE;
 
-	PND_IOB_USR_ENTER
+  PND_IOB_USR_ENTER
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_register_cbf");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_register_cbf");
 
-    if(pThis) {
-        Ret = ((IController *) pThis)->register_cbf(CbeType, Cbf);
-	} else {
-		Ret = PNIO_ERR_WRONG_HND;
-	}
+  if (pThis) {
+    Ret = ((IController *)pThis)->register_cbf(CbeType, Cbf);
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_register_cbf");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_register_cbf");
 
-	PND_IOB_USR_EXIT
+  PND_IOB_USR_EXIT
 
-	return Ret;
+  return Ret;
 }
 
 /*===========================================================================
@@ -566,41 +522,34 @@ PNIO_register_cbf(PNIO_UINT32 ApplHandle,
 *----------------------------------------------------------------------------
 * COMMENTS : -
 *==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR
-PNIO_rec_write_req(PNIO_UINT32 ApplHandle,
-	PNIO_ADDR * pAddr,
-	PNIO_UINT32 RecordIndex,
-	PNIO_REF ReqRef,
-	PNIO_UINT32 Length,
-	PNIO_UINT8 * pBuffer)
-{
-    PNIO_UINT32 Ret;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_rec_write_req(
+    PNIO_UINT32 ApplHandle, PNIO_ADDR *pAddr, PNIO_UINT32 RecordIndex,
+    PNIO_REF ReqRef, PNIO_UINT32 Length, PNIO_UINT8 *pBuffer) {
+  PNIO_UINT32 Ret;
 
-    IController *pThis;
+  IController *pThis;
 
-    Ret = IController::get_handle_by_index(ApplHandle);
-    if (Ret == PND_INVALID_HANDLE)
-        return PNIO_ERR_WRONG_HND;
+  Ret = IController::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-    pThis = IController::get_instance(ApplHandle);
-    if (pThis == PNIO_NULL)
-        return PNIO_ERR_SEQUENCE;
+  pThis = IController::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_SEQUENCE;
 
-	PND_IOB_USR_ENTER
+  PND_IOB_USR_ENTER
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_rec_write_req");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_rec_write_req");
 
-    if(pThis) {
-        Ret = pThis->record_write(pAddr, ReqRef, RecordIndex, Length, pBuffer);
-    } else {
-        Ret = PNIO_ERR_WRONG_HND;
-    }
+  if (pThis) {
+    Ret = pThis->record_write(pAddr, ReqRef, RecordIndex, Length, pBuffer);
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_rec_write_req");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_rec_write_req");
 
-	PND_IOB_USR_EXIT
+  PND_IOB_USR_EXIT
 
-	return Ret;
+  return Ret;
 }
 
 /*===========================================================================
@@ -622,40 +571,36 @@ PNIO_rec_write_req(PNIO_UINT32 ApplHandle,
 *----------------------------------------------------------------------------
 * COMMENTS :
 *==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR
-PNIO_rec_read_req(PNIO_UINT32 ApplHandle,
-	PNIO_ADDR * pAddr,
-	PNIO_UINT32 RecordIndex,
-	PNIO_REF ReqRef,
-	PNIO_UINT32 Length)
-{
-    PNIO_UINT32 Ret;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_rec_read_req(PNIO_UINT32 ApplHandle,
+                                             PNIO_ADDR *pAddr,
+                                             PNIO_UINT32 RecordIndex,
+                                             PNIO_REF ReqRef,
+                                             PNIO_UINT32 Length) {
+  PNIO_UINT32 Ret;
 
-    IController *pThis;
+  IController *pThis;
 
-    Ret = IController::get_handle_by_index(ApplHandle);
-    if (Ret == PND_INVALID_HANDLE)
-        return PNIO_ERR_WRONG_HND;
+  Ret = IController::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-    pThis = IController::get_instance(ApplHandle);
-    if (pThis == PNIO_NULL)
-        return PNIO_ERR_SEQUENCE;
+  pThis = IController::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_SEQUENCE;
 
-	PND_IOB_USR_ENTER
+  PND_IOB_USR_ENTER
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_rec_read_req");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_rec_read_req");
 
-    if(pThis) {
-        Ret = pThis->record_read(pAddr, ReqRef, RecordIndex, Length);
-	} else {
-		Ret = PNIO_ERR_WRONG_HND;
-	}
+  if (pThis) {
+    Ret = pThis->record_read(pAddr, ReqRef, RecordIndex, Length);
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_rec_read_req");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_rec_read_req");
 
-	PND_IOB_USR_EXIT
+  PND_IOB_USR_EXIT
 
-	return Ret;
+  return Ret;
 }
 
 /*===========================================================================
@@ -681,213 +626,191 @@ PNIO_rec_read_req(PNIO_UINT32 ApplHandle,
 *           A subsequent mode change of the controller from CLEAR to OPERATE
 *           sets the IOxS of the data from/to the activated device to GOOD.
 *==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR
-PNIO_device_activate(PNIO_UINT32 ApplHandle,
-	PNIO_ADDR * pAddr,
-	PNIO_DEV_ACT_TYPE DeviceMode)
-{
-    PNIO_UINT32 Ret;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_device_activate(PNIO_UINT32 ApplHandle,
+                                                PNIO_ADDR *pAddr,
+                                                PNIO_DEV_ACT_TYPE DeviceMode) {
+  PNIO_UINT32 Ret;
 
-    IController *pThis;
+  IController *pThis;
 
-    Ret = IController::get_handle_by_index(ApplHandle);
-    if (Ret == PND_INVALID_HANDLE)
-        return PNIO_ERR_WRONG_HND;
+  Ret = IController::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-    pThis = IController::get_instance(ApplHandle);
-    if (pThis == PNIO_NULL)
-        return PNIO_ERR_WRONG_HND;
+  pThis = IController::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_WRONG_HND;
 
-	PND_IOB_USR_ENTER
+  PND_IOB_USR_ENTER
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_device_activate");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_device_activate");
 
-    if(pThis) {
-        Ret = ((IController *) pThis)->device_activate(pAddr, DeviceMode);
-	} else {
-		Ret = PNIO_ERR_WRONG_HND;
-	}
+  if (pThis) {
+    Ret = ((IController *)pThis)->device_activate(pAddr, DeviceMode);
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_device_activate");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_device_activate");
 
-	PND_IOB_USR_EXIT
+  PND_IOB_USR_EXIT
 
-	return Ret;
+  return Ret;
 }
 
 /*==========================================================================*/
 PNIO_UINT32 PNIO_CODE_ATTR PNIO_interface_open(PNIO_UINT32 CpIndex,
-	PNIO_CBF cbf_RecReadConf,
-	PNIO_CBF cbf_AlarmInd,
-	PNIO_UINT32 * pApplHandle)
-{
-	PNIO_UINT32 Ret = PNIO_OK;
+                                               PNIO_CBF cbf_RecReadConf,
+                                               PNIO_CBF cbf_AlarmInd,
+                                               PNIO_UINT32 *pApplHandle) {
+  PNIO_UINT32 Ret = PNIO_OK;
 
-	IIOInterface *pThis = 0;
+  IIOInterface *pThis = 0;
 
-    if(!pApplHandle)
-        return PNIO_ERR_PRM_HND;
+  if (!pApplHandle) return PNIO_ERR_PRM_HND;
 
-    CpIndex--; // Internally CpIndex Starts with 0
+  CpIndex--;  // Internally CpIndex Starts with 0
 
-    Ret = IIOInterface::get_handle_by_index(CpIndex);
-    if (Ret == PND_INVALID_HANDLE)
-        return PNIO_ERR_PRM_CP_ID;
+  Ret = IIOInterface::get_handle_by_index(CpIndex);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_PRM_CP_ID;
 
-    pThis = IIOInterface::get_instance(CpIndex);
-    if (pThis == PNIO_NULL)
-        return PNIO_ERR_SEQUENCE;
+  pThis = IIOInterface::get_instance(CpIndex);
+  if (pThis == PNIO_NULL) return PNIO_ERR_SEQUENCE;
 
-	PND_IOB_USR_ENTER
+  PND_IOB_USR_ENTER
 
-	PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_interface_open CpIndex %d", CpIndex);
+  PND_IOBC_TRACE_01(0, LSA_TRACE_LEVEL_NOTE_HIGH,
+                    "->PNIO_interface_open CpIndex %d", CpIndex);
 
-	PND_IOBC_TRACE_04(0, LSA_TRACE_LEVEL_NOTE_HIGH, "CpIndex= %d, cbf_RecReadConf=%d cbf_AlarmInd=%d ApplHandle = %d",
-		CpIndex, cbf_RecReadConf, cbf_AlarmInd, pApplHandle);
+  PND_IOBC_TRACE_04(
+      0, LSA_TRACE_LEVEL_NOTE_HIGH,
+      "CpIndex= %d, cbf_RecReadConf=%d cbf_AlarmInd=%d ApplHandle = %d",
+      CpIndex, cbf_RecReadConf, cbf_AlarmInd, pApplHandle);
 
-	Ret = IIOInterface::interface_open(CpIndex,
-    cbf_RecReadConf,
-    cbf_AlarmInd,
-    pApplHandle);
+  Ret = IIOInterface::interface_open(CpIndex, cbf_RecReadConf, cbf_AlarmInd,
+                                     pApplHandle);
 
-	PND_IOBC_TRACE_02(0, LSA_TRACE_LEVEL_NOTE_HIGH, "PNIO_interface_open ret= %d, ApplHandle= %d" ,Ret, pApplHandle);
+  PND_IOBC_TRACE_02(0, LSA_TRACE_LEVEL_NOTE_HIGH,
+                    "PNIO_interface_open ret= %d, ApplHandle= %d", Ret,
+                    pApplHandle);
 
-	PND_IOB_USR_EXIT
+  PND_IOB_USR_EXIT
 
-	return Ret;
+  return Ret;
 }
 
 /*==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR PNIO_interface_close(PNIO_UINT32 ApplHandle)
-{
-	PNIO_UINT32 Ret = PNIO_OK;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_interface_close(PNIO_UINT32 ApplHandle) {
+  PNIO_UINT32 Ret = PNIO_OK;
 
-	IIOInterface *pThis = 0;
+  IIOInterface *pThis = 0;
 
-    Ret = IIOInterface::get_handle_by_index(ApplHandle);
-    if (Ret == PND_INVALID_HANDLE)
-        return PNIO_ERR_WRONG_HND;
+  Ret = IIOInterface::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-    pThis = IIOInterface::get_instance(ApplHandle);
-    if (pThis == PNIO_NULL)
-        return PNIO_ERR_WRONG_HND;
+  pThis = IIOInterface::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_WRONG_HND;
 
-	PND_IOB_USR_ENTER
+  PND_IOB_USR_ENTER
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_interface_close");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_interface_close");
 
-	Ret = IIOInterface::interface_close(ApplHandle);
+  Ret = IIOInterface::interface_close(ApplHandle);
 
-	PND_IOB_USR_EXIT
+  PND_IOB_USR_EXIT
 
-	return Ret;
+  return Ret;
 }
 
 /*==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR
-    PNIO_interface_register_cbf(PNIO_UINT32 ApplHandle,
-	PNIO_CBE_TYPE CbeType,
-	PNIO_CBF Cbf)
-{
-    PNIO_UINT32 Ret;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_interface_register_cbf(PNIO_UINT32 ApplHandle,
+                                                       PNIO_CBE_TYPE CbeType,
+                                                       PNIO_CBF Cbf) {
+  PNIO_UINT32 Ret;
 
-	IIOInterface *pThis;
+  IIOInterface *pThis;
 
-    Ret = IIOInterface::get_handle_by_index(ApplHandle);
-    if (Ret == PND_INVALID_HANDLE)
-        return PNIO_ERR_WRONG_HND;
+  Ret = IIOInterface::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-    pThis = IIOInterface::get_instance(ApplHandle);
-    if (pThis == PNIO_NULL)
-        return PNIO_ERR_SEQUENCE;
+  pThis = IIOInterface::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_SEQUENCE;
 
-	PND_IOB_USR_ENTER
+  PND_IOB_USR_ENTER
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_interface_register_cbf");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH,
+                    "->PNIO_interface_register_cbf");
 
-    if(pThis) {
-        Ret = ((IIOInterface *) pThis)->register_cbf(CbeType, Cbf);
-	} else {
-		Ret = PNIO_ERR_WRONG_HND;
-	}
+  if (pThis) {
+    Ret = ((IIOInterface *)pThis)->register_cbf(CbeType, Cbf);
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_interface_register_cbf");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH,
+                    "<-PNIO_interface_register_cbf");
 
-	PND_IOB_USR_EXIT
+  PND_IOB_USR_EXIT
 
-	return Ret;
+  return Ret;
 }
 
 /*==========================================================================*/
 PNIO_UINT32 PNIO_CODE_ATTR PNIO_interface_set_ip_and_nos(
-	    PNIO_UINT32               ApplHandle,
-        PNIO_SET_IP_NOS_MODE_TYPE Mode,
-		PNIO_IPv4                 IPv4,
-		PNIO_NOS                  NoS)
-{
-	IIOInterface *pThis = PNIO_NULL;
+    PNIO_UINT32 ApplHandle, PNIO_SET_IP_NOS_MODE_TYPE Mode, PNIO_IPv4 IPv4,
+    PNIO_NOS NoS) {
+  IIOInterface *pThis = PNIO_NULL;
 
-	PNIO_UINT32 Ret = IIOInterface::get_handle_by_index(ApplHandle);
-	if (Ret == PND_INVALID_HANDLE)
-		return PNIO_ERR_WRONG_HND;
+  PNIO_UINT32 Ret = IIOInterface::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-	pThis = IIOInterface::get_instance(ApplHandle);
-	if (pThis == PNIO_NULL)
-		return PNIO_ERR_SEQUENCE;
+  pThis = IIOInterface::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_SEQUENCE;
 
+  PND_IOB_USR_ENTER
 
-	PND_IOB_USR_ENTER
+  if (pThis) {
+    Ret = (PNIO_UINT32)((IIOInterface *)pThis)
+              ->set_ip_and_nos(ApplHandle, Mode, IPv4, NoS);
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
-		if(pThis)
-		{
-			Ret = (PNIO_UINT32)((IIOInterface *)pThis)->set_ip_and_nos(ApplHandle, Mode, IPv4, NoS);
-		}
-		else
-		{
-			Ret = PNIO_ERR_WRONG_HND;
-		}
+  PND_IOB_USR_EXIT
 
-	PND_IOB_USR_EXIT
-
-	return Ret;
+  return Ret;
 }
 
 /*==========================================================================*/
-PNIO_UINT32 PNIO_CODE_ATTR
-	PNIO_interface_rec_read_req(PNIO_UINT32 ApplHandle,
-	PNIO_ADDR * pAddr,
-	PNIO_UINT32 RecordIndex,
-	PNIO_REF ReqRef,
-	PNIO_UINT32 Length)
-{
-	IIOInterface *pThis = PNIO_NULL;
+PNIO_UINT32 PNIO_CODE_ATTR PNIO_interface_rec_read_req(PNIO_UINT32 ApplHandle,
+                                                       PNIO_ADDR *pAddr,
+                                                       PNIO_UINT32 RecordIndex,
+                                                       PNIO_REF ReqRef,
+                                                       PNIO_UINT32 Length) {
+  IIOInterface *pThis = PNIO_NULL;
 
-    PNIO_UINT32 Ret = IIOInterface::get_handle_by_index(ApplHandle);
-    if (Ret == PND_INVALID_HANDLE)
-        return PNIO_ERR_WRONG_HND;
+  PNIO_UINT32 Ret = IIOInterface::get_handle_by_index(ApplHandle);
+  if (Ret == PND_INVALID_HANDLE) return PNIO_ERR_WRONG_HND;
 
-    pThis = IIOInterface::get_instance(ApplHandle);
-    if (pThis == PNIO_NULL)
-        return PNIO_ERR_SEQUENCE;
+  pThis = IIOInterface::get_instance(ApplHandle);
+  if (pThis == PNIO_NULL) return PNIO_ERR_SEQUENCE;
 
-	PND_IOB_USR_ENTER
+  PND_IOB_USR_ENTER
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "->PNIO_interface_rec_read_req");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH,
+                    "->PNIO_interface_rec_read_req");
 
-    if(pThis) {
-        Ret = pThis->record_read(pAddr, ReqRef, RecordIndex, Length);
-	} else {
-		Ret = PNIO_ERR_WRONG_HND;
-	}
+  if (pThis) {
+    Ret = pThis->record_read(pAddr, ReqRef, RecordIndex, Length);
+  } else {
+    Ret = PNIO_ERR_WRONG_HND;
+  }
 
-	PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH, "<-PNIO_interface_rec_read_req");
+  PND_IOBC_TRACE_00(0, LSA_TRACE_LEVEL_NOTE_HIGH,
+                    "<-PNIO_interface_rec_read_req");
 
-	PND_IOB_USR_EXIT
+  PND_IOB_USR_EXIT
 
-	return Ret;
+  return Ret;
 }
-
-
 
 /*****************************************************************************/
 /*  Copyright (C) 2015 Siemens Aktiengesellschaft. All rights reserved.      */
