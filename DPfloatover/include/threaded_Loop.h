@@ -18,6 +18,7 @@
 #include "../motioncapture/include/motioncapture.h"
 #include "../network/include/crccheck.h"
 #include "../network/include/datapack.h"
+#include "../network/include/pnserver_t.h"
 #include "../network/include/tcpserver_t.h"
 // #include "../sql/include/database.h"
 #include <pthread.h>

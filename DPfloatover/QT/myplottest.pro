@@ -181,12 +181,7 @@ SOURCES += \
     ../network/libcrc/src/crckrmit.c \
     ../network/libcrc/src/crcsick.c \
     ../network/libcrc/src/nmea-chk.c \
-    ../joystick/src/joystick.cpp \
-    ../third_party/Profinet/src/examples/test_app/src/pnd_test_iob_core.cpp \
-    ../third_party/Profinet/src/examples/test_app/src/pnd_test_pduser.cpp \
-    ../third_party/Profinet/src/examples/test_app/src/pnd_test_helper.c \
-    ../third_party/Profinet/src/examples/test_app/src/pnd_test_iodu.c \
-    ../third_party/Profinet/src/examples/test_app/src/pnd_test_pntrc.c
+    ../joystick/src/joystick.cpp
 
 
 HEADERS += \
@@ -197,21 +192,21 @@ HEADERS += \
     thrusterdiag.h \
     display2ddialog.h \
     ../include/constants.h \
+    ../include/threaded_Loop.h \
+    ../include/realtimedata.h \
     ../network/include/crccheck.h \
     ../network/include/datapack.h \
+    ../network/include/tcpserver_t.h \
+    ../network/include/pnserver_t.h  \
     ../network/libcrc/include/checksum.h \
     ../motioncapture/include/motioncapture.h \
-    ../include/threaded_Loop.h \
-    ../network/include/tcpserver_t.h \
     ../sql/include/databasecpp.h \
-    ../include/realtimedata.h \
     ../joystick/include/gamepadmonitor.h \
     ../joystick/include/joystick.h \
     ../controller/pidcontroller/include/controller.h \
     ../controller/pidcontroller/include/kalmanfilter.h \
     ../controller/pidcontroller/include/pidcontroller.h \
     ../controller/pidcontroller/include/thrusterallocation.h \
-    ../third_party/Profinet/src/examples/test_app/src/pnd_test.h \
     ../third_party/Profinet/src/source/acp/src/common/acp_low.h \
     ../third_party/Profinet/src/source/acp/src/common/acp_pls.h \
     ../third_party/Profinet/src/source/acp/src/common/acp_sys.h \
@@ -230,7 +225,7 @@ HEADERS += \
     ../third_party/Profinet/src/source/clrpc/src/inc/clrpc_isv.h \
     ../third_party/Profinet/src/source/clrpc/src/inc/clrpc_pdu.h \
     ../third_party/Profinet/src/source/cm/src/common/cm_arcb.h \
-    ../third_party/Profinet/srng/src/source/acp/src/common/acp_low.h \
+    ../third_party/Profinet/src/source/acp/src/common/acp_low.h \
     ../third_party/Profinet/src/source/acp/src/common/acp_pls.h \
     ../third_party/Profinet/src/source/acp/src/common/acp_sys.h \
     ../third_party/Profinet/src/source/acp/src/common/acp_trc.h \
@@ -248,7 +243,7 @@ HEADERS += \
     ../third_party/Profinet/src/source/clrpc/src/inc/clrpc_isv.h \
     ../third_party/Profinet/src/source/clrpc/src/inc/clrpc_pdu.h \
     ../third_party/Profinet/src/source/cm/src/common/cm_arcb.h \
-    ../third_party/Profinet/src/source/cm/src/c/source/cm/src/common/cm_arcb_helper.h \
+    ../third_party/Profinet/src/source/cm/src/common/cm_arcb_helper.h \
     ../third_party/Profinet/src/source/cm/src/common/cm_err.h \
     ../third_party/Profinet/src/source/cm/src/common/cm_lib.h \
     ../third_party/Profinet/src/source/cm/src/common/cm_list.h \
@@ -566,7 +561,7 @@ HEADERS += \
     ../third_party/Profinet/src/source/tcip/src_iniche_core/tcp/tcp_timr.h \
     ../third_party/Profinet/src/source/tcip/src_iniche_core/tcp/tcp_var.h \
     ../third_party/Profinet/src/source/tcip/src_iniche_core/tcp/tcpip.h \
-    pntest.h
+
 
 
 FORMS += \

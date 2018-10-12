@@ -23,15 +23,6 @@ extern PNIO_UINT32 g_ApplHandle;
 
 #define PND_MAX_NR_OF_CP 50
 
-void HR(int iLen) {
-  int i;
-
-  for (i = 0; i < iLen; i++) printf("-");
-
-  printf("\n");
-  return;
-}
-
 void pnd_test_buffer_full(PNIO_UINT8* pBuffer, PNIO_UINT32 BufferSize) {
   if (PNTRC_fp != 0) {
     fwrite(pBuffer, 1, BufferSize, PNTRC_fp);
@@ -182,8 +173,10 @@ void pn_send_test() {
     pnd_test_set_mode(PNIO_MODE_OPERATE);
 
     sleep(10);
-    send_50ms_20Hz();
-    send_20ms_50Hz();
+    // send_50ms_20Hz();//PLC2
+    while (1) {
+      send_20ms_50Hz();  // PLC1
+    }
   }
   pnd_test_quit_application(g_ApplHandle);
 }
