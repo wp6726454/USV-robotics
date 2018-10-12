@@ -502,5 +502,6 @@ HEADERS  += mainwindow.h         \
     ../../src/source/tcip/src_iniche_core/tcp/tcp_seq.h \
     ../../src/source/tcip/src_iniche_core/tcp/tcp_timr.h \
     ../../src/source/tcip/src_iniche_core/tcp/tcp_var.h \
-    ../../src/source/tcip/src_iniche_core/tcp/tcpip.h
+    ../../src/source/tcip/src_iniche_core/tcp/tcpip.h \
+    pntest.h
 FORMS    += mainwindow.ui
