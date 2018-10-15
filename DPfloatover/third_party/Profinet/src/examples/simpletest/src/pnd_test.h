@@ -31,17 +31,35 @@
 
 #include <eps_rtos.h>
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "pniobase.h"
 #include "pniousrx.h"
 #include "servusrx.h"
 
-#define TEST_IODU_MAX_DATA_LEN 1024
+#include "eps_sys.h"
+
+#if defined(EPS_CFG_USE_PNDEVDRV)
+#include <PnDev_Driver_Inc.h> /* PnDevDrv Interface   */
+#include <precomp.h>
+#endif
+#include "eps_cp_hw.h"
+#include "eps_pn_drv_if.h"
+
+#include "pnd_sys.h"
+
+#include "eps_pndevdrv.h"
+#include "psi_cfg.h"
+
+#include "pniobase.h"
+
+#include "pnd_int.h"
+
+#include <eps_app.h>
+#include <eps_plf.h>
 
 void pnd_test_buffer_full(PNIO_UINT8 *pBuffer, PNIO_UINT32 BufferSize);
+void pnd_test_set_trace_level_done(void);
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,19 +74,7 @@ void pnd_test_register_setmode_cbf(void);
 void pnd_test_register_devact_cbf(void);
 void pnd_test_register_diag_req_cbf(void);
 void pnd_test_register_iosystem_reconfig(void);
-PNIO_UINT32 pnd_test_dev_activate(PNIO_DEV_ACT_TYPE activate_mode);
-void pnd_test_iodu_write();
-void pnd_test_iodu_read();
-void pnd_test_iodu();
-void pnd_test_trig_diag_req(void);
-void pnd_test_ifc_set_ip_and_nos(void);
-void pnd_test_iosystem_reconfig(void);
-void pnd_test_interface_open(PNIO_DEBUG_SETTINGS_PTR_TYPE DebugSettings);
-void pnd_test_interface_close();
-void pnd_test_register_interface_set_ip_and_nos(void);
-void pnd_test_register_interface_rema_read(void);
-PNIO_UINT32 pnd_test_interface_data_read();
-void pnd_test_interface_set_ip_and_nos(void);
+
 void my_pnd_test_network_adapter_selection(PNIO_CP_ID_TYPE *cp_id,
                                            PNIO_CP_ID_PTR_TYPE cp_list,
                                            PNIO_UINT8 nrofcp, FILE *_file);
@@ -80,7 +86,6 @@ void pnd_test_network_adapter_selection(PNIO_CP_ID_TYPE *cp_id,
 void pnd_test_quit_application(PNIO_UINT32 handle);
 
 void send_20ms_50Hz(void);
-
 void send_50ms_20Hz(void);
 
 #ifdef __cplusplus

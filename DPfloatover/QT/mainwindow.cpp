@@ -46,7 +46,7 @@ void MainWindow::on_PB_start_clicked() {
 }
 
 void MainWindow::on_PB_test_clicked() {
-  pn_send_test();
+
   std::thread t1(updatetest, std::ref(globalvar::_dataviewer));
   t1.detach();
 }
@@ -75,8 +75,8 @@ void MainWindow::initializeLoglist() {
 }
 
 void MainWindow::readfilebyline() {
-//  QString _path = globalvar::pwd + "/data/log";
-    QString _path = "/data/log";
+  //  QString _path = globalvar::pwd + "/data/log";
+  QString _path = QString::fromUtf8(logsavepath.c_str());
   QFile inputfile(_path);
   if (inputfile.open(QIODevice::ReadOnly)) {
     QTextStream in(&inputfile);

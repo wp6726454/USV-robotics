@@ -1,0 +1,368 @@
+<Object Name="HWConfiguration">
+  <ClassRID>1</ClassRID>
+  <Object Name="PROFINET Driver">
+    <ClassRID>2</ClassRID>
+    <Object Name="PROFINET 接口">
+      <ClassRID>3</ClassRID>
+      <Key AID="2">32768</Key>
+      <Variable Name="LADDR">
+        <AID>10</AID>
+        <Value Datatype="Scalar" Valuetype="UINT16">64</Value>
+      </Variable>
+      <Variable Name="DataRecordsConf">
+        <AID>11</AID>
+        <Value Datatype="SparseArray" Valuetype="BLOB">
+          <Field Key="4097" Length="12">300600080101000000000000</Field>
+          <Field Key="4096" Length="20">3000001001000000C0A80001FFFFFF00C0A80001</Field>
+          <Field Key="4100" Length="12">300900080101000000000000</Field>
+          <Field Key="4099" Length="32">A201001C010000000014000070726F66696E6574786164726976657234393333</Field>
+          <Field Key="65536" Length="12">F00000080100040000030000</Field>
+          <Field Key="32881" Length="12">025000080100000000000001</Field>
+          <Field Key="143616" Length="20">F001001001000000002A00080064000000000000</Field>
+        </Value>
+      </Variable>
+      <Link>
+        <AID>16</AID>
+        <TargetRID>2296447233</TargetRID>
+      </Link>
+    </Object>
+    <Object Name="端口">
+      <ClassRID>4</ClassRID>
+      <Key AID="2">32769</Key>
+      <Variable Name="LADDR">
+        <AID>10</AID>
+        <Value Datatype="Scalar" Valuetype="UINT16">65</Value>
+      </Variable>
+      <Variable Name="DataRecordsConf">
+        <AID>11</AID>
+        <Value Datatype="SparseArray" Valuetype="BLOB" />
+      </Variable>
+    </Object>
+  </Object>
+  <Object Name="PROFINET IO-System">
+    <RID>2296447233</RID>
+    <ClassRID>5</ClassRID>
+    <Variable Name="LADDR">
+      <AID>10</AID>
+      <Value Datatype="Scalar" Valuetype="UINT16">257</Value>
+    </Variable>
+    <Variable Name="IOsysParamConfig">
+      <AID>15</AID>
+      <Value Datatype="SparseArray" Valuetype="BLOB">
+        <Field Key="12352" Length="20">3040001001000000002A000800640258012C0000</Field>
+      </Value>
+    </Variable>
+    <Object Name="plc_1">
+      <GSDMLFile>gsdml-v2.32-#siemens-preconf_plc_1-20181010-020323.xml</GSDMLFile>
+      <ClassRID>6</ClassRID>
+      <Key AID="3">1</Key>
+      <Variable Name="DeactivatedConfig">
+        <AID>4</AID>
+        <Value Datatype="Scalar" Valuetype="BOOL">false</Value>
+      </Variable>
+      <Variable Name="LADDR">
+        <AID>10</AID>
+        <Value Datatype="Scalar" Valuetype="UINT16">263</Value>
+      </Variable>
+      <Variable Name="IODevParamConfig">
+        <AID>13</AID>
+        <Value Datatype="SparseArray" Valuetype="BLOB">
+          <Field Key="12544" Length="64">3100003C0101000001000001E84D40E393827D429B4D6FF38BF1CCF94000001100C8000000000000000000000000000000000000000000000000000000000000</Field>
+          <Field Key="12384" Length="32">3060001C01000000002A010D00640FE400000001000010000000000000000000</Field>
+          <Field Key="12546" Length="192">310200BC01000000000200580100000100018892000000000002003480000020002000010000FFFFFFFF000300030000C0000000000000000000000000000000000000000001000000000001000103E90001000000000001000103E800000000000000580100000200028892000000000002001A80010020002000010000FFFFFFFF000300030000C0000000000000000000000000000000000000000001000000000001000103E80000000000000001000103E9001900000000000000000000</Field>
+          <Field Key="12545" Length="96">3101005C010000000001000000000000000100440100000100000000023A000003E90000000203E80000100000180002000000000018000100010000000003E90000200000320001000000010032000100010000000000000000000000000000</Field>
+          <Field Key="12548" Length="64">3104003C010000000002001400010400000100010000FFFFFFFF00000000001400020400000100010000FFFFFFFF000000000000000000000000000000000000</Field>
+          <Field Key="12551" Length="28">310700180100000001000001889200000000000000010003C000A000</Field>
+        </Value>
+      </Variable>
+      <Object Name="Network Parameters">
+        <ClassRID>11</ClassRID>
+        <Variable Name="NetworkParamConfig">
+          <AID>12</AID>
+          <Value Datatype="SparseArray" Valuetype="BLOB">
+            <Field Key="4099" Length="24">A201001401000000000A0000706C63786231643065640000</Field>
+            <Field Key="4103" Length="12">3011000801010000FFFF0000</Field>
+          </Value>
+        </Variable>
+      </Object>
+      <Object Name="plc_1">
+        <ClassRID>7</ClassRID>
+        <Key AID="1">1</Key>
+        <Object Name="plc_1">
+          <ClassRID>8</ClassRID>
+          <Key AID="2">65520</Key>
+          <Variable Name="LADDR">
+            <AID>10</AID>
+            <Value Datatype="Scalar" Valuetype="UINT16">258</Value>
+          </Variable>
+          <Variable Name="DataRecordsConf">
+            <AID>11</AID>
+            <Value Datatype="SparseArray" Valuetype="BLOB" />
+          </Variable>
+          <Variable Name="DataRecordsTransferSequence">
+            <AID>14</AID>
+            <Value Datatype="Scalar" Valuetype="BLOB" Length="0" />
+          </Variable>
+        </Object>
+        <Object Name="位置&amp;速度控制">
+          <ClassRID>10</ClassRID>
+          <Key AID="2">1000</Key>
+          <Variable Name="LADDR">
+            <AID>10</AID>
+            <Value Datatype="Scalar" Valuetype="UINT16">261</Value>
+          </Variable>
+          <Variable Name="DataRecordsConf">
+            <AID>11</AID>
+            <Value Datatype="SparseArray" Valuetype="BLOB" />
+          </Variable>
+          <Variable Name="DataRecordsTransferSequence">
+            <AID>14</AID>
+            <Value Datatype="Scalar" Valuetype="BLOB" Length="0" />
+          </Variable>
+          <Variable Name="IOmapping">
+            <AID>5</AID>
+            <Value Datatype="Scalar" Valuetype="STRUCT">
+              <Element AID="6" Datatype="Scalar" Valuetype="UINT32">0</Element>
+              <Element AID="7" Datatype="Scalar" Valuetype="UINT16">0</Element>
+              <Element AID="8" Datatype="Scalar" Valuetype="UINT32">0</Element>
+              <Element AID="9" Datatype="Scalar" Valuetype="UINT16">24</Element>
+            </Value>
+          </Variable>
+        </Object>
+        <Object Name="RT_功率\速度&amp;位置\使能&amp;错误">
+          <ClassRID>10</ClassRID>
+          <Key AID="2">1001</Key>
+          <Variable Name="LADDR">
+            <AID>10</AID>
+            <Value Datatype="Scalar" Valuetype="UINT16">262</Value>
+          </Variable>
+          <Variable Name="DataRecordsConf">
+            <AID>11</AID>
+            <Value Datatype="SparseArray" Valuetype="BLOB" />
+          </Variable>
+          <Variable Name="DataRecordsTransferSequence">
+            <AID>14</AID>
+            <Value Datatype="Scalar" Valuetype="BLOB" Length="0" />
+          </Variable>
+          <Variable Name="IOmapping">
+            <AID>5</AID>
+            <Value Datatype="Scalar" Valuetype="STRUCT">
+              <Element AID="6" Datatype="Scalar" Valuetype="UINT32">0</Element>
+              <Element AID="7" Datatype="Scalar" Valuetype="UINT16">50</Element>
+              <Element AID="8" Datatype="Scalar" Valuetype="UINT32">0</Element>
+              <Element AID="9" Datatype="Scalar" Valuetype="UINT16">0</Element>
+            </Value>
+          </Variable>
+        </Object>
+      </Object>
+    </Object>
+    <Object Name="plc_2">
+      <GSDMLFile>gsdml-v2.32-#siemens-preconf_plc_2-20181010-020341.xml</GSDMLFile>
+      <ClassRID>6</ClassRID>
+      <Key AID="3">2</Key>
+      <Variable Name="DeactivatedConfig">
+        <AID>4</AID>
+        <Value Datatype="Scalar" Valuetype="BOOL">false</Value>
+      </Variable>
+      <Variable Name="LADDR">
+        <AID>10</AID>
+        <Value Datatype="Scalar" Valuetype="UINT16">265</Value>
+      </Variable>
+      <Variable Name="IODevParamConfig">
+        <AID>13</AID>
+        <Value Datatype="SparseArray" Valuetype="BLOB">
+          <Field Key="12544" Length="64">3100003C010100000100000132723D8278979D4CBE68D41AEF034B194000001100C8000000000000000000000000000000000000000000000000000000000000</Field>
+          <Field Key="12384" Length="32">3060001C01000000002A010D00640FE400000001000010000000000000000000</Field>
+          <Field Key="12546" Length="192">310200BC01000000000200580100000100018892000000000002003480020020002000010000FFFFFFFF000300030000C0000000000000000000000000000000000000000001000000000001000103E90001000000000001000103E800000000000000580100000200028892000000000002001A80030020002000010000FFFFFFFF000300030000C0000000000000000000000000000000000000000001000000000001000103E80000000000000001000103E9001900000000000000000000</Field>
+          <Field Key="12545" Length="96">3101005C010000000001000000000000000100440100000100000000023A000003E90000000203E80000100000180002000000000018000100010000000003E90000200000320001000000010032000100010000000000000000000000000000</Field>
+          <Field Key="12548" Length="64">3104003C010000000002001400010400000100010000FFFFFFFF00000000001400020400000100010000FFFFFFFF000000000000000000000000000000000000</Field>
+          <Field Key="12551" Length="28">310700180100000001000001889200000000000000010003C000A000</Field>
+        </Value>
+      </Variable>
+      <Object Name="Network Parameters">
+        <ClassRID>11</ClassRID>
+        <Variable Name="NetworkParamConfig">
+          <AID>12</AID>
+          <Value Datatype="SparseArray" Valuetype="BLOB">
+            <Field Key="4099" Length="24">A201001401000000000A0000706C63786232643161640000</Field>
+            <Field Key="4103" Length="12">3011000801010000FFFF0000</Field>
+          </Value>
+        </Variable>
+      </Object>
+      <Object Name="plc_2">
+        <ClassRID>7</ClassRID>
+        <Key AID="1">1</Key>
+        <Object Name="plc_2">
+          <ClassRID>8</ClassRID>
+          <Key AID="2">65520</Key>
+          <Variable Name="LADDR">
+            <AID>10</AID>
+            <Value Datatype="Scalar" Valuetype="UINT16">267</Value>
+          </Variable>
+          <Variable Name="DataRecordsConf">
+            <AID>11</AID>
+            <Value Datatype="SparseArray" Valuetype="BLOB" />
+          </Variable>
+          <Variable Name="DataRecordsTransferSequence">
+            <AID>14</AID>
+            <Value Datatype="Scalar" Valuetype="BLOB" Length="0" />
+          </Variable>
+        </Object>
+        <Object Name="速度&amp;位置控制">
+          <ClassRID>10</ClassRID>
+          <Key AID="2">1000</Key>
+          <Variable Name="LADDR">
+            <AID>10</AID>
+            <Value Datatype="Scalar" Valuetype="UINT16">270</Value>
+          </Variable>
+          <Variable Name="DataRecordsConf">
+            <AID>11</AID>
+            <Value Datatype="SparseArray" Valuetype="BLOB" />
+          </Variable>
+          <Variable Name="DataRecordsTransferSequence">
+            <AID>14</AID>
+            <Value Datatype="Scalar" Valuetype="BLOB" Length="0" />
+          </Variable>
+          <Variable Name="IOmapping">
+            <AID>5</AID>
+            <Value Datatype="Scalar" Valuetype="STRUCT">
+              <Element AID="6" Datatype="Scalar" Valuetype="UINT32">0</Element>
+              <Element AID="7" Datatype="Scalar" Valuetype="UINT16">0</Element>
+              <Element AID="8" Datatype="Scalar" Valuetype="UINT32">24</Element>
+              <Element AID="9" Datatype="Scalar" Valuetype="UINT16">24</Element>
+            </Value>
+          </Variable>
+        </Object>
+        <Object Name="RT_功率\速度&amp;位置\使能&amp;错误">
+          <ClassRID>10</ClassRID>
+          <Key AID="2">1001</Key>
+          <Variable Name="LADDR">
+            <AID>10</AID>
+            <Value Datatype="Scalar" Valuetype="UINT16">271</Value>
+          </Variable>
+          <Variable Name="DataRecordsConf">
+            <AID>11</AID>
+            <Value Datatype="SparseArray" Valuetype="BLOB" />
+          </Variable>
+          <Variable Name="DataRecordsTransferSequence">
+            <AID>14</AID>
+            <Value Datatype="Scalar" Valuetype="BLOB" Length="0" />
+          </Variable>
+          <Variable Name="IOmapping">
+            <AID>5</AID>
+            <Value Datatype="Scalar" Valuetype="STRUCT">
+              <Element AID="6" Datatype="Scalar" Valuetype="UINT32">50</Element>
+              <Element AID="7" Datatype="Scalar" Valuetype="UINT16">50</Element>
+              <Element AID="8" Datatype="Scalar" Valuetype="UINT32">0</Element>
+              <Element AID="9" Datatype="Scalar" Valuetype="UINT16">0</Element>
+            </Value>
+          </Variable>
+        </Object>
+      </Object>
+    </Object>
+    <Object Name="plc_3">
+      <GSDMLFile>gsdml-v2.32-#siemens-preconf_plc_3-20181010-020353.xml</GSDMLFile>
+      <ClassRID>6</ClassRID>
+      <Key AID="3">3</Key>
+      <Variable Name="DeactivatedConfig">
+        <AID>4</AID>
+        <Value Datatype="Scalar" Valuetype="BOOL">false</Value>
+      </Variable>
+      <Variable Name="LADDR">
+        <AID>10</AID>
+        <Value Datatype="Scalar" Valuetype="UINT16">272</Value>
+      </Variable>
+      <Variable Name="IODevParamConfig">
+        <AID>13</AID>
+        <Value Datatype="SparseArray" Valuetype="BLOB">
+          <Field Key="12544" Length="64">3100003C01010000010000015205A4D09D69EC43A5F609C37F627D814000001100C8000000000000000000000000000000000000000000000000000000000000</Field>
+          <Field Key="12384" Length="32">3060001C01000000002A010D00640FE400000001000010000000000000000000</Field>
+          <Field Key="12546" Length="192">310200BC01000000000200580100000100018892000000000002003480040020002000010000FFFFFFFF000300030000C0000000000000000000000000000000000000000001000000000001000103E90001000000000001000103E800000000000000580100000200028892000000000002002A80050020002000010000FFFFFFFF000300030000C0000000000000000000000000000000000000000001000000000001000103E80000000000000001000103E9002900000000000000000000</Field>
+          <Field Key="12545" Length="96">3101005C010000000001000000000000000100440100000100000000023A000003E90000000203E80000100000280002000000000028000100010000000003E90000200000320001000000010032000100010000000000000000000000000000</Field>
+          <Field Key="12548" Length="64">3104003C010000000002001400010400000100010000FFFFFFFF00000000001400020400000100010000FFFFFFFF000000000000000000000000000000000000</Field>
+          <Field Key="12551" Length="28">310700180100000001000001889200000000000000010003C000A000</Field>
+        </Value>
+      </Variable>
+      <Object Name="Network Parameters">
+        <ClassRID>11</ClassRID>
+        <Variable Name="NetworkParamConfig">
+          <AID>12</AID>
+          <Value Datatype="SparseArray" Valuetype="BLOB">
+            <Field Key="4099" Length="24">A201001401000000000A0000706C63786233313136630000</Field>
+            <Field Key="4103" Length="12">3011000801010000FFFF0000</Field>
+          </Value>
+        </Variable>
+      </Object>
+      <Object Name="plc_3">
+        <ClassRID>7</ClassRID>
+        <Key AID="1">1</Key>
+        <Object Name="plc_3">
+          <ClassRID>8</ClassRID>
+          <Key AID="2">65520</Key>
+          <Variable Name="LADDR">
+            <AID>10</AID>
+            <Value Datatype="Scalar" Valuetype="UINT16">274</Value>
+          </Variable>
+          <Variable Name="DataRecordsConf">
+            <AID>11</AID>
+            <Value Datatype="SparseArray" Valuetype="BLOB" />
+          </Variable>
+          <Variable Name="DataRecordsTransferSequence">
+            <AID>14</AID>
+            <Value Datatype="Scalar" Valuetype="BLOB" Length="0" />
+          </Variable>
+        </Object>
+        <Object Name="位置&amp;速度控制">
+          <ClassRID>10</ClassRID>
+          <Key AID="2">1000</Key>
+          <Variable Name="LADDR">
+            <AID>10</AID>
+            <Value Datatype="Scalar" Valuetype="UINT16">277</Value>
+          </Variable>
+          <Variable Name="DataRecordsConf">
+            <AID>11</AID>
+            <Value Datatype="SparseArray" Valuetype="BLOB" />
+          </Variable>
+          <Variable Name="DataRecordsTransferSequence">
+            <AID>14</AID>
+            <Value Datatype="Scalar" Valuetype="BLOB" Length="0" />
+          </Variable>
+          <Variable Name="IOmapping">
+            <AID>5</AID>
+            <Value Datatype="Scalar" Valuetype="STRUCT">
+              <Element AID="6" Datatype="Scalar" Valuetype="UINT32">0</Element>
+              <Element AID="7" Datatype="Scalar" Valuetype="UINT16">0</Element>
+              <Element AID="8" Datatype="Scalar" Valuetype="UINT32">48</Element>
+              <Element AID="9" Datatype="Scalar" Valuetype="UINT16">40</Element>
+            </Value>
+          </Variable>
+        </Object>
+        <Object Name="RT_功率\速度&amp;位置\使能&amp;错误">
+          <ClassRID>10</ClassRID>
+          <Key AID="2">1001</Key>
+          <Variable Name="LADDR">
+            <AID>10</AID>
+            <Value Datatype="Scalar" Valuetype="UINT16">278</Value>
+          </Variable>
+          <Variable Name="DataRecordsConf">
+            <AID>11</AID>
+            <Value Datatype="SparseArray" Valuetype="BLOB" />
+          </Variable>
+          <Variable Name="DataRecordsTransferSequence">
+            <AID>14</AID>
+            <Value Datatype="Scalar" Valuetype="BLOB" Length="0" />
+          </Variable>
+          <Variable Name="IOmapping">
+            <AID>5</AID>
+            <Value Datatype="Scalar" Valuetype="STRUCT">
+              <Element AID="6" Datatype="Scalar" Valuetype="UINT32">100</Element>
+              <Element AID="7" Datatype="Scalar" Valuetype="UINT16">50</Element>
+              <Element AID="8" Datatype="Scalar" Valuetype="UINT32">0</Element>
+              <Element AID="9" Datatype="Scalar" Valuetype="UINT16">0</Element>
+            </Value>
+          </Variable>
+        </Object>
+      </Object>
+    </Object>
+  </Object>
+</Object>

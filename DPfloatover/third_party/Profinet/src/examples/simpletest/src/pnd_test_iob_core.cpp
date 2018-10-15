@@ -28,28 +28,14 @@
 /*                                                                           */
 /*                                                                           */
 /*****************************************************************************/
-#include "psi_cfg.h"
-#include "stdio.h"
-
-#if (EPS_PLF == EPS_PLF_WINDOWS_X86)
-#include "conio.h"
-#endif
-
-#include "pniobase.h"
-#include "pniobase.h"
-#include "pniousrx.h"
-#include "servusrx.h"
-
-#include "eps_sys.h"
-
-#include "pnd_int.h"
-#include "pnd_sys.h"
 
 #include "pnd_test.h"
 
 #define PND_INVALID_HANDLE 0xFFFF
+#define TEST_IODU_MAX_DATA_LEN 1024
 
 volatile PNIO_MODE_TYPE g_currentMode = PNIO_MODE_OFFLINE;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -1030,22 +1016,6 @@ void callback_for_ifc_set_ip_and_nos(PNIO_CBE_PRM *pCbfPrm) {
   }
 }
 
-void callback_for_ifc_rema_read(PNIO_CBE_PRM *pCbfPrm) {
-#if (EPS_PLF == EPS_PLF_WINDOWS_X86)
-  wait_for_con();
-#endif
-
-  printf("\ncallback_for_ifc_rema_read is called!!\n\n");
-
-  FILE *hXMLFile = fopen("rema.xml", "w+");
-
-  fwrite(pCbfPrm->RemaReadConf.RemaXMLBuffer, 1,
-         pCbfPrm->RemaReadConf.RemaXMLBufferLength, (FILE *)hXMLFile);
-
-  fflush(hXMLFile);
-  fclose(hXMLFile);
-}
-
 void callback_for_iosystem_reconfig(PNIO_CBE_PRM *pCbfPrm) {
 #if (EPS_PLF == EPS_PLF_WINDOWS_X86)
   wait_for_con();
@@ -1092,30 +1062,6 @@ void callback_for_ifc_record_read_conf(PNIO_CBE_PRM *pCbfPrm) {
   }
 }
 
-PNIO_UINT32 pnd_test_dev_activate(PNIO_DEV_ACT_TYPE activate_mode) {
-  PNIO_ADDR Addr;
-  PNIO_UINT32 result = PNIO_OK;
-
-  Addr.AddrType = PNIO_ADDR_LOG;
-  Addr.IODataType = PNIO_IO_OUT;
-
-  printf("\n ----------------------------------------");
-  printf("\n Any logical address of the device : ");
-  scanf("%d", (int *)&Addr.u.Addr);
-
-  // a logical address has no direction (don't care) but we set it to a valid
-  // value
-  Addr.IODataType = PNIO_IO_IN;
-
-  result = PNIO_device_activate(g_ApplHandle, &Addr, activate_mode);
-
-  if (result != PNIO_OK) {
-    printf("PNIO_device_activate returned with error: %d \n", (int)result);
-  }
-
-  return result;
-}
-
 void pnd_test_set_mode(PNIO_MODE_TYPE mode) {
   if (!(g_ApplHandle == PND_INVALID_HANDLE)) {
     PNIO_set_mode(g_ApplHandle, mode);
@@ -1145,222 +1091,6 @@ void pnd_test_controller_close(void) {
   }
 }
 
-void pnd_test_trig_diag_req(void) {
-  PNIO_CTRL_DIAG *pDiagReq = (PNIO_CTRL_DIAG *)malloc(sizeof(PNIO_CTRL_DIAG));
-
-  pDiagReq->ReqRef = 0;
-  PNIO_ADDR Addr;
-
-  printf("\n\n\n");
-  printf("----------------------------------------");
-  printf("\n Which diagnostic service would you like to request? \n");
-  printf("----------------------------------------");
-
-  int cmd = 777;
-  PNIO_UINT32 result;
-
-  while (cmd != 4) {
-    printf("\n\n");
-    printf("============================================\n");
-    printf("1...PNIO_CTRL_DIAG_CONFIG_SUBMODULE_LIST	\n");
-    printf("2...PNIO_CTRL_DIAG_CONFIG_NAME_ADDR_INFO	\n");
-    printf("3...PNIO_CTRL_DIAG_DEVICE_DIAGNOSTIC	    \n");
-    printf("============================================\n");
-    printf("4...Quit This                               \n");
-    printf("============================================\n\n");
-
-    scanf("%d", &cmd);
-
-    if (cmd >= 4)  // quit this!
-    {
-      break;
-    }
-
-    switch (cmd) {
-      case 1:  // PNIO_CTRL_DIAG_CONFIG_SUBMODULE_LIST:
-        pDiagReq->DiagService = PNIO_CTRL_DIAG_CONFIG_SUBMODULE_LIST;
-        break;
-
-      case 2:  // PNIO_CTRL_DIAG_CONFIG_NAME_ADDR_INFO:
-        pDiagReq->DiagService = PNIO_CTRL_DIAG_CONFIG_NAME_ADDR_INFO;
-        break;
-
-      case 3:  // PNIO_CTRL_DIAG_DEVICE_DIAGNOSTIC:
-        pDiagReq->DiagService = PNIO_CTRL_DIAG_DEVICE_DIAGNOSTIC;
-
-        printf("\n ----------------------------------------");
-        printf("\n Logical address :                      \n");
-
-        scanf("%d", (PNIO_UINT32 *)&Addr.u.Addr);
-
-        pDiagReq->u.Addr.u.Addr = Addr.u.Addr;
-        pDiagReq->u.Addr.AddrType = PNIO_ADDR_LOG;
-        pDiagReq->u.Addr.IODataType = PNIO_IO_IN;
-        break;
-    }
-
-    result = PNIO_ctrl_diag_req(g_ApplHandle,
-                                pDiagReq);  // TODO: return error values are
-                                            // defined in PGH_IO-Base_76.pdf, bu
-                                            // errrorlari da bildir.
-
-    printf("Diagnostic returned result: 0x%x\n", result);
-  }
-
-  free(pDiagReq);
-}
-
-void pnd_test_iosystem_reconfig(void) {
-  PNIO_IOS_RECONFIG_MODE Mode;
-  PNIO_UINT32 DeviceCnt = 0;
-  PNIO_ADDR *DeviceList = PNIO_NULL;
-  PNIO_UINT32 PortInterconnectionCnt = 0;
-  PNIO_ADDR *PortInterconnectionList = PNIO_NULL;
-  PNIO_UINT32 result;
-
-  unsigned int cmd = 777;
-
-  printf("\n\n\n");
-  printf("--------------------------------------------------\n");
-  printf("Which step would you like to choose?               \n");
-  printf("--------------------------------------------------\n");
-
-  printf("\n");
-  printf("=================================\n");
-  printf("1...PNIO_IOS_RECONFIG_MODE_DEACT \n");
-  printf("2...PNIO_IOS_RECONFIG_MODE_TAILOR\n");
-  printf("=================================\n");
-  printf("3...Quit This                    \n");
-  printf("=================================\n\n");
-
-  scanf("%d", &cmd);
-
-  if (cmd >= 3 || cmd <= 0) {
-    return;
-  }
-
-  Mode = static_cast<PNIO_IOS_RECONFIG_MODE>(cmd);
-
-  switch (Mode) {
-    case PNIO_IOS_RECONFIG_MODE_DEACT:  // Step-1
-    {
-      // No need to do anything,
-      // This step only performs deactivation to the devices
-
-      break;
-    }
-    case PNIO_IOS_RECONFIG_MODE_TAILOR:  // Step-2
-    {
-      int count = 0;
-      int laddr = 0;
-
-      printf("\n");
-      printf(
-          "--------------------------------------------------------------------"
-          "----\n");
-      printf(
-          "Please type the number of the optional IODevices in new "
-          "configuration.    \n");
-      printf(
-          "--------------------------------------------------------------------"
-          "----\n");
-
-      printf("Device Count: ");
-      scanf("%d", &count);
-      DeviceCnt = count;
-
-      if (DeviceCnt != 0) {
-        DeviceList = (PNIO_ADDR *)malloc(DeviceCnt * sizeof(PNIO_ADDR));
-        if (DeviceList == NULL) {
-          printf("DeviceList allocation failure!\n");
-          return;
-        }
-
-        printf("\n");
-        printf(
-            "------------------------------------------------------------------"
-            "----------    \n");
-        printf(
-            "Please type logical addresses of the optional IODevices in new "
-            "configuration.     \n");
-        printf(
-            "------------------------------------------------------------------"
-            "----------    \n");
-
-        for (PNIO_UINT16 i = 0; i < DeviceCnt; i++) {
-          printf("\nDevice #%02d: ", i + 1);
-          scanf("%d", &laddr);
-          DeviceList[i].AddrType = PNIO_ADDR_LOG;
-          DeviceList[i].IODataType = PNIO_IO_IN;
-          DeviceList[i].u.Addr = laddr;
-        }
-      }
-
-      printf("\n");
-      printf(
-          "--------------------------------------------------------------------"
-          "----\n");
-      printf(
-          "Please type the number of entries in the PortInterconnectionList.   "
-          "      \n");
-      printf(
-          "--------------------------------------------------------------------"
-          "----\n");
-
-      printf("PortInterconnectionCnt: ");
-      scanf("%d", &count);
-      PortInterconnectionCnt = count;
-
-      if (PortInterconnectionCnt != 0) {
-        PortInterconnectionList =
-            (PNIO_ADDR *)malloc(2 * PortInterconnectionCnt * sizeof(PNIO_ADDR));
-        if (PortInterconnectionList == NULL) {
-          printf("PortInterconnectionList allocation failure!\n");
-          return;
-        }
-
-        printf("\n");
-        printf(
-            "------------------------------------------------------------------"
-            "------\n");
-        printf(
-            "Please type logical addresses of the PortInterconnectionList "
-            "pairs.       \n");
-        printf(
-            "------------------------------------------------------------------"
-            "------\n");
-      }
-
-      for (PNIO_UINT16 i = 0; i < (2 * PortInterconnectionCnt); i = i + 2) {
-        printf("\nPortInterconnectionList #%2d,1: ", (i / 2) + 1);
-        scanf("%d", &laddr);
-        PortInterconnectionList[i].AddrType = PNIO_ADDR_LOG;
-        PortInterconnectionList[i].IODataType = PNIO_IO_IN;
-        PortInterconnectionList[i].u.Addr = laddr;
-        printf("\nPortInterconnectionList #%2d,2: ", (i / 2) + 1);
-        scanf("%d", &laddr);
-        PortInterconnectionList[i + 1].AddrType = PNIO_ADDR_LOG;
-        PortInterconnectionList[i + 1].IODataType = PNIO_IO_IN;
-        PortInterconnectionList[i + 1].u.Addr = laddr;
-      }
-
-      break;
-    }
-  }
-
-  result =
-      PNIO_iosystem_reconfig(g_ApplHandle, Mode, DeviceCnt, DeviceList,
-                             PortInterconnectionCnt, PortInterconnectionList);
-
-  printf("PNIO_iosystem_reconfig returned result: 0x%x\n", result);
-
-  if (Mode == PNIO_IOS_RECONFIG_MODE_TAILOR) {
-    if (DeviceList != PNIO_NULL) free(DeviceList);
-
-    if (PortInterconnectionList != PNIO_NULL) free(PortInterconnectionList);
-  }
-}
-
 void pnd_test_register_setmode_cbf(void) {
   PNIO_register_cbf(g_ApplHandle, PNIO_CBE_MODE_IND,
                     callback_for_mode_change_indication);
@@ -1381,187 +1111,154 @@ void pnd_test_register_iosystem_reconfig(void) {
                     callback_for_iosystem_reconfig);
 }
 
-void pnd_test_interface_open(PNIO_DEBUG_SETTINGS_PTR_TYPE DebugSettings) {
-  PNIO_UINT32 result;
+void my_pnd_test_network_adapter_selection(PNIO_CP_ID_TYPE *cp_id,
+                                           PNIO_CP_ID_PTR_TYPE cp_list,
+                                           PNIO_UINT8 nrofcp, FILE *_file) {
+  PNIO_CP_ID_PTR_TYPE pCpList = cp_list;
+  PNIO_CP_ID_PTR_TYPE pDevice;
 
-  LSA_UNUSED_ARG(DebugSettings);
-
-  result = PNIO_interface_open(1, callback_for_ifc_record_read_conf,
-                               callback_for_alarm_ind, &g_ApplHandle);
-  if (result != PNIO_OK) {
-    printf("PNIO_interface_open returned error: %d\n", (int)result);
+  if (nrofcp == 0) {
+    fprintf(_file, "\nNo network adapter found!");
+    return;
   }
-}
 
-void pnd_test_interface_close(void) {
-  PNIO_UINT32 result;
-  result = PNIO_interface_close(g_ApplHandle);
-  if (result != PNIO_OK) {
-    printf("pnd_test_controller_close returned Error No.: %d \n", (int)result);
+  pDevice = (PNIO_CP_ID_PTR_TYPE)&pCpList[0];
+
+  if (pDevice->CpSelection == PNIO_CP_SELECT_WITH_MAC_ADDRESS) {
+    fprintf(_file, "\r\n %d ... %02x:%02x:%02x:%02x:%02x:%02x  -  %s", 0,
+            pDevice->CpMacAddr[0], pDevice->CpMacAddr[1], pDevice->CpMacAddr[2],
+            pDevice->CpMacAddr[3], pDevice->CpMacAddr[4], pDevice->CpMacAddr[5],
+            pDevice->Description);
   }
+  // only one network board
+  memcpy(cp_id, &pCpList[0], sizeof(PNIO_CP_ID_TYPE));
 }
 
-void pnd_test_register_interface_set_ip_and_nos(void) {
-  PNIO_interface_register_cbf(g_ApplHandle, PNIO_CBE_IFC_SET_ADDR_CONF,
-                              callback_for_ifc_set_ip_and_nos);
-}
-
-void pnd_test_register_interface_rema_read(void) {
-  PNIO_interface_register_cbf(g_ApplHandle, PNIO_CBE_REMA_READ_CONF,
-                              callback_for_ifc_rema_read);
-}
-
-PNIO_UINT32 pnd_test_interface_data_read() {
-  PNIO_REF ReqRef = 0;
-  PNIO_UINT32 Length = 0;
-
-  PNIO_ADDR Addr;
-  PNIO_UINT32 result = PNIO_OK;
-
-  Addr.AddrType = PNIO_ADDR_LOG;
-  Addr.IODataType = PNIO_IO_IN;
-
-  printf("\n\n\n");
-  printf("----------------------------------------");
-  printf("\n Logical address : ");
-  scanf("%d", (int *)&Addr.u.Addr);
-
-  Length = 266;
-
+void pnd_test_network_adapter_selection(PNIO_CP_ID_TYPE *cp_id,
+                                        PNIO_CP_ID_PTR_TYPE cp_list,
+                                        PNIO_UINT8 nrofcp) {
+  PNIO_UINT8 i;
+  PNIO_CP_ID_PTR_TYPE pCpList = cp_list;
+  PNIO_CP_ID_PTR_TYPE pDevice;
   int cmd = 777;
 
-  while (cmd != 1) {
-    printf("\n\n");
-    printf("0...PDIOSystem Info         ( Index 0x0000B081 )\n");
-    printf("================================================\n");
-    printf("1..Quit This\n\n");
+  if (nrofcp == 0) {
+    printf("\nNo network adapter found!");
+    return;
+  }
 
-    scanf("%d", &cmd);
+  printf("\r\nFound network adapters:\r\n");
+  printf("----------------------------------------");
 
-    switch (cmd) {
-      case 0: {
-        result = PNIO_interface_rec_read_req(g_ApplHandle, &Addr, 0x0000B081,
-                                             ReqRef, Length);
-        break;
-      }
+  for (i = 0; i < nrofcp; i++) {
+    pDevice = (PNIO_CP_ID_PTR_TYPE)&pCpList[i];
+
+    if (pDevice->CpSelection == PNIO_CP_SELECT_WITH_MAC_ADDRESS) {
+      printf("\r\n %d ... %02x:%02x:%02x:%02x:%02x:%02x  -  %s", i,
+             pDevice->CpMacAddr[0], pDevice->CpMacAddr[1],
+             pDevice->CpMacAddr[2], pDevice->CpMacAddr[3],
+             pDevice->CpMacAddr[4], pDevice->CpMacAddr[5],
+             pDevice->Description);
+    } else if (pDevice->CpSelection == PNIO_CP_SELECT_WITH_PCI_LOCATION) {
+      printf("\r\n %d ... Bus %2d, Dev %2d, Fct %2d - %s", i,
+             pDevice->CpPciLocation.BusNr, pDevice->CpPciLocation.DeviceNr,
+             pDevice->CpPciLocation.FunctionNr, pDevice->Description);
     }
   }
 
-  return result;
+  printf("\r\n----------------------------------------\r\n");
+
+  while (cmd < 0 || cmd >= nrofcp) {
+    printf("\nEnter the number of the network adapter: ");
+    scanf_s("%d", &cmd);
+  }
+
+  memcpy(cp_id, &pCpList[cmd], sizeof(PNIO_CP_ID_TYPE));
 }
 
-void pnd_test_interface_set_ip_and_nos(void) {
-  PNIO_UINT8 Mode;
-  PNIO_IPv4 IpV4;
-  PNIO_NOS NoS;
+void pnd_test_quit_application(PNIO_UINT32 handle) {
+  PNIO_interface_close(handle);
+  PNIO_controller_close(handle);
+  SERV_CP_shutdown();
+  SERV_CP_undo_init();
+}
 
-  printf("\n\n\n");
-  printf("--------------------------------------------------\n");
-  printf("Which mode would you like to set?                   \n");
-  printf("--------------------------------------------------\n");
+void send_20ms_50Hz() {  // 10s per circle, 10000ms/20ms = 500
+  PNIO_ADDR Addr;
+  PNIO_IOXS remState;
+  PNIO_UINT32 response;
 
-  unsigned int cmd = 777;
-  PNIO_UINT32 result;
+  float write_data[TEST_IODU_MAX_DATA_LEN];
 
-  while (cmd != 4) {
-    printf("\n");
-    printf("===========================\n");
-    printf("1...IPv4 (IPv4 Suite)	   \n");
-    printf("2...NoS  (Name Of Station) \n");
-    printf("3...IPv4 & NoS             \n");
-    printf("===========================\n");
-    printf("4...Quit This              \n");
-    printf("===========================\n\n");
+  Addr.AddrType = PNIO_ADDR_LOG;
+  Addr.IODataType = PNIO_IO_OUT;
 
-    scanf("%d", &cmd);
+  Addr.u.Addr = 0;
 
-    if (cmd >= 4) {
-      break;
+  float i = 0;
+  int j = 0;
+  int count = 0;
+
+  printf("PLC_1_Control:\n");
+  printf("send_data>>>>>>>>>>>>>>>>>>\n");
+
+  for (j = 0; j < 2; j++) {
+    for (i = 0; i < 360.0; i += 0.72) {
+      write_data[0] = 0;
+      write_data[1] = 0;
+      write_data[2] = 0;
+      write_data[3] = 0;
+      write_data[4] = i;
+      write_data[5] = i;
+      response =
+          PNIO_data_write(g_ApplHandle, &Addr, 24 /*BufLen*/,
+                          (PNIO_UINT8 *)write_data, PNIO_S_GOOD, &remState);
+      if (remState != 0x00) count++;
+      usleep(50000);
     }
-
-    memset(NoS.Nos, 0, 256);
-    memset(IpV4.IpAddress, 0, 4);
-    memset(IpV4.Gateway, 0, 4);
-    memset(IpV4.NetMask, 0, 4);
-
-    Mode = 0;
-
-    if (cmd == 1 || cmd == 3) {
-      int dump_address[4];
-      int dump_remanent;
-
-      printf("\n");
-      printf(
-          "--------------------------------------------------------------------"
-          "----\n");
-      printf(
-          "Please type IpAddress, Gateway, NetMask and Remanent state "
-          "respectively.  \n");
-      printf(
-          "--------------------------------------------------------------------"
-          "----\n");
-      // be careful about scanf! %d -> decimal integer which is 4 bytes!
-      printf("Ip Address     : ");
-      scanf("%d%d%d%d", &dump_address[0], &dump_address[1], &dump_address[2],
-            &dump_address[3]);
-      for (PNIO_UINT8 i = 0; i < 4; i++)
-        IpV4.IpAddress[i] = static_cast<PNIO_UINT8>(dump_address[i]);
-
-      printf("\nGateway Address: ");
-      scanf("%d%d%d%d", &dump_address[0], &dump_address[1], &dump_address[2],
-            &dump_address[3]);
-      for (PNIO_UINT8 i = 0; i < 4; i++)
-        IpV4.Gateway[i] = static_cast<PNIO_UINT8>(dump_address[i]);
-
-      printf("\nNetmask        : ");
-      scanf("%d%d%d%d", &dump_address[0], &dump_address[1], &dump_address[2],
-            &dump_address[3]);
-      for (PNIO_UINT8 i = 0; i < 4; i++)
-        IpV4.NetMask[i] = static_cast<PNIO_UINT8>(dump_address[i]);
-
-      printf("\nRemanent State : ");
-      scanf("%d", &dump_remanent);
-      IpV4.Remanent = static_cast<PNIO_BOOL>(dump_remanent);
-
-      Mode = PNIO_SET_IP_MODE;
-    }
-
-    if (cmd == 2 || cmd == 3) {
-      int dump_remanent;
-      char string[256];
-      PNIO_UINT16 length;
-
-      printf("\n");
-      printf("------------------------------------------------\n");
-      printf("Please type Name of Station and Remanent state.  \n");
-      printf("------------------------------------------------\n");
-
-      printf("Name of Station : ");
-      scanf("%s", string);
-
-      length = (PNIO_UINT16)pnd_strlen(string);
-
-      if (length >= 256) {
-        printf("Name of station size overflow!");
-        break;
-      }
-
-      memcpy(&NoS.Nos[0], string, length);
-
-      NoS.Length = length;
-
-      printf("\nRemanent State  : ");
-      scanf("%d", &dump_remanent);
-      NoS.Remanent = static_cast<PNIO_BOOL>(dump_remanent);
-
-      Mode |= PNIO_SET_NOS_MODE;
-    }
-
-    result = PNIO_interface_set_ip_and_nos(
-        g_ApplHandle, (PNIO_SET_IP_NOS_MODE_TYPE)Mode, IpV4, NoS);
-
-    printf("PNIO_interface_set_ip_and_nos, Result: %#x\n", result);
+    printf(">>%d * 500\n", j + 1);
   }
+  printf("count = %d\n", count);
+  printf("package loss rate: %.8f%\n", ((float)count) / 100.0);
+}
+
+void send_50ms_20Hz() {
+  PNIO_ADDR Addr;
+  PNIO_IOXS remState;
+  PNIO_UINT32 response;
+
+  float write_data[TEST_IODU_MAX_DATA_LEN];
+
+  Addr.AddrType = PNIO_ADDR_LOG;
+  Addr.IODataType = PNIO_IO_OUT;
+
+  Addr.u.Addr = 24;
+
+  float i = 0;
+  int j = 0;
+  int count = 0;
+
+  printf("PLC_2_Control:\n");
+  printf("send_data>>>>>>>>>>>>>>>>>>\n");
+
+  for (j = 0; j < 2; j++) {
+    for (i = 0; i < 360.0; i += 0.72) {
+      write_data[0] = 20;
+      write_data[1] = 20;
+      write_data[2] = 20;
+      write_data[3] = 20;
+      write_data[4] = i;
+      write_data[5] = i;
+      response =
+          PNIO_data_write(g_ApplHandle, &Addr, 24 /*BufLen*/,
+                          (PNIO_UINT8 *)write_data, PNIO_S_GOOD, &remState);
+      if (remState != 0x00) count++;
+      usleep(50000);
+    }
+    printf(">>%d * 500\n", j + 1);
+  }
+  printf("count = %d\n", count);
+  printf("package loss rate: %.8f%\n", ((float)count) / 100.0);
 }
 
 /*****************************************************************************/

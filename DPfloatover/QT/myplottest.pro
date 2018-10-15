@@ -181,7 +181,8 @@ SOURCES += \
     ../network/libcrc/src/crckrmit.c \
     ../network/libcrc/src/crcsick.c \
     ../network/libcrc/src/nmea-chk.c \
-    ../joystick/src/joystick.cpp
+    ../joystick/src/joystick.cpp \
+    ../network/src/pnd_test_iob_core.cpp
 
 
 HEADERS += \

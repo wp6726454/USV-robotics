@@ -66,7 +66,7 @@ class threadloop {
   void receiveallclients_t() {
     if (MAXCONNECTION > 0) {
       // thread for the first vessel
-      std::thread _threadfirst(&threadloop::ReceiveClient_first, this, 0);
+      std::thread _threadfirst(&threadloop::ReceiveClient_first_tcp, this, 0);
       if (FILEORNOT) {  // join for terminal, detach for QT
         _tmclients[0] = _threadfirst.native_handle();
         _threadfirst.detach();
@@ -75,7 +75,7 @@ class threadloop {
     }
     if (MAXCONNECTION > 1) {
       // thread for the second vessel
-      std::thread _threadsecond(&threadloop::ReceiveClient_second, this, 1);
+      std::thread _threadsecond(&threadloop::ReceiveClient_second_tcp, this, 1);
       if (FILEORNOT) {  // join for terminal, detach for QT
         _tmclients[1] = _threadsecond.native_handle();
         _threadsecond.detach();
@@ -84,7 +84,7 @@ class threadloop {
     }
     if (MAXCONNECTION > 2) {
       // thread for the third vessel
-      std::thread _threadthird(&threadloop::ReceiveClient_third, this, 2);
+      std::thread _threadthird(&threadloop::ReceiveClient_third_tcp, this, 2);
       if (FILEORNOT) {  // join for terminal, detach for QT
         _tmclients[2] = _threadthird.native_handle();
         _threadthird.detach();
@@ -196,17 +196,15 @@ class threadloop {
       6.0,                                     // maxpositive_x_thrust(N)
       5.0,                                     // maxnegative_x_thrust(N)
       3,                                       // maxpositive_y_thrust(N)
-      2,                                       // maxnegative_y_thrust(N)
+      1,                                       // maxnegative_y_thrust(N)
       5,                                       // maxpositive_Mz_thrust(N*m)
       3,                                       // maxnegative_Mz_thrust(N*m)
       // 26.0,                                    // maxpositive_x_thrust(N)
       // 25.0,                                    // maxnegative_x_thrust(N)
       // 6,                                       // maxpositive_y_thrust(N)
       // 4,                                       // maxnegative_y_thrust(N)
-      // 11,                                      //
-      // maxpositive_Mz_thrust(N*m)
-      // 7.6,                                     //
-      // maxnegative_Mz_thrust(N*m)
+      // 11,                                      // maxpositive_Mz_thrust(N*m)
+      // 7.6,                                     // maxnegative_Mz_thrust(N*m)
       3,       // m
       3,       // n
       9,       // numvar
@@ -251,39 +249,45 @@ class threadloop {
       0.01,                                    // allowed_error_x
       0.01,                                    // allowed_error_y;
       0.01,                                    // allowed_error_orientation;
-      26.0,                                    // maxpositive_x_thrust(N)
-      25.0,                                    // maxnegative_x_thrust(N)
-      6,                                       // maxpositive_y_thrust(N)
-      4,                                       // maxnegative_y_thrust(N)
-      11,                                      // maxpositive_Mz_thrust(N*m)
-      7.6,                                     // maxnegative_Mz_thrust(N*m)
-      3,                                       // m
-      3,                                       // n
-      9,                                       // numvar
-      3,                                       // num_constraints
-      5.6e-7,                                  // Kbar_positive
-      2.2e-7,                                  // Kbar_negative
-      100,                                     // max_delta_rotation_bow
-      4000,                                    // max_rotation_bow
-      8.96,                                    // max_thrust_bow_positive
-      3.52,                                    // max_thrust_bow_negative
-      2e-5,                                    // K_left
-      2e-5,                                    // K_right
-      20,                                      // max_delta_rotation_bow
-      1000,                                    // max_rotation_azimuth
-      20,                                      // max_thrust_azimuth_left
-      20,                                      // max_thrust_azimuth_right
-      0.1277,                                  // max_delta_alpha_azimuth
-      M_PI,                                    // max_alpha_azimuth_left
-      0,                                       // min_alpha_azimuth_left
-      0,                                       // max_alpha_azimuth_right
-      -M_PI,                                   // min_alpha_azimuth_right
-      1.9,                                     // bow_x
-      0,                                       // bow_y
-      -1.893,                                  // left_x
-      -0.216,                                  // left_y
-      -1.893,                                  // right_x
-      0.216                                    // right_y
+      6.0,                                     // maxpositive_x_thrust(N)
+      5.0,                                     // maxnegative_x_thrust(N)
+      3,                                       // maxpositive_y_thrust(N)
+      1,                                       // maxnegative_y_thrust(N)
+      5,                                       // maxpositive_Mz_thrust(N*m)
+      3,                                       // maxnegative_Mz_thrust(N*m)
+      // 26.0,    // maxpositive_x_thrust(N)
+      // 25.0,    // maxnegative_x_thrust(N)
+      // 6,       // maxpositive_y_thrust(N)
+      // 4,       // maxnegative_y_thrust(N)
+      // 11,      // maxpositive_Mz_thrust(N*m)
+      // 7.6,     // maxnegative_Mz_thrust(N*m)
+      3,       // m
+      3,       // n
+      9,       // numvar
+      3,       // num_constraints
+      5.6e-7,  // Kbar_positive
+      3e-7,    // Kbar_negative
+      100,     // max_delta_rotation_bow
+      4000,    // max_rotation_bow
+      8.96,    // max_thrust_bow_positive
+      5.0,     // max_thrust_bow_negative
+      2e-5,    // K_left
+      2e-5,    // K_right
+      20,      // max_delta_rotation_bow
+      1000,    // max_rotation_azimuth
+      20,      // max_thrust_azimuth_left
+      20,      // max_thrust_azimuth_right
+      0.1277,  // max_delta_alpha_azimuth
+      M_PI,    // max_alpha_azimuth_left
+      0,       // min_alpha_azimuth_left
+      0,       // max_alpha_azimuth_right
+      -M_PI,   // min_alpha_azimuth_right
+      1.9,     // bow_x
+      0,       // bow_y
+      -1.893,  // left_x
+      -0.216,  // left_y
+      -1.893,  // right_x
+      0.216    // right_y
   };
   // constant parameters of the third vessel
   vessel_third _vessel_third{
@@ -445,8 +449,9 @@ class threadloop {
       }
     }
   }
+
   // send and receive data from the first client (K class-I)
-  void ReceiveClient_first(int sockfd_index = 0) {
+  void ReceiveClient_first_tcp(int sockfd_index = 0) {
     // run through the existing connections looking for data to read
     Vectfd clients_fd = myserver.GetClientsFd();
     int sockfd = clients_fd(sockfd_index);
@@ -505,7 +510,7 @@ class threadloop {
               boost::posix_time::second_clock::local_time();
           boost::posix_time::time_duration t_elapsed = t_end - t_start;
           long int mt_elapsed = t_elapsed.total_milliseconds();
-          if (mt_elapsed > 50) {
+          if (mt_elapsed > 100) {
             if (FILEORNOT) {
               myfile = fopen(logsavepath.c_str(), "a+");
               fprintf(myfile, "First: Take too long for QP!\n");
@@ -514,7 +519,7 @@ class threadloop {
               perror("First: Take too long for QP");
           } else {
             std::this_thread::sleep_for(
-                std::chrono::milliseconds(50 - mt_elapsed));
+                std::chrono::milliseconds(100 - mt_elapsed));
           }
 
           // send message to clients only
@@ -549,7 +554,7 @@ class threadloop {
   }
 
   // send and receive data from the second client (K class-II)
-  void ReceiveClient_second(int sockfd_index = 1) {
+  void ReceiveClient_second_tcp(int sockfd_index = 1) {
     // run through the existing connections looking for data to read
     Vectfd clients_fd = myserver.GetClientsFd();
     int sockfd = clients_fd(sockfd_index);
@@ -608,7 +613,7 @@ class threadloop {
               boost::posix_time::second_clock::local_time();
           boost::posix_time::time_duration t_elapsed = t_end - t_start;
           long int mt_elapsed = t_elapsed.total_milliseconds();
-          if (mt_elapsed > 50) {
+          if (mt_elapsed > 100) {
             if (FILEORNOT) {
               myfile = fopen(logsavepath.c_str(), "a+");
               fprintf(myfile, "Second: Take too long for QP!\n");
@@ -617,7 +622,7 @@ class threadloop {
               perror("Second: Take too long for QP");
           } else {
             std::this_thread::sleep_for(
-                std::chrono::milliseconds(50 - mt_elapsed));
+                std::chrono::milliseconds(100 - mt_elapsed));
           }
 
           // send message to clients only
@@ -652,7 +657,7 @@ class threadloop {
   }
 
   // send and receive data from the third client (X class)
-  void ReceiveClient_third(int sockfd_index = 2) {
+  void ReceiveClient_third_tcp(int sockfd_index = 2) {
     // run through the existing connections looking for data to read
     Vectfd clients_fd = myserver.GetClientsFd();
     int sockfd = clients_fd(sockfd_index);

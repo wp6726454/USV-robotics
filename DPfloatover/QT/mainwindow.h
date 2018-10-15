@@ -1,12 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "display2ddialog.h"
-#include "globalvar.h"
-#include "thrusterdiag.h"
 #include <QMainWindow>
 #include <QString>
 #include <fstream>
+#include "display2ddialog.h"
+#include "globalvar.h"
+#include "thrusterdiag.h"
 
 namespace Ui {
 class MainWindow;
@@ -15,11 +15,11 @@ class MainWindow;
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
-public:
+ public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
-private slots:
+ private slots:
   void on_action2D_triggered();
 
   void on_actionThruster_P_triggered();
@@ -34,17 +34,16 @@ private slots:
 
   void readfilebyline();
 
-private:
+ private:
   Ui::MainWindow *ui;
   Display2DDialog *myDisplay2DDialog;
   ThrusterDiag *myThrusterDiag;
   QStringListModel *_model;
-  Qt::WindowFlags flags=nullptr;
+  Qt::WindowFlags flags = nullptr;
 
   void GetCurrentPath();
   void initializeLoglist();
   void updatelog();
-
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

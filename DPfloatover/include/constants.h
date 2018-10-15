@@ -29,8 +29,12 @@
 #define VIEWERREFRESH 20  // ms
 
 const double sample_time = 0.1;  // second
-const std::string dbsavepath = "./data/mytest.db";
-const std::string logsavepath = "./data/log";
+const std::string dbsavepath =
+    "/home/skloe/Coding/CPP1X/USV/DPfloatover/QT/build/data/mytest.db";
+const std::string logsavepath =
+    "/home/skloe/Coding/CPP1X/USV/DPfloatover/QT/build/data/log";
+const std::string xmlpath =
+    "/home/skloe/Coding/CPP1X/USV/DPfloatover/QT/build/xml/test.xml";
 /* model properties of vessel 1 (K class-I)
 *********************************************************************** */
 struct vessel_first {

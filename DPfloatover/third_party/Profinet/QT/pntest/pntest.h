@@ -178,6 +178,7 @@ void pn_send_test() {
       send_20ms_50Hz();  // PLC1
     }
   }
+  pnd_test_controller_close();
   pnd_test_quit_application(g_ApplHandle);
 }
 #endif  // PNTEST_H

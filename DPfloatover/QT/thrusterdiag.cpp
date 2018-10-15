@@ -25,6 +25,7 @@ void ThrusterDiag::initializeAllUI() {
 
   // set the whole dialog
   this->setWindowState(Qt::WindowMaximized);
+  this->setWindowFlags(Qt::Window);
   this->setAutoFillBackground(true);
   this->setPalette(pal_background);
   this->setStyleSheet("QLabel {color : white; }");  // set color for all Qlabels
