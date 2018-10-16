@@ -62,7 +62,6 @@
 #define PND_MAX_NR_OF_CP 50
 
 volatile PNIO_MODE_TYPE g_currentMode = PNIO_MODE_OFFLINE;
-
 #define ERROR_CAUSE_DESC                                                      \
   {0 /* CM_ERROR_CAUSE_NONE */, "No problem, everything OK"},                 \
       {1 /* CM_ERROR_CAUSE_IP_MULTIPLE */,                                    \
@@ -1096,6 +1095,8 @@ void pnd_test_controller_open(PNIO_DEBUG_SETTINGS_PTR_TYPE DebugSettings) {
   result = PNIO_controller_open(
       1, PNIO_CEP_MODE_CTRL, callback_for_ds_read_conf,
       callback_for_ds_write_conf, callback_for_alarm_ind, &g_ApplHandle);
+  // result = PNIO_controller_open(1, PNIO_CEP_MODE_CTRL, NULL, NULL, NULL,
+  //                               &g_ApplHandle);
   if (result != PNIO_OK) {
     printf("PNIO_controller_open returned error: %d\n", (int)result);
   }
@@ -1265,8 +1266,8 @@ void send_50ms_20Hz() {
       write_data[1] = 20;
       write_data[2] = 20;
       write_data[3] = 20;
-      write_data[4] = i;
-      write_data[5] = i;
+      write_data[4] = (float)i;
+      write_data[5] = (float)i;
       response =
           PNIO_data_write(g_ApplHandle, &Addr, 24 /*BufLen*/,
                           (PNIO_UINT8 *)write_data, PNIO_S_GOOD, &remState);
@@ -1292,7 +1293,7 @@ void terminationHandler(int sigNum) {
 }
 
 void pnd_init() {
-  g_ApplHandle = 0xFFFF;
+  // g_ApplHandle = 0xFFFF;
   struct sigaction signalStr;
 
   signalStr.sa_handler = terminationHandler;
@@ -1423,13 +1424,86 @@ void pntest() {
     pnd_test_set_mode(PNIO_MODE_OPERATE);
 
     sleep(10);
-    // send_50ms_20Hz();  // PLC2
+    send_50ms_20Hz();  // PLC2
     send_20ms_50Hz();  // PLC1
   }
   pnd_test_controller_close();
   pnd_test_quit_application(g_ApplHandle);
 }
 
+void send2firstvessel(const realtimevessel_first *_realtimevessel_first,
+                      FILE *_file) {
+  PNIO_ADDR Addr;
+  PNIO_IOXS remState;
+  float write_data[TEST_IODU_MAX_DATA_LEN];
+
+  Addr.AddrType = PNIO_ADDR_LOG;
+  Addr.IODataType = PNIO_IO_OUT;
+  // 0 for the first vessel, 24 for the second vessel
+  // 50 for the third vessel
+  Addr.u.Addr = 24;
+  int count_temp = 0;
+
+  while (1) {
+    write_data[0] = (float)_realtimevessel_first->rotation(0);
+    write_data[1] = write_data[0];
+    write_data[2] = (float)_realtimevessel_first->rotation(1);
+    write_data[3] = (float)_realtimevessel_first->rotation(2);
+    write_data[4] = (float)_realtimevessel_first->alpha_deg(1);
+    write_data[5] = (float)_realtimevessel_first->alpha_deg(2);
+
+    PNIO_data_write(g_ApplHandle, &Addr, 24 /*BufLen*/,
+                    (PNIO_UINT8 *)write_data, PNIO_S_GOOD, &remState);
+    if (remState != 0x00) {
+      // print error information
+      if (FILEORNOT) {
+        _file = fopen(logsavepath.c_str(), "a+");
+        fprintf(_file, "First: error in send!\n");
+        fclose(_file);
+      } else
+        perror("First: send");
+    }
+    usleep(sample_utime);
+    ++count_temp;
+    if (count_temp == 3000) break;
+  }
+}
+
+void send2secondvessel(const realtimevessel_second *_realtimevessel_second,
+                       FILE *_file) {
+  PNIO_ADDR Addr;
+  PNIO_IOXS remState;
+  float write_data[TEST_IODU_MAX_DATA_LEN];
+
+  Addr.AddrType = PNIO_ADDR_LOG;
+  Addr.IODataType = PNIO_IO_OUT;
+  Addr.u.Addr = 24;
+  int count_temp = 0;
+
+  while (1) {
+    write_data[0] = (float)_realtimevessel_second->rotation(0);
+    write_data[1] = write_data[0];
+    write_data[2] = (float)_realtimevessel_second->rotation(1);
+    write_data[3] = (float)_realtimevessel_second->rotation(2);
+    write_data[4] = (float)_realtimevessel_second->alpha_deg(1);
+    write_data[5] = (float)_realtimevessel_second->alpha_deg(2);
+
+    PNIO_data_write(g_ApplHandle, &Addr, 24 /*BufLen*/,
+                    (PNIO_UINT8 *)write_data, PNIO_S_GOOD, &remState);
+    if (remState != 0x00) {
+      // print error information
+      if (FILEORNOT) {
+        _file = fopen(logsavepath.c_str(), "a+");
+        fprintf(_file, "Second: error in send!\n");
+        fclose(_file);
+      } else
+        perror("Second: send");
+    }
+    usleep(sample_utime);
+    ++count_temp;
+    if (count_temp == 3000) break;
+  }
+}
 /*****************************************************************************/
 /*  Copyright (C) 2015 Siemens Aktiengesellschaft. All rights reserved.      */
 /*****************************************************************************/

@@ -40,13 +40,14 @@ void MainWindow::on_PB_start_clicked() {
   // start a thread for motion caputre
   globalvar::_threadloop.updatemotioncapture_t();
   // start multithreads for each socket client
-  globalvar::_threadloop.receiveallclients_t();
+  globalvar::_threadloop.controller_t();
+  // start a thread for send/receive using Profinet
+  globalvar::_threadloop.send2allclients_pn_t();
   // start a thread for sqlite database
   globalvar::_threadloop.save2database_t();
 }
 
 void MainWindow::on_PB_test_clicked() {
-
   std::thread t1(updatetest, std::ref(globalvar::_dataviewer));
   t1.detach();
 }

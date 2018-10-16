@@ -14,6 +14,8 @@
 #include <sqlite_modern_cpp.h>
 #include <Eigen/Core>
 #include "constants.h"
+#include "realtimedata.h"
+
 class databasecpp {
  public:
   explicit databasecpp(const std::string &savepath = "dbfile.db")
@@ -51,15 +53,60 @@ class databasecpp {
                       " HEAVE       DOUBLE, "
                       " ROLL        DOUBLE, "
                       " PITCH       DOUBLE, "
-                      " YAW         DOUBLE, "
-                      " Ux          DOUBLE, "
-                      " Uy          DOUBLE, "
-                      " Utheta      DOUBLE);";
+                      " YAW         DOUBLE, " /* measurement*/
+                      " x           DOUBLE, "
+                      " y           DOUBLE, "
+                      " theta       DOUBLE, "
+                      " u           DOUBLE, "
+                      " v           DOUBLE, "
+                      " r           DOUBLE, " /* state*/
+                      " tauX        DOUBLE, "
+                      " tauY        DOUBLE, "
+                      " tayMz       DOUBLE);";
+    " u          DOUBLE, "
+    " v          DOUBLE, "
+    " r          DOUBLE);";
     db << str;
   }
   // insert a row into some client table
   void update_client_table(int _clientid, bool t_status,
                            const Eigen::VectorXd &_motiondata) {
+    std::string str = "INSERT INTO " + clientset[_clientid];
+    // t_status=0 means corrected data
+    std::string str_end("");
+    if (t_status) {
+      str_end = "(STATUS, DATETIME) VALUES( 1 , julianday('now'));";
+    } else {
+      str_end =
+          "(STATUS, DATETIME, SURGE, SWAY, HEAVE, ROLL, PITCH, "
+          "YAW, Ux, Uy, Utheta) VALUES( 0 , julianday('now')";
+      convert_Eigendouble2string(_motiondata, str_end);
+      str_end += ");";
+    }
+    str += str_end;
+    db << str;
+  }
+  // insert a row into some client table
+  void update_client_table(bool t_status,
+                           const realtimevessel_first &_realtimevessel_first) {
+    std::string str = "INSERT INTO " + clientset[0];
+    // t_status=0 means corrected data
+    std::string str_end("");
+    if (t_status) {
+      str_end = "(STATUS, DATETIME) VALUES( 1 , julianday('now'));";
+    } else {
+      str_end =
+          "(STATUS, DATETIME, SURGE, SWAY, HEAVE, ROLL, PITCH, "
+          "YAW, Ux, Uy, Utheta) VALUES( 0 , julianday('now')";
+      convert_Eigendouble2string(_motiondata, str_end);
+      str_end += ");";
+    }
+    str += str_end;
+    db << str;
+  }
+  // insert a row into some client table
+  void update_client_table(
+      bool t_status, const realtimevessel_second &_realtimevessel_second) {
     std::string str = "INSERT INTO " + clientset[_clientid];
     // t_status=0 means corrected data
     std::string str_end("");

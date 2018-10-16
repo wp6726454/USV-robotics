@@ -61,13 +61,14 @@ class threadloop {
     if (_SERV_CP_Startup() == 0) {
       _opencontroller();
       pnd_test_set_mode(PNIO_MODE_OPERATE);
+      createtables();
     }
   }
   // loop for send and recive data using socket
-  void receiveallclients_t() {
+  void controller_t() {
     if (MAXCONNECTION > 0) {
       // thread for the first vessel
-      std::thread _threadfirst(&threadloop::ReceiveClient_first_pn, this);
+      std::thread _threadfirst(&threadloop::controller_first_pn, this);
       if (FILEORNOT) {  // join for terminal, detach for QT
         _tmclients[0] = _threadfirst.native_handle();
         _threadfirst.detach();
@@ -76,7 +77,7 @@ class threadloop {
     }
     if (MAXCONNECTION > 1) {
       // thread for the second vessel
-      std::thread _threadsecond(&threadloop::ReceiveClient_second_pn, this);
+      std::thread _threadsecond(&threadloop::controller_second_pn, this);
       if (FILEORNOT) {  // join for terminal, detach for QT
         _tmclients[1] = _threadsecond.native_handle();
         _threadsecond.detach();
@@ -85,13 +86,22 @@ class threadloop {
     }
     if (MAXCONNECTION > 2) {
       // thread for the third vessel
-      std::thread _threadthird(&threadloop::ReceiveClient_third_pn, this);
+      std::thread _threadthird(&threadloop::controller_third_pn, this);
       if (FILEORNOT) {  // join for terminal, detach for QT
         _tmclients[2] = _threadthird.native_handle();
         _threadthird.detach();
       } else
         _threadthird.join();
     }
+  }
+  // profinet
+  void send2allclients_pn_t() {
+    std::thread _threadpnsend(&threadloop::send2allclients_pn, this);
+    if (FILEORNOT) {  // join for terminal, detach for QT
+      _threadid_pnsend = _threadpnsend.native_handle();
+      _threadpnsend.detach();
+    } else
+      _threadpnsend.join();
   }
   // gampad
   void updategamepad_t() {
@@ -121,6 +131,7 @@ class threadloop {
 
   void closelooop() {
     if (FILEORNOT) {
+      pthread_cancel(_threadid_pnsend);
       pthread_cancel(_threadid_gamepad);
       pthread_cancel(_threadid_motion);
       for (int i = 0; i != MAXCONNECTION; ++i) stopthread(i);
@@ -167,6 +178,7 @@ class threadloop {
   pthread_t _threadid_database;  // the id of thread for saving data
   pthread_t _threadid_motion;    // the id of thread for motion capture
   pthread_t _threadid_gamepad;   // the id of thread for gamepad
+  pthread_t _threadid_pnsend;    // the id of thread for gamepad
   //
   int connection_status;
   databasecpp mydb;
@@ -191,28 +203,30 @@ class threadloop {
       0.01,                                    // allowed_error_x
       0.01,                                    // allowed_error_y;
       0.01,                                    // allowed_error_orientation;
-      6.0,                                     // maxpositive_x_thrust(N)
-      5.0,                                     // maxnegative_x_thrust(N)
+      3.0,                                     // maxpositive_x_thrust(N)
+      2.0,                                     // maxnegative_x_thrust(N)
       3,                                       // maxpositive_y_thrust(N)
-      1,                                       // maxnegative_y_thrust(N)
+      2,                                       // maxnegative_y_thrust(N)
       5,                                       // maxpositive_Mz_thrust(N*m)
       3,                                       // maxnegative_Mz_thrust(N*m)
       // 26.0,                                    // maxpositive_x_thrust(N)
       // 25.0,                                    // maxnegative_x_thrust(N)
       // 6,                                       // maxpositive_y_thrust(N)
       // 4,                                       // maxnegative_y_thrust(N)
-      // 11,                                      // maxpositive_Mz_thrust(N*m)
-      // 7.6,                                     // maxnegative_Mz_thrust(N*m)
+      // 11,                                      //
+      // maxpositive_Mz_thrust(N*m)
+      // 7.6,                                     //
+      // maxnegative_Mz_thrust(N*m)
       3,       // m
       3,       // n
       9,       // numvar
       3,       // num_constraints
       5.6e-7,  // Kbar_positive
-      2.2e-7,  // Kbar_negative
+      5e-7,    // Kbar_negative
       100,     // max_delta_rotation_bow
       4000,    // max_rotation_bow
       8.96,    // max_thrust_bow_positive
-      3.52,    // max_thrust_bow_negative
+      8,       // max_thrust_bow_negative
       2e-5,    // K_left
       2e-5,    // K_right
       20,      // max_delta_rotation_bow
@@ -433,18 +447,7 @@ class threadloop {
   }
 
   // send and receive data from the first client (K class-I)
-  void ReceiveClient_first_pn() {
-    PNIO_ADDR Addr;
-    PNIO_IOXS remState;
-    PNIO_UINT32 response;
-
-    float write_data[TEST_IODU_MAX_DATA_LEN];
-
-    Addr.AddrType = PNIO_ADDR_LOG;
-    Addr.IODataType = PNIO_IO_OUT;
-
-    Addr.u.Addr = 0;
-    int count_temp = 0;
+  void controller_first_pn() {
     while (1) {
       // real-time control and optimization for each client
       boost::posix_time::ptime t_start =
@@ -459,7 +462,7 @@ class threadloop {
           boost::posix_time::second_clock::local_time();
       boost::posix_time::time_duration t_elapsed = t_end - t_start;
       long int mt_elapsed = t_elapsed.total_milliseconds();
-      if (mt_elapsed > 100) {
+      if (mt_elapsed > sample_mtime) {
         if (FILEORNOT) {
           myfile = fopen(logsavepath.c_str(), "a+");
           fprintf(myfile, "First: Take too long for QP!\n");
@@ -468,47 +471,14 @@ class threadloop {
           perror("First: Take too long for QP");
       } else {
         std::this_thread::sleep_for(
-            std::chrono::milliseconds(100 - mt_elapsed));
+            std::chrono::milliseconds(sample_mtime - mt_elapsed));
       }
       realtimeprint_first();
-      write_data[0] = (float)_realtimevessel_first.rotation(0);
-      write_data[1] = write_data[0];
-      write_data[2] = (float)_realtimevessel_first.rotation(1);
-      write_data[3] = (float)_realtimevessel_first.rotation(2);
-      write_data[4] = (float)_realtimevessel_first.alpha_deg(1);
-      write_data[5] = (float)_realtimevessel_first.alpha_deg(2);
-
-      response =
-          PNIO_data_write(g_ApplHandle, &Addr, 24 /*BufLen*/,
-                          (PNIO_UINT8 *)write_data, PNIO_S_GOOD, &remState);
-      if (remState != 0x00) {
-        // print error information
-        if (FILEORNOT) {
-          myfile = fopen(logsavepath.c_str(), "a+");
-          fprintf(myfile, "First: error in send!\n");
-          fclose(myfile);
-        } else
-          perror("First: send");
-      }
-
-      // temporary code
-      ++count_temp;
-      if (count_temp == 3000) break;
     }
   }
 
   // send and receive data from the second client (K class-II)
-  void ReceiveClient_second_pn() {
-    PNIO_ADDR Addr;
-    PNIO_IOXS remState;
-    PNIO_UINT32 response;
-    float write_data[TEST_IODU_MAX_DATA_LEN];
-
-    Addr.AddrType = PNIO_ADDR_LOG;
-    Addr.IODataType = PNIO_IO_OUT;
-
-    Addr.u.Addr = 24;
-    int count_temp = 0;
+  void controller_second_pn() {
     while (1) {
       // real-time control and optimization for each client
       boost::posix_time::ptime t_start =
@@ -523,7 +493,7 @@ class threadloop {
           boost::posix_time::second_clock::local_time();
       boost::posix_time::time_duration t_elapsed = t_end - t_start;
       long int mt_elapsed = t_elapsed.total_milliseconds();
-      if (mt_elapsed > 100) {
+      if (mt_elapsed > sample_mtime) {
         if (FILEORNOT) {
           myfile = fopen(logsavepath.c_str(), "a+");
           fprintf(myfile, "Second: Take too long for QP!\n");
@@ -532,46 +502,14 @@ class threadloop {
           perror("Second: Take too long for QP");
       } else {
         std::this_thread::sleep_for(
-            std::chrono::milliseconds(100 - mt_elapsed));
+            std::chrono::milliseconds(sample_mtime - mt_elapsed));
       }
-      realtimeprint_second();
-      write_data[0] = (float)_realtimevessel_second.rotation(0);
-      write_data[1] = write_data[0];
-      write_data[2] = (float)_realtimevessel_second.rotation(1);
-      write_data[3] = (float)_realtimevessel_second.rotation(2);
-      write_data[4] = (float)_realtimevessel_second.alpha_deg(1);
-      write_data[5] = (float)_realtimevessel_second.alpha_deg(2);
-      response =
-          PNIO_data_write(g_ApplHandle, &Addr, 24 /*BufLen*/,
-                          (PNIO_UINT8 *)write_data, PNIO_S_GOOD, &remState);
-      if (remState != 0x00) {
-        // print error information
-        if (FILEORNOT) {
-          myfile = fopen(logsavepath.c_str(), "a+");
-          fprintf(myfile, "Second: error in send!\n");
-          fclose(myfile);
-        } else
-          perror("Second: send");
-      }
-
-      // temporary code
-      ++count_temp;
-      if (count_temp == 3000) break;
+      // realtimeprint_second();
     }
   }
 
   // send and receive data from the third client (X class)
-  void ReceiveClient_third_pn() {
-    PNIO_ADDR Addr;
-    PNIO_IOXS remState;
-    PNIO_UINT32 response;
-    float write_data[TEST_IODU_MAX_DATA_LEN];
-
-    Addr.AddrType = PNIO_ADDR_LOG;
-    Addr.IODataType = PNIO_IO_OUT;
-
-    Addr.u.Addr = 50;
-    int count_temp = 0;
+  void controller_third_pn() {
     while (1) {
       // real-time control and optimization for each client
       boost::posix_time::ptime t_start =
@@ -585,7 +523,7 @@ class threadloop {
           boost::posix_time::second_clock::local_time();
       boost::posix_time::time_duration t_elapsed = t_end - t_start;
       long int mt_elapsed = t_elapsed.total_milliseconds();
-      if (mt_elapsed > 100) {
+      if (mt_elapsed > sample_mtime) {
         if (FILEORNOT) {
           myfile = fopen(logsavepath.c_str(), "a+");
           fprintf(myfile, "Third: Take too long for QP!\n");
@@ -594,54 +532,49 @@ class threadloop {
           perror("Third: Take too long for QP");
       } else {
         std::this_thread::sleep_for(
-            std::chrono::milliseconds(100 - mt_elapsed));
+            std::chrono::milliseconds(sample_mtime - mt_elapsed));
       }
 
       realtimeprint_third();
-
-      write_data[0] = (float)_realtimevessel_third.rotation(0);
-      write_data[1] = write_data[0];
-      write_data[2] = (float)_realtimevessel_third.rotation(1);
-      write_data[3] = (float)_realtimevessel_third.rotation(2);
-      write_data[4] = (float)_realtimevessel_third.alpha_deg(1);
-      write_data[5] = (float)_realtimevessel_third.alpha_deg(2);
-      response =
-          PNIO_data_write(g_ApplHandle, &Addr, 24 /*BufLen*/,
-                          (PNIO_UINT8 *)write_data, PNIO_S_GOOD, &remState);
-      if (remState != 0x00) {
-        // print error information
-        if (FILEORNOT) {
-          myfile = fopen(logsavepath.c_str(), "a+");
-          fprintf(myfile, "Third: error in send!\n");
-          fclose(myfile);
-        } else
-          perror("Third: send");
-      }
-
-      // temporary code
-      ++count_temp;
-      if (count_temp == 3000) break;
     }
   }
 
+  void send2allclients_pn() {
+    if (MAXCONNECTION == 1) {
+      send2firstvessel(&_realtimevessel_first, myfile);
+    } else if (MAXCONNECTION == 2) {
+      send2firstvessel(&_realtimevessel_first, myfile);
+      send2secondvessel(&_realtimevessel_second, myfile);
+
+    } else if (MAXCONNECTION == 3) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(sample_mtime));
+    }
+  }
+
+  void createtables() {
+    for (int i = 0; i != MAXCONNECTION; ++i) {
+      mydb.update_mastertable(i);
+      mydb.create_client_table(i);
+    }
+  }
   void realtimeprint_first() {
-    std::cout << "Desired force:" << std::endl
+    std::cout << "First: Desired force:" << std::endl
               << _realtimevessel_first.tau << std::endl;
-    std::cout << "Estimated force:" << std::endl
+    std::cout << "First:Estimated force:" << std::endl
               << _realtimevessel_first.BalphaU << std::endl;
-    std::cout << "thruster angle:" << std::endl
+    std::cout << "First:thruster angle:" << std::endl
               << _realtimevessel_first.alpha_deg << std::endl;
-    std::cout << "thruster speed:" << std::endl
+    std::cout << "First:thruster speed:" << std::endl
               << _realtimevessel_first.rotation << std::endl;
   }
   void realtimeprint_second() {
-    std::cout << "Desired force:" << std::endl
+    std::cout << "Second: Desired force:" << std::endl
               << _realtimevessel_second.tau << std::endl;
-    std::cout << "Estimated force:" << std::endl
+    std::cout << "Second: Estimated force:" << std::endl
               << _realtimevessel_second.BalphaU << std::endl;
-    std::cout << "thruster angle:" << std::endl
+    std::cout << "Second: thruster angle:" << std::endl
               << _realtimevessel_second.alpha_deg << std::endl;
-    std::cout << "thruster speed:" << std::endl
+    std::cout << "Second: thruster speed:" << std::endl
               << _realtimevessel_second.rotation << std::endl;
   }
   void realtimeprint_third() {

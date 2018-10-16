@@ -14,7 +14,7 @@
 
 #define CLIENT_DATA_SIZE 9  // define length of float array for client data
 // maximum number of clients connected, "0" means unlimited number of clients
-#define MAXCONNECTION 2
+#define MAXCONNECTION 1
 #define PORT "9035"  // port we're listening on
 
 // max number of bytes we can get at once for socket server
@@ -28,7 +28,9 @@
 // refresh period of each variable
 #define VIEWERREFRESH 20  // ms
 
-const double sample_time = 0.1;  // second
+const double sample_time = 0.1;            // second
+const int sample_mtime = 100;              // ms
+const unsigned int sample_utime = 100000;  // us
 const std::string dbsavepath =
     "/home/skloe/Coding/CPP1X/USV/DPfloatover/QT/build/data/mytest.db";
 const std::string logsavepath =

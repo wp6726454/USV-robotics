@@ -35,6 +35,7 @@ class motioncapture {
     if (MAXCONNECTION > 0) getcurrentmotion_first(_realtimevessel_first);
     if (MAXCONNECTION > 1) getcurrentmotion_second(_realtimevessel_second);
     if (MAXCONNECTION > 2) getcurrentmotion_third(_realtimevessel_third);
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
 
  private:
@@ -52,7 +53,6 @@ class motioncapture {
     static int angle = 0;
     _realtimevessel_first.Position(0) = 1.2 * sin(angle * M_PI / 180);
     ++angle;
-    std::cout << _realtimevessel_first.Position << std::endl;
   }
   // get the current position and velocity of the second vessel (K class-II)
   void getcurrentmotion_second(realtimevessel_second &_realtimevessel_second) {

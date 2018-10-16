@@ -22,6 +22,7 @@
 #include "realtimedata.h"
 #include "timecounter.hpp"
 
+#define QP_THREADS_USED 2
 // static void MSKAPI printstr(void *handle, const char str[]) {  //
 // printf("%s", str);  // } /* printstr */
 
@@ -301,7 +302,8 @@ class thrusterallocation_first {
     /* Create the optimization task. */
     r = MSK_maketask(env, _vessel_first.num_constraints, _vessel_first.numvar,
                      &task);
-
+    // set up the threads used by mosek
+    r = MSK_putintparam(task, MSK_IPAR_NUM_THREADS, QP_THREADS_USED);
     // r = MSK_linkfunctotaskstream(task, MSK_STREAM_LOG, NULL, printstr);
     r = MSK_linkfunctotaskstream(task, MSK_STREAM_LOG, NULL, NULL);
     // append num_constrainsts empty contraints
@@ -1035,7 +1037,8 @@ class thrusterallocation_second {
     /* Create the optimization task. */
     r = MSK_maketask(env, _vessel_second.num_constraints, _vessel_second.numvar,
                      &task);
-
+    // set up the threads used by mosek
+    r = MSK_putintparam(task, MSK_IPAR_NUM_THREADS, QP_THREADS_USED);
     // r = MSK_linkfunctotaskstream(task, MSK_STREAM_LOG, NULL, printstr);
     r = MSK_linkfunctotaskstream(task, MSK_STREAM_LOG, NULL, NULL);
     // append num_constrainsts empty contraints
@@ -1719,7 +1722,8 @@ class thrusterallocation_third {
     r = MSK_makeenv(&env, NULL);
     /* Create the optimization task. */
     r = MSK_maketask(env, _vessel.num_constraints, _vessel.numvar, &task);
-
+    // set up the threads used by mosek
+    r = MSK_putintparam(task, MSK_IPAR_NUM_THREADS, QP_THREADS_USED);
     // r = MSK_linkfunctotaskstream(task, MSK_STREAM_LOG, NULL, printstr);
     r = MSK_linkfunctotaskstream(task, MSK_STREAM_LOG, NULL, NULL);
     // append num_constrainsts empty contraints

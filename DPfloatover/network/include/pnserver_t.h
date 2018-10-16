@@ -12,15 +12,17 @@
 #include "servusrx.h"
 
 #include "constants.h"
+#include "realtimedata.h"
 
 static FILE *PNTRC_fp = 0;
 #define TEST_IODU_MAX_DATA_LEN 1024
 static PNIO_DEBUG_SETTINGS_TYPE debSet;
-extern PNIO_UINT32 g_ApplHandle;
+static PNIO_UINT32 g_ApplHandle = 0xFFFF;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 // pnd_test functions
 void pnd_test_buffer_full(PNIO_UINT8 *pBuffer, PNIO_UINT32 BufferSize);
 void pnd_test_set_mode(PNIO_MODE_TYPE mode);
@@ -50,6 +52,11 @@ void _opencontroller();
 void send_20ms_50Hz(void);
 void send_50ms_20Hz(void);
 void pntest();
+
+void send2firstvessel(const realtimevessel_first *_realtimevessel_first,
+                      FILE *_file);
+void send2secondvessel(const realtimevessel_second *_realtimevessel_second,
+                       FILE *_file);
 #ifdef __cplusplus
 }
 #endif
