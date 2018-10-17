@@ -203,12 +203,12 @@ class threadloop {
       0.01,                                    // allowed_error_x
       0.01,                                    // allowed_error_y;
       0.01,                                    // allowed_error_orientation;
-      3.0,                                     // maxpositive_x_thrust(N)
-      2.0,                                     // maxnegative_x_thrust(N)
-      3,                                       // maxpositive_y_thrust(N)
-      2,                                       // maxnegative_y_thrust(N)
-      5,                                       // maxpositive_Mz_thrust(N*m)
-      3,                                       // maxnegative_Mz_thrust(N*m)
+      6.0,                                     // maxpositive_x_thrust(N)
+      4.0,                                     // maxnegative_x_thrust(N)
+      3.0,                                     // maxpositive_y_thrust(N)
+      2.0,                                     // maxnegative_y_thrust(N)
+      5.0,                                     // maxpositive_Mz_thrust(N*m)
+      3.0,                                     // maxnegative_Mz_thrust(N*m)
       // 26.0,                                    // maxpositive_x_thrust(N)
       // 25.0,                                    // maxnegative_x_thrust(N)
       // 6,                                       // maxpositive_y_thrust(N)
@@ -426,22 +426,12 @@ class threadloop {
   void save2database() {
     while (1) {
       if (MAXCONNECTION > 0) {
-        Eigen::Matrix<double, 9, 1> position9DoF_socket =
-            Eigen::Matrix<double, 9, 1>::Zero();
-        position9DoF_socket << _realtimevessel_first.Position, 1, 2, 3;
-        mydb.update_client_table(0, false, position9DoF_socket);
+        mydb.update_client_table(false, _realtimevessel_first);
       }
       if (MAXCONNECTION > 1) {
-        Eigen::Matrix<double, 9, 1> position9DoF_socket =
-            Eigen::Matrix<double, 9, 1>::Zero();
-        position9DoF_socket << _realtimevessel_second.Position, 1, 2, 3;
-        mydb.update_client_table(1, false, position9DoF_socket);
+        mydb.update_client_table(false, _realtimevessel_second);
       }
       if (MAXCONNECTION > 2) {
-        Eigen::Matrix<double, 9, 1> position9DoF_socket =
-            Eigen::Matrix<double, 9, 1>::Zero();
-        position9DoF_socket << _realtimevessel_third.Position, 1, 2, 3;
-        mydb.update_client_table(2, false, position9DoF_socket);
       }
     }
   }
