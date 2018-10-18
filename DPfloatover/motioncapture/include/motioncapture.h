@@ -36,17 +36,11 @@ class motioncapture {
     delete poInput;
   }
 
-  int initializemotioncapture() {
+  int initializemotioncapture(FILE *_file) {
     // connect to QTM server
     poInput = new CInput();
 
-    // By default assume you want to connect to QTM at the same machine - just
-    // for
-    // testing
     char pServerAddr[32] = "192.168.253.1";
-    // The base port (as entered in QTM, TCP/IP port number, in the RT output
-    // tab
-    // of the workspace options.
     unsigned short nBasePort = 22222;
 
     poOutput = new COutput();
@@ -55,7 +49,9 @@ class motioncapture {
     if (poRTProtocol->Connect(pServerAddr, nBasePort, 1, 14, false)) {
       char pVer[64];
       if (poRTProtocol->GetQTMVersion(pVer, sizeof(pVer))) {
-        printf("Connected. %s.\n", pVer);
+        _file = fopen(logsavepath.c_str(), "a+");
+        fprintf(_file, "Connected.%s.\n", pVer);
+        fclose(_file);
         return 0;
       }
 

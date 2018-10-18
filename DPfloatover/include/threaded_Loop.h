@@ -30,7 +30,6 @@
 #include "../network/include/pnserver_t.h"
 #include "../sql/include/databasecpp.h"
 #include "constants.h"
-#include "timecounter.hpp"
 
 class threadloop {
  public:
@@ -199,10 +198,16 @@ class threadloop {
   int connection_status;
   databasecpp mydb;
   gamepadmonitor mygamepad;
-  // mysql mysqli;
   motioncapture mymotioncapture;
   FILE *myfile;
 
+  // index for control mode
+  // 0: manual control
+  // 1: heading control
+  // 2: automatic control
+  int index_controlmode_first = 0;
+  int index_controlmode_second = 0;
+  int index_controlmode_third = 0;
   // constant parameters of the first vessel
   vessel_first _vessel_first{
       {623, 0, 0, 0, 706, 444, 0, 444, 1298},  // mass

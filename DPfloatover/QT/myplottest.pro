@@ -165,7 +165,6 @@ DEFINES += QT_DEPRECATED_WARNINGS \
 
 SOURCES += \
         main.cpp \
-    dataviewer.cpp \
     display2ddialog.cpp \
     mainwindow.cpp \
     qcustomplot.cpp \
@@ -193,7 +192,6 @@ SOURCES += \
 
 
 HEADERS += \
-    dataviewer.h \
     globalvar.h \
     mainwindow.h \
     qcustomplot.h \

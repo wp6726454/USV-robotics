@@ -25,7 +25,6 @@ void MainWindow::on_actionThruster_P_triggered() {
 
 void MainWindow::on_PB_connection_clicked() {
   globalvar::_threadloop.initializelooop();
-
   // connect to PN server
   globalvar::_threadloop.start_connnection_t();
   // start a thread for gamepad
@@ -43,10 +42,7 @@ void MainWindow::on_PB_start_clicked() {
   globalvar::_threadloop.save2database_t();
 }
 
-void MainWindow::on_PB_test_clicked() {
-  std::thread t1(updatetest, std::ref(globalvar::_dataviewer));
-  t1.detach();
-}
+void MainWindow::on_PB_test_clicked() {}
 
 void MainWindow::on_PB_suspend_clicked() {
   // globalvar::_loop.closelooop();

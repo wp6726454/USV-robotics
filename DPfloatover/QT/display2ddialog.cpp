@@ -41,7 +41,8 @@ void Display2DDialog::initializeAllUI() {
 
   // load image as pixmap
   ui->label_north->setGeometry(QRect(850, 20, 10, 10));
-  QString imagepath = globalvar::pwd + "/../../images/north.png";
+  QString imagepath =
+      "/home/skloe/Coding/CPP1X/USV/DPfloatover/QT/build/images/north.png";
   QImage image(imagepath);
   ui->label_north->setPixmap(QPixmap::fromImage((image)));
   ui->label_north->adjustSize();
