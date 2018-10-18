@@ -47,16 +47,17 @@ void terminationHandler(int sigNum);
 void pnd_init();
 PNIO_UINT32 _SERV_CP_shutdown();
 PNIO_UINT32 _SERV_CP_Startup();
-void _opencontroller();
-
+void _openpncontroller();
+void _closepncontroller();
 void send_20ms_50Hz(void);
 void send_50ms_20Hz(void);
 void pntest();
 
 void send2firstvessel(const realtimevessel_first *_realtimevessel_first,
                       FILE *_file);
-void send2secondvessel(const realtimevessel_second *_realtimevessel_second,
-                       FILE *_file);
+void send2bothvessel(const realtimevessel_first *_realtimevessel_first,
+                     const realtimevessel_second *_realtimevessel_second,
+                     FILE *_file);
 #ifdef __cplusplus
 }
 #endif

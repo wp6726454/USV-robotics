@@ -14,9 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::on_action2D_triggered() {
-  //  Display2DDialog mDialog;
-  //  mDialog.setModal(true);
-  //  mDialog.exec();
   myDisplay2DDialog = new Display2DDialog(this);
   myDisplay2DDialog->show();
 }
@@ -27,18 +24,17 @@ void MainWindow::on_actionThruster_P_triggered() {
 }
 
 void MainWindow::on_PB_connection_clicked() {
-  //  globalvar::_loop.initializelooop();
-  //  globalvar::_loop.start_connnection_t();
   globalvar::_threadloop.initializelooop();
+
+  // connect to PN server
   globalvar::_threadloop.start_connnection_t();
+  // start a thread for gamepad
   globalvar::_threadloop.updategamepad_t();
+  // start a thread for motion caputre
+  globalvar::_threadloop.updatemotioncapture_t();
 }
 
 void MainWindow::on_PB_start_clicked() {
-  //  globalvar::_loop.receiveallclients_t();
-
-  // start a thread for motion caputre
-  globalvar::_threadloop.updatemotioncapture_t();
   // start multithreads for each socket client
   globalvar::_threadloop.controller_t();
   // start a thread for send/receive using Profinet
@@ -48,8 +44,6 @@ void MainWindow::on_PB_start_clicked() {
 }
 
 void MainWindow::on_PB_test_clicked() {
-  // start a thread for motion caputre
-  globalvar::_threadloop.updatemotioncapture_t();
   std::thread t1(updatetest, std::ref(globalvar::_dataviewer));
   t1.detach();
 }

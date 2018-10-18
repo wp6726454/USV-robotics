@@ -51,7 +51,6 @@ void COperations::DataTransfer(realtimevessel_first& _realtimevessel_first,
           mpoOutput->HandleDataFrame(
               logfile, mpoRTProtocol, _realtimevessel_first,
               _realtimevessel_second, _realtimevessel_third);
-          std::cout << _realtimevessel_first.Measurement << std::endl;
           break;
         case CRTPacket::PacketNoMoreData:  // No more data
           break;

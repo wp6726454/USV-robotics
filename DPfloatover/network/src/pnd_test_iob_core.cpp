@@ -1402,7 +1402,7 @@ PNIO_UINT32 _SERV_CP_Startup() {
   return ret_val;
 }
 
-void _opencontroller() {
+void _openpncontroller() {
   PNIO_DEBUG_SETTINGS_TYPE debSet;
   debSet.CbfPntrcBufferFull = pnd_test_buffer_full;
 
@@ -1417,10 +1417,15 @@ void _opencontroller() {
   pnd_test_register_iosystem_reconfig();
 }
 
+void _closepncontroller() {
+  pnd_test_controller_close();
+  pnd_test_quit_application(g_ApplHandle);
+}
+
 void pntest() {
   pnd_init();
   if (_SERV_CP_Startup() == 0) {
-    _opencontroller();
+    _openpncontroller();
     pnd_test_set_mode(PNIO_MODE_OPERATE);
 
     sleep(10);
@@ -1441,8 +1446,7 @@ void send2firstvessel(const realtimevessel_first *_realtimevessel_first,
   Addr.IODataType = PNIO_IO_OUT;
   // 0 for the first vessel, 24 for the second vessel
   // 50 for the third vessel
-  Addr.u.Addr = 24;
-  int count_temp = 0;
+  Addr.u.Addr = 0;
 
   while (1) {
     write_data[0] = (float)_realtimevessel_first->rotation(0);
@@ -1464,33 +1468,62 @@ void send2firstvessel(const realtimevessel_first *_realtimevessel_first,
         perror("First: send");
     }
     usleep(sample_utime);
-    ++count_temp;
-    if (count_temp == 3000) break;
   }
 }
 
-void send2secondvessel(const realtimevessel_second *_realtimevessel_second,
-                       FILE *_file) {
-  PNIO_ADDR Addr;
-  PNIO_IOXS remState;
-  float write_data[TEST_IODU_MAX_DATA_LEN];
+void send2bothvessel(const realtimevessel_first *_realtimevessel_first,
+                     const realtimevessel_second *_realtimevessel_second,
+                     FILE *_file) {
+  // setup for the first vessel
+  PNIO_ADDR Addr_first;
+  PNIO_IOXS remState_first;
+  float write_data_first[TEST_IODU_MAX_DATA_LEN];
 
-  Addr.AddrType = PNIO_ADDR_LOG;
-  Addr.IODataType = PNIO_IO_OUT;
-  Addr.u.Addr = 24;
-  int count_temp = 0;
+  Addr_first.AddrType = PNIO_ADDR_LOG;
+  Addr_first.IODataType = PNIO_IO_OUT;
+  Addr_first.u.Addr = 0;
+  // setup for the second vessel
+  PNIO_ADDR Addr_second;
+  PNIO_IOXS remState_second;
+  float write_data_second[TEST_IODU_MAX_DATA_LEN];
+
+  Addr_second.AddrType = PNIO_ADDR_LOG;
+  Addr_second.IODataType = PNIO_IO_OUT;
+  Addr_second.u.Addr = 24;
 
   while (1) {
-    write_data[0] = (float)_realtimevessel_second->rotation(0);
-    write_data[1] = write_data[0];
-    write_data[2] = (float)_realtimevessel_second->rotation(1);
-    write_data[3] = (float)_realtimevessel_second->rotation(2);
-    write_data[4] = (float)_realtimevessel_second->alpha_deg(1);
-    write_data[5] = (float)_realtimevessel_second->alpha_deg(2);
+    // update data for the first vessel
+    write_data_first[0] = (float)_realtimevessel_first->rotation(0);
+    write_data_first[1] = write_data_first[0];
+    write_data_first[2] = (float)_realtimevessel_first->rotation(1);
+    write_data_first[3] = (float)_realtimevessel_first->rotation(2);
+    write_data_first[4] = (float)_realtimevessel_first->alpha_deg(1);
+    write_data_first[5] = (float)_realtimevessel_first->alpha_deg(2);
+    // update data for the second vessel
+    write_data_second[0] = (float)_realtimevessel_second->rotation(0);
+    write_data_second[1] = write_data_second[0];
+    write_data_second[2] = (float)_realtimevessel_second->rotation(1);
+    write_data_second[3] = (float)_realtimevessel_second->rotation(2);
+    write_data_second[4] = (float)_realtimevessel_second->alpha_deg(1);
+    write_data_second[5] = (float)_realtimevessel_second->alpha_deg(2);
 
-    PNIO_data_write(g_ApplHandle, &Addr, 24 /*BufLen*/,
-                    (PNIO_UINT8 *)write_data, PNIO_S_GOOD, &remState);
-    if (remState != 0x00) {
+    // send data through PN driver
+    PNIO_data_write(g_ApplHandle, &Addr_first, 24 /*BufLen*/,
+                    (PNIO_UINT8 *)write_data_first, PNIO_S_GOOD,
+                    &remState_first);
+    PNIO_data_write(g_ApplHandle, &Addr_second, 24 /*BufLen*/,
+                    (PNIO_UINT8 *)write_data_second, PNIO_S_GOOD,
+                    &remState_second);
+    if (remState_first != 0x00) {
+      // print error information
+      if (FILEORNOT) {
+        _file = fopen(logsavepath.c_str(), "a+");
+        fprintf(_file, "First: error in send!\n");
+        fclose(_file);
+      } else
+        perror("First: send");
+    }
+    if (remState_second != 0x00) {
       // print error information
       if (FILEORNOT) {
         _file = fopen(logsavepath.c_str(), "a+");
@@ -1500,8 +1533,6 @@ void send2secondvessel(const realtimevessel_second *_realtimevessel_second,
         perror("Second: send");
     }
     usleep(sample_utime);
-    ++count_temp;
-    if (count_temp == 3000) break;
   }
 }
 /*****************************************************************************/

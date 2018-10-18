@@ -58,7 +58,7 @@ class threadloop {
   // start socket server and wait for clients
   void start_connnection_t() {
     if (_SERV_CP_Startup() == 0) {
-      _opencontroller();
+      _openpncontroller();
       pnd_test_set_mode(PNIO_MODE_OPERATE);
       createtables();
     }
@@ -130,10 +130,14 @@ class threadloop {
 
   void closelooop() {
     if (FILEORNOT) {
+      resetallvessels();     // set zero of each vessel
+      closemotioncapture();  // close qtm clients
+      _closepncontroller();  // close pn server
+      // close all thread
       pthread_cancel(_threadid_pnsend);
       pthread_cancel(_threadid_gamepad);
       pthread_cancel(_threadid_motion);
-      for (int i = 0; i != MAXCONNECTION; ++i) stopthread(i);
+      for (int i = 0; i != MAXCONNECTION; ++i) stopmosekthread(i);
       pthread_cancel(_threadid_database);
 
       fclose(myfile);
@@ -273,10 +277,10 @@ class threadloop {
       0.01,                                    // allowed_error_x
       0.01,                                    // allowed_error_y;
       0.01,                                    // allowed_error_orientation;
-      6.0,                                     // maxpositive_x_thrust(N)
-      5.0,                                     // maxnegative_x_thrust(N)
+      8.0,                                     // maxpositive_x_thrust(N)
+      7.0,                                     // maxnegative_x_thrust(N)
       3,                                       // maxpositive_y_thrust(N)
-      1,                                       // maxnegative_y_thrust(N)
+      2,                                       // maxnegative_y_thrust(N)
       5,                                       // maxpositive_Mz_thrust(N*m)
       3,                                       // maxnegative_Mz_thrust(N*m)
       // 26.0,    // maxpositive_x_thrust(N)
@@ -412,8 +416,8 @@ class threadloop {
   controller_second _controller_second;
   controller_third _controller_third;
 
-  // stop one thread for client's socket
-  void stopthread(int threadindex) {
+  // stop one thread for client's mosek solver
+  void stopmosekthread(int threadindex) {
     ThreadMap::const_iterator it = _tmclients.find(threadindex);
     if (it != _tmclients.end()) {
       pthread_cancel(it->second);
@@ -430,16 +434,11 @@ class threadloop {
   // get the real time motion response
   void updatemotion() {
     if (mymotioncapture.initializemotioncapture() == 0) {
-      mymotioncapture.RequestPositionandVelocity(
+      mymotioncapture.RequestPosition(
           _realtimevessel_first, _realtimevessel_second, _realtimevessel_third);
     }
-
-    // while (1) {
-    //   mymotioncapture.RequestPositionandVelocity(
-    //       _realtimevessel_first, _realtimevessel_second,
-    //       _realtimevessel_third);
-    // }
   }
+  void closemotioncapture() { mymotioncapture.stopRequest(); }
   // save motion data to sqlite database
   void save2database() {
     while (1) {
@@ -481,7 +480,7 @@ class threadloop {
         std::this_thread::sleep_for(
             std::chrono::milliseconds(sample_mtime - mt_elapsed));
       }
-      realtimeprint_first();
+      // realtimeprint_first();
     }
   }
 
@@ -512,7 +511,7 @@ class threadloop {
         std::this_thread::sleep_for(
             std::chrono::milliseconds(sample_mtime - mt_elapsed));
       }
-      // realtimeprint_second();
+      realtimeprint_second();
     }
   }
 
@@ -551,9 +550,7 @@ class threadloop {
     if (MAXCONNECTION == 1) {
       send2firstvessel(&_realtimevessel_first, myfile);
     } else if (MAXCONNECTION == 2) {
-      send2firstvessel(&_realtimevessel_first, myfile);
-      send2secondvessel(&_realtimevessel_second, myfile);
-
+      send2bothvessel(&_realtimevessel_first, &_realtimevessel_second, myfile);
     } else if (MAXCONNECTION == 3) {
       std::this_thread::sleep_for(std::chrono::milliseconds(sample_mtime));
     }
@@ -565,6 +562,40 @@ class threadloop {
       mydb.create_client_table(i);
     }
   }
+
+  void resetallvessels() {
+    // reset the data of the first vessel
+    _realtimevessel_first.Measurement.setZero();
+    _realtimevessel_first.Position.setZero();
+    _realtimevessel_first.State.setZero();
+    _realtimevessel_first.tau.setZero();
+    _realtimevessel_first.BalphaU.setZero();
+    _realtimevessel_first.alpha.setZero();
+    _realtimevessel_first.alpha_deg.setZero();
+    _realtimevessel_first.u.setZero();
+    _realtimevessel_first.rotation.setZero();
+    // reset the data of the second vessel
+    _realtimevessel_second.Measurement.setZero();
+    _realtimevessel_second.Position.setZero();
+    _realtimevessel_second.State.setZero();
+    _realtimevessel_second.tau.setZero();
+    _realtimevessel_second.BalphaU.setZero();
+    _realtimevessel_second.alpha.setZero();
+    _realtimevessel_second.alpha_deg.setZero();
+    _realtimevessel_second.u.setZero();
+    _realtimevessel_second.rotation.setZero();
+    // reset the data of the third vessel
+    _realtimevessel_third.Measurement.setZero();
+    _realtimevessel_third.Position.setZero();
+    _realtimevessel_third.State.setZero();
+    _realtimevessel_third.tau.setZero();
+    _realtimevessel_third.BalphaU.setZero();
+    _realtimevessel_third.alpha.setZero();
+    _realtimevessel_third.alpha_deg.setZero();
+    _realtimevessel_third.u.setZero();
+    _realtimevessel_third.rotation.setZero();
+  }  // setZero for realtime data of each vessel
+
   void realtimeprint_first() {
     std::cout << "First: Desired force:" << std::endl
               << _realtimevessel_first.tau << std::endl;
