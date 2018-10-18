@@ -142,6 +142,19 @@ class threadloop {
 
   int get_connection_status() { return connection_status; }
 
+  Vector6d getrealtimestate_first() { return _realtimevessel_first.State; }
+  Vector6d getrealtimestate_second() { return _realtimevessel_second.State; }
+  Vector6d getrealtimestate_third() { return _realtimevessel_third.State; }
+
+  Vector6d getrealtime6dmotionmeasurement_first() {
+    return _realtimevessel_first.Measurement;
+  }
+  Vector6d getrealtime6dmotionmeasurement_second() {
+    return _realtimevessel_second.Measurement;
+  }
+  Vector6d getrealtime6dmotionmeasurement_third() {
+    return _realtimevessel_third.Measurement;
+  }
   Vector6d getrealtime6dmotion_first() {
     return _realtimevessel_first.Position;
   }

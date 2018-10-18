@@ -1,11 +1,11 @@
-#include "mainwindow.h"
 #include <QApplication>
+#include "mainwindow.h"
 
 dataviewer globalvar::_dataviewer(180);
 // looop globalvar::_loop = {};
 threadloop globalvar::_threadloop = {};
 QString globalvar::pwd("");
-//GamepadMonitor globalvar::mygamepad;
+// GamepadMonitor globalvar::mygamepad;
 QVector<double> globalvar::vesselshape_x = {
     0.0074978133785332,  0.00141841298259321,   0.00141841298259321,
     0.00141841298259321, 0.00141841298259321,   0.00141841298259321,
@@ -404,7 +404,6 @@ QVector<double> globalvar::vesselshape_y = {
     0.174602287073907,   -0.135745367855436,  0.122318624342624,
     -0.0774093424927773, 0.0660972798993622,  -0.0224762519429407,
     0.0149560309980983};
-
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);

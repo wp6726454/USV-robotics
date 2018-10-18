@@ -14,7 +14,7 @@ Display2DDialog::Display2DDialog(QWidget *parent)
   ui->setupUi(this);
   initializePlanarMotionData();
   initializeAllUI();
-  setupDemo(1);
+  setupDemo();
 }
 
 Display2DDialog::~Display2DDialog() { delete ui; }
@@ -53,71 +53,20 @@ void Display2DDialog::initializeAllUI() {
   ui->customPlot_2Dmotion->installEventFilter(this);
 }
 
-void Display2DDialog::setupDemo(int demoIndex) {
-  switch (demoIndex) {
-    case 1:
-      setupVesselRealtimeData();
-      break;
-    case 2:
-      setupSimpleRealtimeData(ui->customPlot_2Dmotion);
-      break;
-  }
-  setWindowTitle("QCustomPlot: " + demoName);
+void Display2DDialog::setupDemo() {
+  setupVesselRealtimeData();
+  setWindowTitle(demoName);
   ui->status_text->clear();
   ui->customPlot_2Dmotion->replot();
 }
 
 // start the real-time viewer for 6DOF and 2DOF motion of vessels
 void Display2DDialog::setupVesselRealtimeData() {
-  demoName = "Real-time vessel Demo";
+  demoName = "Real-time vessel Display";
   connect(&dataTimer, SIGNAL(timeout()), this, SLOT(vesselshapeDataSlot()));
   connect(&dataTimer, SIGNAL(timeout()), this, SLOT(motion6DOFdataSlot()));
   // Interval 0 means to refresh as fast as possible
   dataTimer.start(VIEWERREFRESH);
-}
-
-void Display2DDialog::setupSimpleRealtimeData(QCustomPlot *customPlot) {
-  demoName = "Simple realtime Demo";
-  customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-  QCPGraph *graph = customPlot->addGraph();
-  double phase = 0;
-  double k = 3;
-  for (unsigned i = 0; i < arraylength; ++i) {
-    double tempx = i / (double)(arraylength - 1) * 34 - 17;
-    planarmotion_x[0][i] = tempx;
-    planarmotion_y[0][i] =
-        qExp(-tempx * tempx / 20.0) * qSin(k * tempx + phase);
-  }
-  graph->setData(planarmotion_x[0], planarmotion_y[0]);
-  graph->setPen(QPen(QColor(0, 114, 199, 255)));
-  graph->rescaleKeyAxis();
-  customPlot->yAxis->setRange(-0.3, 0.3);
-  customPlot->xAxis->grid()->setZeroLinePen(Qt::NoPen);
-
-  // add the group velocity tracer (green circle):
-  QCPItemTracer *groupTracer = new QCPItemTracer(customPlot);
-  groupTracer->setGraph(graph);
-  groupTracer->setGraphKey(5.5);
-  groupTracer->setInterpolating(true);
-  groupTracer->setStyle(QCPItemTracer::tsCircle);
-  groupTracer->setPen(QPen(Qt::green));
-  groupTracer->setBrush(Qt::green);
-  groupTracer->setSize(7);
-
-  // prepare data
-
-  // setup a timer that repeatedly calls bracketDataSlot:
-  connect(&dataTimer, SIGNAL(timeout()), this, SLOT(simplerealtimeDataSlot()));
-  dataTimer.start(
-      VIEWERREFRESH);  // Interval 0 means to refresh as fast as possible
-
-  // setup a timer that repeatly call bracketDataSlot; and passing an argument
-  // to slot
-  //  QSignalMapper *signalMapper = new QSignalMapper(this);
-  //  connect(&dataTimer,SIGNAL(timeout()),signalMapper,SLOT(map()));
-  //  signalMapper->setMapping(&dataTimer,17);
-  //  connect(signalMapper,SIGNAL(mapped(int)),this,SLOT(simplerealtimeDataSlotp(int)));
-  //  dataTimer.start(0);
 }
 
 void Display2DDialog::simplerealtimeDataSlot() {
@@ -153,63 +102,34 @@ void Display2DDialog::simplerealtimeDataSlot() {
 
 // real-time planar motion of each vessel
 void Display2DDialog::vesselshapeDataSlot() {
-  double secs =
-      QCPAxisTickerDateTime::dateTimeToKey(QDateTime::currentDateTime());
+  Vector6d _state_first = globalvar::_threadloop.getrealtime6dmotion_first();
+  Vector6d _state_second = globalvar::_threadloop.getrealtime6dmotion_second();
+  Vector6d _state_third = globalvar::_threadloop.getrealtime6dmotion_third();
 
-  // update data to make phase move:
-  double angle = secs * 5;
-
-  double radius[MAXCONNECTION];
-  for (int i = 0; i != MAXCONNECTION; ++i) radius[i] = 10 * i + 30;
-  double c_value = std::cos(angle * M_PI / 180);
-  double s_value = std::sin(angle * M_PI / 180);
-
-  for (int c_index = 0; c_index != MAXCONNECTION; ++c_index) {
-    convertvessel(radius[c_index] * c_value, radius[c_index] * s_value,
-                  angle + 90, planarmotion_y[c_index], planarmotion_x[c_index]);
-    ui->customPlot_2Dmotion->graph(c_index)->setData(planarmotion_x[c_index],
-                                                     planarmotion_y[c_index]);
+  // the first vessel
+  if (MAXCONNECTION > 0) {
+    convertvessel(_state_first(0), _state_first(1), _state_first(5),
+                  planarmotion_y[0], planarmotion_x[0]);
+    ui->customPlot_2Dmotion->graph(0)->setData(planarmotion_x[0],
+                                               planarmotion_y[0]);
+  }
+  if (MAXCONNECTION > 1) {
+    convertvessel(_state_second(0), _state_second(1), _state_second(5),
+                  planarmotion_y[1], planarmotion_x[1]);
+    ui->customPlot_2Dmotion->graph(1)->setData(planarmotion_x[1],
+                                               planarmotion_y[1]);
+  }
+  if (MAXCONNECTION > 2) {
+    convertvessel(_state_third(0), _state_third(1), _state_third(5),
+                  planarmotion_y[2], planarmotion_x[2]);
+    ui->customPlot_2Dmotion->graph(2)->setData(planarmotion_x[2],
+                                               planarmotion_y[2]);
   }
   ui->customPlot_2Dmotion->replot();
 
   // calculate frames per second:
-  double key = secs;
-  static double lastFpsKey;
-  static int frameCount;
-  ++frameCount;
-  if (key - lastFpsKey > 2)  // average fps over 2 seconds
-  {
-    ui->status_text->setText(
-        QString("%1 FPS, Total Data points: %2")
-            .arg(frameCount / (key - lastFpsKey), 0, 'f', 0)
-            .arg(ui->customPlot_2Dmotion->graph(0)->data()->size()));
-    lastFpsKey = key;
-    frameCount = 0;
-  }
-}
-
-void Display2DDialog::simplerealtimeDataSlotp(int t_phase) {
-  double secs =
+  double key =
       QCPAxisTickerDateTime::dateTimeToKey(QDateTime::currentDateTime());
-
-  // update data to make phase move:
-  unsigned n = 500;
-  double phase = secs * 5;
-  double k = 3;
-  QVector<double> x(n), y(n);
-  for (unsigned i = 0; i < n; ++i) {
-    x[i] = i / (double)(n - 1) * 34 - t_phase;
-    y[i] = qExp(-x[i] * x[i] / 20.0) * qSin(k * x[i] + phase);
-  }
-  ui->customPlot_2Dmotion->graph()->setData(x, y);
-
-  itemDemoPhaseTracer->setGraphKey(
-      (8 * M_PI + fmod(M_PI * 1.5 - phase, 6 * M_PI)) / k);
-
-  ui->customPlot_2Dmotion->replot();
-
-  // calculate frames per second:
-  double key = secs;
   static double lastFpsKey;
   static int frameCount;
   ++frameCount;
@@ -284,26 +204,10 @@ void Display2DDialog::convertvessel(double origin_x, double origin_y,
   double c_value = std::cos(t_orient);
   double s_value = std::sin(t_orient);
   for (unsigned i = 0; i != arraylength; ++i) {
-    t_datax[i] = c_value * globalvar::vesselshape_x[i] -
-                 s_value * globalvar::vesselshape_y[i] + origin_x;
-    t_datay[i] = s_value * globalvar::vesselshape_x[i] +
-                 c_value * globalvar::vesselshape_y[i] + origin_y;
-  }
-}
-
-void Display2DDialog::convertvessel(double origin_x, double origin_y,
-                                    double t_orient,
-                                    QVector<QCPCurveData> &t_curvedata) {
-  // convert degree to rad
-  t_orient = t_orient * M_PI / 180;
-  double c_value = std::cos(t_orient);
-  double s_value = std::sin(t_orient);
-  for (unsigned i = 0; i != arraylength; ++i) {
-    t_curvedata[i] =
-        QCPCurveData(i, s_value * globalvar::vesselshape_x[i] +
-                            c_value * globalvar::vesselshape_y[i] + origin_y,
-                     c_value * globalvar::vesselshape_x[i] -
-                         s_value * globalvar::vesselshape_y[i] + origin_x);
+    t_datax[i] = c_value * 0.33 * globalvar::vesselshape_x[i] -
+                 s_value * 0.28 * globalvar::vesselshape_y[i] + origin_x;
+    t_datay[i] = s_value * 0.33 * globalvar::vesselshape_x[i] +
+                 c_value * 0.28 * globalvar::vesselshape_y[i] + origin_y;
   }
 }
 
@@ -367,8 +271,10 @@ void Display2DDialog::initializePlanarMotion(QCustomPlot *customPlot) {
   }
 
   // setup x,y axis
-  customPlot->xAxis->setRange(-60, 60);
-  customPlot->yAxis->setRange(-60, 60);
+  customPlot->xAxis->setRangeReversed(true);
+  customPlot->yAxis->setRangeReversed(true);
+  customPlot->xAxis->setRange(-30, 30);
+  customPlot->yAxis->setRange(-30, 30);
   customPlot->yAxis->setScaleRatio(customPlot->xAxis, 1.0);  // axis equal
   //  customPlot->xAxis->grid()->setZeroLinePen(Qt::NoPen);
 }
@@ -384,11 +290,11 @@ bool Display2DDialog::eventFilter(QObject *target, QEvent *event) {
          you can easily use QCPAxis::pixelToCoord() method.
 
      */
-    int x =
+    double x =
         ui->customPlot_2Dmotion->xAxis->pixelToCoord(_mouseEvent->pos().x());
-    int y =
+    double y =
         ui->customPlot_2Dmotion->yAxis->pixelToCoord(_mouseEvent->pos().y());
-    ui->label_mousepos->setText(QString("X = %1 , Y = %2").arg(x).arg(y));
+    ui->label_mousepos->setText(QString("X = %1 , Y = %2").arg(y).arg(x));
   }
   return false;
 }

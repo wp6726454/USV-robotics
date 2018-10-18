@@ -7,6 +7,7 @@
 #include "constants.h"
 #include "globalvar.h"
 #include "qcustomplot.h"  // the header file of QCustomPlot.
+#include "realtimedata.h"
 
 const uint32_t arraylength = 592;       // length of array for 2D display
 const uint32_t arraylength_6DoF = 296;  // length of array for 6DoF display
@@ -22,14 +23,12 @@ class Display2DDialog : public QDialog {
   explicit Display2DDialog(QWidget *parent = nullptr);
   ~Display2DDialog();
 
-  void setupDemo(int demoIndex);
+  void setupDemo();
   void setupVesselRealtimeData();
-  void setupSimpleRealtimeData(QCustomPlot *customPlot);
 
  private slots:
   void motion6DOFdataSlot();
   void simplerealtimeDataSlot();
-  void simplerealtimeDataSlotp(int t_phase);
   void vesselshapeDataSlot();
 
  private:
@@ -52,8 +51,7 @@ class Display2DDialog : public QDialog {
   void initializeAllUI();
   void convertvessel(double origin_x, double origin_y, double t_orient,
                      QVector<double> &t_datax, QVector<double> &t_datay);
-  void convertvessel(double origin_x, double origin_y, double t_orient,
-                     QVector<QCPCurveData> &t_curvedata);
+
   void initialize6DOFmotion(QCustomPlot *customPlot);
   void initializePlanarMotion(QCustomPlot *customPlot);
   void initializePlanarMotionData();

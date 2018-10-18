@@ -21,16 +21,18 @@ typedef Eigen::Matrix<double, 6, 1> Vector6d;
 // real time data of the first vessel (K class-I)
 struct realtimevessel_first {
   /* data wroten by motion capture system */
-  // x(surge), y(sway), yaw(theta), u, v, r (next time stamp)
+  // x(surge: m), y(sway: m), orientation(theta: rad), u, v, r (next time stamp)
   Vector6d Measurement;
-  Vector6d Position;  // x(surge), y(sway), z(heave), roll, pitch, yaw(theta)
+  // x(surge: m), y(sway: m), z(heave: m), roll(deg), pitch(deg), yaw(theta:
+  // deg)
+  Vector6d Position;
   Vector6d Velocity;
 
   /* data wroten by controller (e.g. kalman, pid, thruster allocation) */
-  Vector6d State;             // x(surge), y(sway), yaw(theta), u, v, r
-  Eigen::Vector3d tau;        // << x, y, Mz (desired force)
-  Eigen::Vector3d BalphaU;    // << x, y, Mz (estimated force)
-  Eigen::Vector3d alpha;      // rad, <<  bow_alpha, left_alpha, right_alpha
+  Vector6d State;           // x(surge: m), y(sway: m), yaw(theta: rad), u, v, r
+  Eigen::Vector3d tau;      // << x, y, Mz (desired force)
+  Eigen::Vector3d BalphaU;  // << x, y, Mz (estimated force)
+  Eigen::Vector3d alpha;    // rad, <<  bow_alpha, left_alpha, right_alpha
   Eigen::Vector3i alpha_deg;  // deg, <<  bow_alpha, left_alpha, right_alpha
   Eigen::Vector3d u;          // << bow_thrust, left_thrust, right_thrust
   Eigen::Vector3i rotation;   // rpm, << bow_n, left_n, right_n

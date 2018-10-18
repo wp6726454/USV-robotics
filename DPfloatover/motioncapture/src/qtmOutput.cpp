@@ -197,19 +197,44 @@ void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
 void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
                                CRTProtocol* poRTProtocol,
                                realtimevessel_first& _realtimevessel_first) {
-  float fX, fY, fZ, fAng1, fAng2, fAng3;
+  float fX, fY, fZ, fAng1, fAng2, fAng3;  // mm, mm, mm, deg, deg, deg (QTM)
 
   if (poRTPacket->GetComponentSize(CRTPacket::Component6dEuler)) {
     unsigned int nCount = poRTPacket->Get6DOFEulerBodyCount();
 
     if (nCount > 0) {
       poRTPacket->Get6DOFEulerBody(0, fX, fY, fZ, fAng1, fAng2, fAng3);
-      _realtimevessel_first.Measurement(0) = fX;
-      _realtimevessel_first.Measurement(1) = fY;
-      _realtimevessel_first.Measurement(2) = fZ;
-      _realtimevessel_first.Measurement(3) = fAng1;
-      _realtimevessel_first.Measurement(4) = fAng2;
-      _realtimevessel_first.Measurement(5) = fAng3;
+
+      double m_fx = fX / 1000;
+      double m_fy = fY / 1000;
+      double rad_orientation = fAng3 * M_PI / 180;
+      _realtimevessel_first.Position(0) = m_fx;
+      _realtimevessel_first.Position(1) = m_fy;
+      _realtimevessel_first.Position(2) = fZ / 1000;
+      _realtimevessel_first.Position(3) = fAng1;
+      _realtimevessel_first.Position(4) = fAng2;
+      _realtimevessel_first.Position(5) = fAng3;
+
+      double raw_u =
+          (m_fx - _realtimevessel_first.Measurement(0)) / sample_time;
+      double raw_v =
+          (m_fy - _realtimevessel_first.Measurement(1)) / sample_time;
+      double raw_r = (rad_orientation - _realtimevessel_first.Measurement(2)) /
+                     sample_time;
+      if ((abs(raw_u) > max_velocity_u) || (abs(raw_v) > max_velocity_v) ||
+          (abs(raw_r) > max_velocity_orientation)) {
+        _realtimevessel_first.Measurement(3) = 0;
+        _realtimevessel_first.Measurement(4) = 0;
+        _realtimevessel_first.Measurement(5) = 0;
+      } else {
+        _realtimevessel_first.Measurement(3) = raw_u;
+        _realtimevessel_first.Measurement(4) = raw_v;
+        _realtimevessel_first.Measurement(5) = raw_r;
+      }
+
+      _realtimevessel_first.Measurement(0) = m_fx;
+      _realtimevessel_first.Measurement(1) = m_fy;
+      _realtimevessel_first.Measurement(2) = rad_orientation;
     }
   }
 }  // PrintData6DEuler (the first vessel)
@@ -218,8 +243,8 @@ void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
                                CRTProtocol* poRTProtocol,
                                realtimevessel_first& _realtimevessel_first,
                                realtimevessel_second& _realtimevessel_second) {
-  float fX, fY, fZ, fAng1, fAng2, fAng3;
-
+  float fX, fY, fZ, fAng1, fAng2, fAng3;  // mm, mm, mm, deg, deg, deg (QTM)
+  double m_fx, m_fy, rad_orientation, raw_u, raw_v, raw_r;
   if (poRTPacket->GetComponentSize(CRTPacket::Component6dEuler)) {
     unsigned int nCount = poRTPacket->Get6DOFEulerBodyCount();
 
@@ -227,21 +252,65 @@ void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
       // the first vessel
       poRTPacket->Get6DOFEulerBody(0, fX, fY, fZ, fAng1, fAng2, fAng3);
       // the first vessel
-      _realtimevessel_first.Measurement(0) = fX;
-      _realtimevessel_first.Measurement(1) = fY;
-      _realtimevessel_first.Measurement(2) = fZ;
-      _realtimevessel_first.Measurement(3) = fAng1;
-      _realtimevessel_first.Measurement(4) = fAng2;
-      _realtimevessel_first.Measurement(5) = fAng3;
+      m_fx = fX / 1000;
+      m_fy = fY / 1000;
+      rad_orientation = fAng3 * M_PI / 180;
+      _realtimevessel_first.Position(0) = m_fx;
+      _realtimevessel_first.Position(1) = m_fy;
+      _realtimevessel_first.Position(2) = fZ / 1000;
+      _realtimevessel_first.Position(3) = fAng1;
+      _realtimevessel_first.Position(4) = fAng2;
+      _realtimevessel_first.Position(5) = fAng3;
+
+      raw_u = (m_fx - _realtimevessel_first.Measurement(0)) / sample_time;
+      raw_v = (m_fy - _realtimevessel_first.Measurement(1)) / sample_time;
+      raw_r = (rad_orientation - _realtimevessel_first.Measurement(2)) /
+              sample_time;
+      if ((abs(raw_u) > max_velocity_u) || (abs(raw_v) > max_velocity_v) ||
+          (abs(raw_r) > max_velocity_orientation)) {
+        _realtimevessel_first.Measurement(3) = 0;
+        _realtimevessel_first.Measurement(4) = 0;
+        _realtimevessel_first.Measurement(5) = 0;
+      } else {
+        _realtimevessel_first.Measurement(3) = raw_u;
+        _realtimevessel_first.Measurement(4) = raw_v;
+        _realtimevessel_first.Measurement(5) = raw_r;
+      }
+
+      _realtimevessel_first.Measurement(0) = m_fx;
+      _realtimevessel_first.Measurement(1) = m_fy;
+      _realtimevessel_first.Measurement(2) = rad_orientation;
       // the second vessel
       poRTPacket->Get6DOFEulerBody(1, fX, fY, fZ, fAng1, fAng2, fAng3);
       // the second vessel
-      _realtimevessel_second.Measurement(0) = fX;
-      _realtimevessel_second.Measurement(1) = fY;
-      _realtimevessel_second.Measurement(2) = fZ;
-      _realtimevessel_second.Measurement(3) = fAng1;
-      _realtimevessel_second.Measurement(4) = fAng2;
-      _realtimevessel_second.Measurement(5) = fAng3;
+      m_fx = fX / 1000;
+      m_fy = fY / 1000;
+      rad_orientation = fAng3 * M_PI / 180;
+      _realtimevessel_second.Position(0) = m_fx;
+      _realtimevessel_second.Position(1) = m_fy;
+      _realtimevessel_second.Position(2) = fZ / 1000;
+      _realtimevessel_second.Position(3) = fAng1;
+      _realtimevessel_second.Position(4) = fAng2;
+      _realtimevessel_second.Position(5) = fAng3;
+
+      raw_u = (m_fx - _realtimevessel_second.Measurement(0)) / sample_time;
+      raw_v = (m_fy - _realtimevessel_second.Measurement(1)) / sample_time;
+      raw_r = (rad_orientation - _realtimevessel_second.Measurement(2)) /
+              sample_time;
+      if ((abs(raw_u) > max_velocity_u) || (abs(raw_v) > max_velocity_v) ||
+          (abs(raw_r) > max_velocity_orientation)) {
+        _realtimevessel_second.Measurement(3) = 0;
+        _realtimevessel_second.Measurement(4) = 0;
+        _realtimevessel_second.Measurement(5) = 0;
+      } else {
+        _realtimevessel_second.Measurement(3) = raw_u;
+        _realtimevessel_second.Measurement(4) = raw_v;
+        _realtimevessel_second.Measurement(5) = raw_r;
+      }
+
+      _realtimevessel_second.Measurement(0) = m_fx;
+      _realtimevessel_second.Measurement(1) = m_fy;
+      _realtimevessel_second.Measurement(2) = rad_orientation;
     }
   }
 }  // PrintData6DEuler (the first and second vessel)
@@ -251,8 +320,8 @@ void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
                                realtimevessel_first& _realtimevessel_first,
                                realtimevessel_second& _realtimevessel_second,
                                realtimevessel_third& _realtimevessel_third) {
-  float fX, fY, fZ, fAng1, fAng2, fAng3;
-
+  float fX, fY, fZ, fAng1, fAng2, fAng3;  // mm, mm, mm, deg, deg, deg (QTM)
+  double m_fx, m_fy, rad_orientation, raw_u, raw_v, raw_r;
   if (poRTPacket->GetComponentSize(CRTPacket::Component6dEuler)) {
     unsigned int nCount = poRTPacket->Get6DOFEulerBodyCount();
 
@@ -260,30 +329,96 @@ void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
       // the first vessel
       poRTPacket->Get6DOFEulerBody(0, fX, fY, fZ, fAng1, fAng2, fAng3);
       // the first vessel
-      _realtimevessel_first.Measurement(0) = fX;
-      _realtimevessel_first.Measurement(1) = fY;
-      _realtimevessel_first.Measurement(2) = fZ;
-      _realtimevessel_first.Measurement(3) = fAng1;
-      _realtimevessel_first.Measurement(4) = fAng2;
-      _realtimevessel_first.Measurement(5) = fAng3;
+      m_fx = fX / 1000;
+      m_fy = fY / 1000;
+      rad_orientation = fAng3 * M_PI / 180;
+      _realtimevessel_first.Position(0) = m_fx;
+      _realtimevessel_first.Position(1) = m_fy;
+      _realtimevessel_first.Position(2) = fZ / 1000;
+      _realtimevessel_first.Position(3) = fAng1;
+      _realtimevessel_first.Position(4) = fAng2;
+      _realtimevessel_first.Position(5) = fAng3;
+
+      raw_u = (m_fx - _realtimevessel_first.Measurement(0)) / sample_time;
+      raw_v = (m_fy - _realtimevessel_first.Measurement(1)) / sample_time;
+      raw_r = (rad_orientation - _realtimevessel_first.Measurement(2)) /
+              sample_time;
+      if ((abs(raw_u) > max_velocity_u) || (abs(raw_v) > max_velocity_v) ||
+          (abs(raw_r) > max_velocity_orientation)) {
+        _realtimevessel_first.Measurement(3) = 0;
+        _realtimevessel_first.Measurement(4) = 0;
+        _realtimevessel_first.Measurement(5) = 0;
+      } else {
+        _realtimevessel_first.Measurement(3) = raw_u;
+        _realtimevessel_first.Measurement(4) = raw_v;
+        _realtimevessel_first.Measurement(5) = raw_r;
+      }
+
+      _realtimevessel_first.Measurement(0) = m_fx;
+      _realtimevessel_first.Measurement(1) = m_fy;
+      _realtimevessel_first.Measurement(2) = rad_orientation;
       // the second vessel
       poRTPacket->Get6DOFEulerBody(1, fX, fY, fZ, fAng1, fAng2, fAng3);
       // the second vessel
-      _realtimevessel_second.Measurement(0) = fX;
-      _realtimevessel_second.Measurement(1) = fY;
-      _realtimevessel_second.Measurement(2) = fZ;
-      _realtimevessel_second.Measurement(3) = fAng1;
-      _realtimevessel_second.Measurement(4) = fAng2;
-      _realtimevessel_second.Measurement(5) = fAng3;
+      m_fx = fX / 1000;
+      m_fy = fY / 1000;
+      rad_orientation = fAng3 * M_PI / 180;
+      _realtimevessel_second.Position(0) = m_fx;
+      _realtimevessel_second.Position(1) = m_fy;
+      _realtimevessel_second.Position(2) = fZ / 1000;
+      _realtimevessel_second.Position(3) = fAng1;
+      _realtimevessel_second.Position(4) = fAng2;
+      _realtimevessel_second.Position(5) = fAng3;
+
+      raw_u = (m_fx - _realtimevessel_second.Measurement(0)) / sample_time;
+      raw_v = (m_fy - _realtimevessel_second.Measurement(1)) / sample_time;
+      raw_r = (rad_orientation - _realtimevessel_second.Measurement(2)) /
+              sample_time;
+      if ((abs(raw_u) > max_velocity_u) || (abs(raw_v) > max_velocity_v) ||
+          (abs(raw_r) > max_velocity_orientation)) {
+        _realtimevessel_second.Measurement(3) = 0;
+        _realtimevessel_second.Measurement(4) = 0;
+        _realtimevessel_second.Measurement(5) = 0;
+      } else {
+        _realtimevessel_second.Measurement(3) = raw_u;
+        _realtimevessel_second.Measurement(4) = raw_v;
+        _realtimevessel_second.Measurement(5) = raw_r;
+      }
+
+      _realtimevessel_second.Measurement(0) = m_fx;
+      _realtimevessel_second.Measurement(1) = m_fy;
+      _realtimevessel_second.Measurement(2) = rad_orientation;
       // the third vessel
       poRTPacket->Get6DOFEulerBody(2, fX, fY, fZ, fAng1, fAng2, fAng3);
       // the third vessel
-      _realtimevessel_third.Measurement(0) = fX;
-      _realtimevessel_third.Measurement(1) = fY;
-      _realtimevessel_third.Measurement(2) = fZ;
-      _realtimevessel_third.Measurement(3) = fAng1;
-      _realtimevessel_third.Measurement(4) = fAng2;
-      _realtimevessel_third.Measurement(5) = fAng3;
+      m_fx = fX / 1000;
+      m_fy = fY / 1000;
+      rad_orientation = fAng3 * M_PI / 180;
+      _realtimevessel_third.Position(0) = m_fx;
+      _realtimevessel_third.Position(1) = m_fy;
+      _realtimevessel_third.Position(2) = fZ / 1000;
+      _realtimevessel_third.Position(3) = fAng1;
+      _realtimevessel_third.Position(4) = fAng2;
+      _realtimevessel_third.Position(5) = fAng3;
+
+      raw_u = (m_fx - _realtimevessel_third.Measurement(0)) / sample_time;
+      raw_v = (m_fy - _realtimevessel_third.Measurement(1)) / sample_time;
+      raw_r = (rad_orientation - _realtimevessel_third.Measurement(2)) /
+              sample_time;
+      if ((abs(raw_u) > max_velocity_u) || (abs(raw_v) > max_velocity_v) ||
+          (abs(raw_r) > max_velocity_orientation)) {
+        _realtimevessel_third.Measurement(3) = 0;
+        _realtimevessel_third.Measurement(4) = 0;
+        _realtimevessel_third.Measurement(5) = 0;
+      } else {
+        _realtimevessel_third.Measurement(3) = raw_u;
+        _realtimevessel_third.Measurement(4) = raw_v;
+        _realtimevessel_third.Measurement(5) = raw_r;
+      }
+
+      _realtimevessel_third.Measurement(0) = m_fx;
+      _realtimevessel_third.Measurement(1) = m_fy;
+      _realtimevessel_third.Measurement(2) = rad_orientation;
     }
   }
 }  // PrintData6DEuler (the first/second/third vessel)

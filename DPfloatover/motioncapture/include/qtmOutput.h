@@ -17,6 +17,10 @@
 #include "qtmInput.h"
 #include "realtimedata.h"
 
+const double max_velocity_u = 1;
+const double max_velocity_v = 0.5;
+const double max_velocity_orientation = 0.5;
+
 using T_BOOST_CLOCK =
     boost::date_time::microsec_clock<boost::posix_time::ptime>;
 
