@@ -48,6 +48,8 @@ void MainWindow::on_PB_start_clicked() {
 }
 
 void MainWindow::on_PB_test_clicked() {
+  // start a thread for motion caputre
+  globalvar::_threadloop.updatemotioncapture_t();
   std::thread t1(updatetest, std::ref(globalvar::_dataviewer));
   t1.detach();
 }

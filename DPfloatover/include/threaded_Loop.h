@@ -13,13 +13,6 @@
 #ifndef _THREADLOOP_HPP_
 #define _THREADLOOP_HPP_
 
-#include "../controller/pidcontroller/include/controller.h"
-#include "../joystick/include/gamepadmonitor.h"
-#include "../motioncapture/include/motioncapture.h"
-#include "../network/include/crccheck.h"
-#include "../network/include/datapack.h"
-#include "../network/include/pnserver_t.h"
-// #include "../sql/include/database.h"
 #include <pthread.h>
 #include <sys/prctl.h>
 #include <unistd.h>
@@ -29,6 +22,12 @@
 #include <cstdlib>
 #include <thread>
 #include <unordered_map>
+#include "../controller/pidcontroller/include/controller.h"
+#include "../joystick/include/gamepadmonitor.h"
+#include "../motioncapture/include/motioncapture.h"
+#include "../network/include/crccheck.h"
+#include "../network/include/datapack.h"
+#include "../network/include/pnserver_t.h"
 #include "../sql/include/databasecpp.h"
 #include "constants.h"
 #include "timecounter.hpp"
@@ -417,10 +416,16 @@ class threadloop {
   }
   // get the real time motion response
   void updatemotion() {
-    while (1) {
+    if (mymotioncapture.initializemotioncapture() == 0) {
       mymotioncapture.RequestPositionandVelocity(
           _realtimevessel_first, _realtimevessel_second, _realtimevessel_third);
     }
+
+    // while (1) {
+    //   mymotioncapture.RequestPositionandVelocity(
+    //       _realtimevessel_first, _realtimevessel_second,
+    //       _realtimevessel_third);
+    // }
   }
   // save motion data to sqlite database
   void save2database() {

@@ -182,7 +182,14 @@ SOURCES += \
     ../network/libcrc/src/crcsick.c \
     ../network/libcrc/src/nmea-chk.c \
     ../joystick/src/joystick.cpp \
-    ../network/src/pnd_test_iob_core.cpp
+    ../network/src/pnd_test_iob_core.cpp \
+    ../motioncapture/src/qtmMarkup.cpp \
+    ../motioncapture/src/qtmNetwork.cpp \
+    ../motioncapture/src/qtmOperations.cpp \
+    ../motioncapture/src/qtmOutput.cpp \
+    ../motioncapture/src/RTPacket.cpp \
+    ../motioncapture/src/RTProtocol.cpp
+
 
 
 HEADERS += \
@@ -562,6 +569,7 @@ HEADERS += \
     ../third_party/Profinet/src/source/tcip/src_iniche_core/tcp/tcp_timr.h \
     ../third_party/Profinet/src/source/tcip/src_iniche_core/tcp/tcp_var.h \
     ../third_party/Profinet/src/source/tcip/src_iniche_core/tcp/tcpip.h \
+
 
 
 

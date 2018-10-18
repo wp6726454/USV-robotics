@@ -300,9 +300,8 @@ void Display2DDialog::convertvessel(double origin_x, double origin_y,
   double s_value = std::sin(t_orient);
   for (unsigned i = 0; i != arraylength; ++i) {
     t_curvedata[i] =
-        QCPCurveData(i,
-                     s_value * globalvar::vesselshape_x[i] +
-                         c_value * globalvar::vesselshape_y[i] + origin_y,
+        QCPCurveData(i, s_value * globalvar::vesselshape_x[i] +
+                            c_value * globalvar::vesselshape_y[i] + origin_y,
                      c_value * globalvar::vesselshape_x[i] -
                          s_value * globalvar::vesselshape_y[i] + origin_x);
   }
@@ -370,8 +369,7 @@ void Display2DDialog::initializePlanarMotion(QCustomPlot *customPlot) {
   // setup x,y axis
   customPlot->xAxis->setRange(-60, 60);
   customPlot->yAxis->setRange(-60, 60);
-  customPlot->yAxis->setScaleRatio(customPlot->xAxis,
-                                   1.0);  // axis equal
+  customPlot->yAxis->setScaleRatio(customPlot->xAxis, 1.0);  // axis equal
   //  customPlot->xAxis->grid()->setZeroLinePen(Qt::NoPen);
 }
 

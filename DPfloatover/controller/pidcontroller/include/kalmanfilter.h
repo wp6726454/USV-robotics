@@ -98,8 +98,9 @@ class kalmanfilter_first {
   void correct(realtimevessel_first &_realtimedata) {
     K = (P * H.transpose()) * (H * P * H.transpose() + R).inverse();
     // K = (P * H.transpose()) * (H * P * H.transpose() + R).llt().solve(Im);
-    _realtimedata.State = _realtimedata.State + K * (_realtimedata.Measurement -
-                                                     H * _realtimedata.State);
+    _realtimedata.State =
+        _realtimedata.State +
+        K * (_realtimedata.Measurement - H * _realtimedata.State);
 
     P = (Matrix66d::Identity() - K * H) * P;
   }
@@ -210,8 +211,9 @@ class kalmanfilter_second {
   void correct(realtimevessel_second &_realtimedata) {
     K = (P * H.transpose()) * (H * P * H.transpose() + R).inverse();
     // K = (P * H.transpose()) * (H * P * H.transpose() + R).llt().solve(Im);
-    _realtimedata.State = _realtimedata.State + K * (_realtimedata.Measurement -
-                                                     H * _realtimedata.State);
+    _realtimedata.State =
+        _realtimedata.State +
+        K * (_realtimedata.Measurement - H * _realtimedata.State);
 
     P = (Matrix66d::Identity() - K * H) * P;
   }
@@ -321,8 +323,9 @@ class kalmanfilter_third {
   void correct(realtimevessel_third &_realtimedata) {
     K = (P * H.transpose()) * (H * P * H.transpose() + R).inverse();
     // K = (P * H.transpose()) * (H * P * H.transpose() + R).llt().solve(Im);
-    _realtimedata.State = _realtimedata.State + K * (_realtimedata.Measurement -
-                                                     H * _realtimedata.State);
+    _realtimedata.State =
+        _realtimedata.State +
+        K * (_realtimedata.Measurement - H * _realtimedata.State);
 
     P = (Matrix66d::Identity() - K * H) * P;
   }

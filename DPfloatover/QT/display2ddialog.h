@@ -1,15 +1,15 @@
 #ifndef DISPLAY2DDIALOG_H
 #define DISPLAY2DDIALOG_H
-#include "constants.h"
-#include "globalvar.h"
-#include "qcustomplot.h" // the header file of QCustomPlot.
 #include <QDialog>
 #include <QTimer>
 #include <cmath>
 #include <unordered_map>
+#include "constants.h"
+#include "globalvar.h"
+#include "qcustomplot.h"  // the header file of QCustomPlot.
 
-const uint32_t arraylength = 592; // length of array for 2D display
-const uint32_t arraylength_6DoF = 296; // length of array for 6DoF display
+const uint32_t arraylength = 592;       // length of array for 2D display
+const uint32_t arraylength_6DoF = 296;  // length of array for 6DoF display
 
 namespace Ui {
 class Display2DDialog;
@@ -18,7 +18,7 @@ class Display2DDialog;
 class Display2DDialog : public QDialog {
   Q_OBJECT
 
-public:
+ public:
   explicit Display2DDialog(QWidget *parent = nullptr);
   ~Display2DDialog();
 
@@ -26,13 +26,13 @@ public:
   void setupVesselRealtimeData();
   void setupSimpleRealtimeData(QCustomPlot *customPlot);
 
-private slots:
+ private slots:
   void motion6DOFdataSlot();
   void simplerealtimeDataSlot();
   void simplerealtimeDataSlotp(int t_phase);
   void vesselshapeDataSlot();
 
-private:
+ private:
   Ui::Display2DDialog *ui;
   QString demoName;
   QTimer dataTimer;
@@ -60,4 +60,4 @@ private:
   bool eventFilter(QObject *target, QEvent *event);
 };
 
-#endif // DISPLAY2DDIALOG_H
+#endif  // DISPLAY2DDIALOG_H
