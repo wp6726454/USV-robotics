@@ -1499,21 +1499,9 @@ void send2bothvessel(const realtimevessel_first *_realtimevessel_first,
     write_data_first[3] = (float)_realtimevessel_first->rotation(2);
     write_data_first[4] = (float)_realtimevessel_first->alpha_deg(1);
     write_data_first[5] = (float)_realtimevessel_first->alpha_deg(2);
-    // update data for the second vessel
-    write_data_second[0] = (float)_realtimevessel_second->rotation(0);
-    write_data_second[1] = write_data_second[0];
-    write_data_second[2] = (float)_realtimevessel_second->rotation(1);
-    write_data_second[3] = (float)_realtimevessel_second->rotation(2);
-    write_data_second[4] = (float)_realtimevessel_second->alpha_deg(1);
-    write_data_second[5] = (float)_realtimevessel_second->alpha_deg(2);
-
-    // send data through PN driver
     PNIO_data_write(g_ApplHandle, &Addr_first, 24 /*BufLen*/,
                     (PNIO_UINT8 *)write_data_first, PNIO_S_GOOD,
                     &remState_first);
-    PNIO_data_write(g_ApplHandle, &Addr_second, 24 /*BufLen*/,
-                    (PNIO_UINT8 *)write_data_second, PNIO_S_GOOD,
-                    &remState_second);
     if (remState_first != 0x00) {
       // print error information
       if (FILEORNOT) {
@@ -1523,6 +1511,18 @@ void send2bothvessel(const realtimevessel_first *_realtimevessel_first,
       } else
         perror("First: send");
     }
+    // update data for the second vessel
+    write_data_second[0] = (float)_realtimevessel_second->rotation(0);
+    write_data_second[1] = write_data_second[0];
+    write_data_second[2] = (float)_realtimevessel_second->rotation(1);
+    write_data_second[3] = (float)_realtimevessel_second->rotation(2);
+    write_data_second[4] = (float)_realtimevessel_second->alpha_deg(1);
+    write_data_second[5] = (float)_realtimevessel_second->alpha_deg(2);
+    // send data through PN driver
+    PNIO_data_write(g_ApplHandle, &Addr_second, 24 /*BufLen*/,
+                    (PNIO_UINT8 *)write_data_second, PNIO_S_GOOD,
+                    &remState_second);
+
     if (remState_second != 0x00) {
       // print error information
       if (FILEORNOT) {

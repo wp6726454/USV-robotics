@@ -17,9 +17,10 @@
 #include "qtmInput.h"
 #include "realtimedata.h"
 
-const double max_velocity_u = 1;
-const double max_velocity_v = 0.5;
-const double max_velocity_orientation = 0.5;
+const double max_velocity_u = 1;              // m/s
+const double max_velocity_v = 0.5;            // m/s
+const double max_velocity_orientation = 0.5;  // rad/s
+const double qtm_max_position = 30000;        // mm
 
 using T_BOOST_CLOCK =
     boost::date_time::microsec_clock<boost::posix_time::ptime>;
@@ -66,12 +67,16 @@ class COutput {
   void PrintData6DEulerRes(FILE* logfile, CRTPacket* poRTPacket,
                            CRTProtocol* poRTProtocol);
 
-  static const int mcnMaxCameras =
-      20;  // How many cameras can be measured noise on
-  static const int mcnMaxMarkers =
-      20;  // How many markers can be measured noise on
-  static const int mcnUseSamples =
-      100;  // How many samples to calculate max noise upon
+  void updaterealtimevesseldata(Vector6d& _measurement, Vector6d& _position,
+                                float _fX, float _fY, float _fZ, float _fAng1,
+                                float _fAng2, float _fAng3);
+  void resetmeasurement(Vector6d& _measurement, Vector6d& _position);
+  // How many cameras can be measured noise on
+  static const int mcnMaxCameras = 20;
+  // How many markers can be measured noise on
+  static const int mcnMaxMarkers = 20;
+  // How many samples to calculate max noise upon
+  static const int mcnUseSamples = 100;
   static const int mcnMaxNoise = 30;  // Max noise in subpixels to display
 
   char msDist[100];

@@ -148,7 +148,7 @@ void Display2DDialog::vesselshapeDataSlot() {
 // real-time 6DOF motion data
 void Display2DDialog::motion6DOFdataSlot() {
   Vector6d position6DoF_first =
-      globalvar::_threadloop.getrealtime6dmotion_second();
+      globalvar::_threadloop.getrealtimestate_second();
   Vector6d position6DoF_second =
       globalvar::_threadloop.getrealtime6dmotion_second();
   Vector6d position6DoF_third =

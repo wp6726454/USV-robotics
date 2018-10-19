@@ -56,12 +56,14 @@ class motioncapture {
       }
 
     } else {
-      printf("\nFailed to connect to QTM RT Server. %s\n\n",
-             poRTProtocol->GetErrorString());
+      _file = fopen(logsavepath.c_str(), "a+");
+      fprintf(_file, "Failed to connect to QTM RT Server. %s\n",
+              poRTProtocol->GetErrorString());
       delete poOperations;
       delete poRTProtocol;
       delete poOutput;
       delete poInput;
+      fclose(_file);
       return 1;
     }
   }
@@ -69,11 +71,18 @@ class motioncapture {
   // multi-thread
   void RequestPosition(realtimevessel_first &_realtimevessel_first,
                        realtimevessel_second &_realtimevessel_second,
-                       realtimevessel_third &_realtimevessel_third) {
+                       realtimevessel_third &_realtimevessel_third,
+                       FILE *_file) {
     poOperations->DataTransfer(_realtimevessel_first, _realtimevessel_second,
-                               _realtimevessel_third);
+                               _realtimevessel_third, _file);
   }
-  void stopRequest() { poRTProtocol->StreamFramesStop(); }
+  // suspend the QTM clients
+  void stopRequest(FILE *_file) {
+    poRTProtocol->StreamFramesStop();
+    _file = fopen(logsavepath.c_str(), "a+");
+    fprintf(_file, "Shut down QTM client.\n");
+    fclose(_file);
+  }
 
  private:
   // raw data

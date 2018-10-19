@@ -213,7 +213,6 @@ void testmultistep() {
   };
 
   realtimevessel_first myrealtimevessel_first;
-  realtimevessel_second myrealtimevessel_second;
   realtimevessel_third myrealtimevessel_third;
   // specify parameters of the first vessel
   myrealtimevessel_first.tau.setZero();
@@ -225,9 +224,21 @@ void testmultistep() {
       mysavefile_first, myvessel_first, myrealtimevessel_first);
   output2csv(mythrusterallocation_first, mysavefile_first, "First");
   // specify parameters of the second vessel
-  myrealtimevessel_second.tau.setZero();
-  myrealtimevessel_second.alpha << -M_PI / 2, M_PI / 30, -M_PI / 180;
-  myrealtimevessel_second.u << 0.001, 0.1, 0.1;
+
+  // realtime parameters of the second vessel (K class-II)
+  realtimevessel_second myrealtimevessel_second{
+      Vector6d::Zero(),         // measurement
+      Vector6d::Zero(),         // position
+      Vector6d::Zero(),         // velocity
+      Vector6d::Zero(),         // state
+      Eigen::Vector3d::Zero(),  // tau
+      Eigen::Vector3d::Zero(),  // BalphaU
+      (Eigen::Vector3d() << -M_PI / 2, M_PI / 10, -M_PI / 4)
+          .finished(),                                   // alpha
+      Eigen::Vector3i::Zero(),                           // alpha_deg
+      (Eigen::Vector3d() << 0.01, 0.0, 0.0).finished(),  // u
+      Eigen::Vector3i::Zero()                            // rotation
+  };
   thrusterallocation_second mythrusterallocation_second(
       myvessel_second, myrealtimevessel_second);
   mythrusterallocation_second.test_multiplethrusterallocation(
@@ -235,7 +246,7 @@ void testmultistep() {
   output2csv(mythrusterallocation_second, mysavefile_second, "Second");
   // specify parameters of the third vessel
   myrealtimevessel_third.tau.setZero();
-  myrealtimevessel_third.alpha << -M_PI / 2, M_PI / 30, -M_PI / 180;
+  myrealtimevessel_third.alpha << -M_PI / 2, M_PI / 10, -M_PI / 180;
   myrealtimevessel_third.u << 0.001, 0.1, 0.1;
   thrusterallocation_third mythrusterallocation_third(myvessel_third,
                                                       myrealtimevessel_third);

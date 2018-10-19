@@ -10,7 +10,7 @@ class COperations {
   COperations(CInput* mpoInput, COutput* poOutput, CRTProtocol* poRTProtocol);
   void DataTransfer(realtimevessel_first& _realtimevessel_first,
                     realtimevessel_second& _realtimevessel_second,
-                    realtimevessel_third& _realtimevessel_third);
+                    realtimevessel_third& _realtimevessel_third, FILE* _file);
 
  private:
   CInput* mpoInput;

@@ -36,6 +36,9 @@ class threadloop {
   threadloop()
       : connection_status(0),
         mydb(dbsavepath),
+        index_controlmode_first(0),
+        index_controlmode_second(0),
+        index_controlmode_third(0),
         _controller_first(_vessel_first, _realtimevessel_first),
         _controller_second(_vessel_second, _realtimevessel_second),
         _controller_third(_vessel_third, _realtimevessel_third) {}
@@ -205,9 +208,9 @@ class threadloop {
   // 0: manual control
   // 1: heading control
   // 2: automatic control
-  int index_controlmode_first = 0;
-  int index_controlmode_second = 0;
-  int index_controlmode_third = 0;
+  int index_controlmode_first;
+  int index_controlmode_second;
+  int index_controlmode_third;
   // constant parameters of the first vessel
   vessel_first _vessel_first{
       {623, 0, 0, 0, 706, 444, 0, 444, 1298},  // mass
@@ -224,12 +227,12 @@ class threadloop {
       0.01,                                    // allowed_error_x
       0.01,                                    // allowed_error_y;
       0.01,                                    // allowed_error_orientation;
-      6.0,                                     // maxpositive_x_thrust(N)
-      4.0,                                     // maxnegative_x_thrust(N)
-      3.0,                                     // maxpositive_y_thrust(N)
-      2.0,                                     // maxnegative_y_thrust(N)
-      5.0,                                     // maxpositive_Mz_thrust(N*m)
-      3.0,                                     // maxnegative_Mz_thrust(N*m)
+      0.0,                                     // maxpositive_x_thrust(N)
+      0.0,                                     // maxnegative_x_thrust(N)
+      0,                                       // maxpositive_y_thrust(N)
+      0,                                       // maxnegative_y_thrust(N)
+      0,                                       // maxpositive_Mz_thrust(N*m)
+      0,                                       // maxnegative_Mz_thrust(N*m)
       // 26.0,                                    // maxpositive_x_thrust(N)
       // 25.0,                                    // maxnegative_x_thrust(N)
       // 6,                                       // maxpositive_y_thrust(N)
@@ -243,7 +246,7 @@ class threadloop {
       9,       // numvar
       3,       // num_constraints
       5.6e-7,  // Kbar_positive
-      5e-7,    // Kbar_negative
+      4e-7,    // Kbar_negative
       100,     // max_delta_rotation_bow
       4000,    // max_rotation_bow
       8.96,    // max_thrust_bow_positive
@@ -299,11 +302,11 @@ class threadloop {
       9,       // numvar
       3,       // num_constraints
       5.6e-7,  // Kbar_positive
-      3e-7,    // Kbar_negative
+      5e-7,    // Kbar_negative
       100,     // max_delta_rotation_bow
       4000,    // max_rotation_bow
       8.96,    // max_thrust_bow_positive
-      5.0,     // max_thrust_bow_negative
+      8.9,     // max_thrust_bow_negative
       2e-5,    // K_left
       2e-5,    // K_right
       20,      // max_delta_rotation_bow
@@ -438,12 +441,13 @@ class threadloop {
   }
   // get the real time motion response
   void updatemotion() {
-    if (mymotioncapture.initializemotioncapture() == 0) {
-      mymotioncapture.RequestPosition(
-          _realtimevessel_first, _realtimevessel_second, _realtimevessel_third);
+    if (mymotioncapture.initializemotioncapture(myfile) == 0) {
+      mymotioncapture.RequestPosition(_realtimevessel_first,
+                                      _realtimevessel_second,
+                                      _realtimevessel_third, myfile);
     }
   }
-  void closemotioncapture() { mymotioncapture.stopRequest(); }
+  void closemotioncapture() { mymotioncapture.stopRequest(myfile); }
   // save motion data to sqlite database
   void save2database() {
     while (1) {
@@ -460,15 +464,24 @@ class threadloop {
 
   // send and receive data from the first client (K class-I)
   void controller_first_pn() {
+    Eigen::Vector3d mysetpoint = Eigen::Vector3d::Zero();
     while (1) {
       // real-time control and optimization for each client
       boost::posix_time::ptime t_start =
           boost::posix_time::second_clock::local_time();
 
-      _controller_first.fullymanualcontroller(
-          mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
-          mygamepad.getGamepadZmoment(), _vessel_first, _realtimevessel_first,
-          myfile);
+      if (index_controlmode_first == 0)
+        _controller_first.fullymanualcontroller(
+            mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
+            mygamepad.getGamepadZmoment(), _realtimevessel_first, myfile);
+      else if (index_controlmode_first == 1) {
+        _controller_first.headingcontrolleronestep(
+            _realtimevessel_first, mysetpoint, mygamepad.getGamepadXforce(),
+            mygamepad.getGamepadYforce(), myfile);
+      } else if (index_controlmode_first == 2) {
+        _controller_first.pidcontrolleronestep(_realtimevessel_first,
+                                               mysetpoint, myfile);
+      }
 
       boost::posix_time::ptime t_end =
           boost::posix_time::second_clock::local_time();
@@ -498,8 +511,7 @@ class threadloop {
 
       _controller_second.fullymanualcontroller(
           mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
-          mygamepad.getGamepadZmoment(), _vessel_second, _realtimevessel_second,
-          myfile);
+          mygamepad.getGamepadZmoment(), _realtimevessel_second, myfile);
 
       boost::posix_time::ptime t_end =
           boost::posix_time::second_clock::local_time();
@@ -529,7 +541,7 @@ class threadloop {
 
       _controller_third.fullymanualcontroller(
           mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
-          mygamepad.getGamepadZmoment(), _vessel_third, _realtimevessel_third);
+          mygamepad.getGamepadZmoment(), _realtimevessel_third);
 
       boost::posix_time::ptime t_end =
           boost::posix_time::second_clock::local_time();

@@ -9,12 +9,12 @@ COperations::COperations(CInput* poInput, COutput* poOutput,
 
 void COperations::DataTransfer(realtimevessel_first& _realtimevessel_first,
                                realtimevessel_second& _realtimevessel_second,
-                               realtimevessel_third& _realtimevessel_third) {
+                               realtimevessel_third& _realtimevessel_third,
+                               FILE* _file) {
   CRTPacket::EPacketType ePacketType;
   unsigned int nComponentType;
   CRTProtocol::EStreamRate eStreamRate;
   int nRateArgument;
-  FILE* logfile = NULL;
 
   mpoOutput->ResetCounters();
 
@@ -22,8 +22,6 @@ void COperations::DataTransfer(realtimevessel_first& _realtimevessel_first,
   nComponentType = CRTProtocol::cComponent6dEuler;
   eStreamRate = CRTProtocol::RateAllFrames;
   nRateArgument = 0;
-
-  logfile = stdout;
 
   bool bDataAvailable;
 
@@ -43,13 +41,15 @@ void COperations::DataTransfer(realtimevessel_first& _realtimevessel_first,
         case CRTPacket::PacketError:  // sHeader.nType 0 indicates an error
         {
           CRTPacket* poRTPacket = mpoRTProtocol->GetRTPacket();
-          fprintf(stderr, "Error at StreamFrames: %s\n",
+          _file = fopen(logsavepath.c_str(), "a+");
+          fprintf(_file, "Error at StreamFrames: %s\n",
                   poRTPacket->GetErrorString());
+          fclose(_file);
           break;
         }
         case CRTPacket::PacketData:  // Data received
           mpoOutput->HandleDataFrame(
-              logfile, mpoRTProtocol, _realtimevessel_first,
+              _file, mpoRTProtocol, _realtimevessel_first,
               _realtimevessel_second, _realtimevessel_third);
           break;
         case CRTPacket::PacketNoMoreData:  // No more data
