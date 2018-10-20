@@ -2,7 +2,7 @@ clear;
 close all;
 
 % copy csv file
-name='Second';
+name='First';
 path='/home/skloe/Coding/CPP1X/USV/DPfloatover/controller/pidcontroller/example/';
 path=strcat(path,name);
 Rtau=csvread(strcat(path,'_Balpha.csv'));

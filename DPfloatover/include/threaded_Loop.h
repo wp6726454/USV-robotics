@@ -302,11 +302,11 @@ class threadloop {
       9,       // numvar
       3,       // num_constraints
       5.6e-7,  // Kbar_positive
-      5e-7,    // Kbar_negative
+      2.2e-7,  // Kbar_negative
       100,     // max_delta_rotation_bow
       4000,    // max_rotation_bow
       8.96,    // max_thrust_bow_positive
-      8.9,     // max_thrust_bow_negative
+      3.52,    // max_thrust_bow_negative
       2e-5,    // K_left
       2e-5,    // K_right
       20,      // max_delta_rotation_bow
@@ -398,7 +398,7 @@ class threadloop {
       Vector6d::Zero(),         // state
       Eigen::Vector3d::Zero(),  // tau
       Eigen::Vector3d::Zero(),  // BalphaU
-      (Eigen::Vector3d() << M_PI / 2, M_PI / 180, -M_PI / 30)
+      (Eigen::Vector3d() << M_PI / 2, M_PI / 10, -M_PI / 4)
           .finished(),                                   // alpha
       Eigen::Vector3i::Zero(),                           // alpha_deg
       (Eigen::Vector3d() << 0.01, 0.0, 0.0).finished(),  // u
@@ -470,19 +470,18 @@ class threadloop {
       boost::posix_time::ptime t_start =
           boost::posix_time::second_clock::local_time();
 
-      if (index_controlmode_first == 0)
-        _controller_first.fullymanualcontroller(
-            mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
-            mygamepad.getGamepadZmoment(), _realtimevessel_first, myfile);
-      else if (index_controlmode_first == 1) {
+      if (index_controlmode_first == 1) {
         _controller_first.headingcontrolleronestep(
             _realtimevessel_first, mysetpoint, mygamepad.getGamepadXforce(),
             mygamepad.getGamepadYforce(), myfile);
       } else if (index_controlmode_first == 2) {
         _controller_first.pidcontrolleronestep(_realtimevessel_first,
                                                mysetpoint, myfile);
+      } else {
+        _controller_first.fullymanualcontroller(
+            mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
+            mygamepad.getGamepadZmoment(), _realtimevessel_first, myfile);
       }
-
       boost::posix_time::ptime t_end =
           boost::posix_time::second_clock::local_time();
       boost::posix_time::time_duration t_elapsed = t_end - t_start;
@@ -504,15 +503,24 @@ class threadloop {
 
   // send and receive data from the second client (K class-II)
   void controller_second_pn() {
+    Eigen::Vector3d mysetpoint = Eigen::Vector3d::Zero();
     while (1) {
       // real-time control and optimization for each client
       boost::posix_time::ptime t_start =
           boost::posix_time::second_clock::local_time();
 
-      _controller_second.fullymanualcontroller(
-          mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
-          mygamepad.getGamepadZmoment(), _realtimevessel_second, myfile);
-
+      if (index_controlmode_second == 1) {
+        _controller_second.headingcontrolleronestep(
+            _realtimevessel_second, mysetpoint, mygamepad.getGamepadXforce(),
+            mygamepad.getGamepadYforce(), myfile);
+      } else if (index_controlmode_second == 2) {
+        _controller_second.pidcontrolleronestep(_realtimevessel_second,
+                                                mysetpoint, myfile);
+      } else {
+        _controller_second.fullymanualcontroller(
+            mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
+            mygamepad.getGamepadZmoment(), _realtimevessel_second, myfile);
+      }
       boost::posix_time::ptime t_end =
           boost::posix_time::second_clock::local_time();
       boost::posix_time::time_duration t_elapsed = t_end - t_start;

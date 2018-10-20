@@ -141,12 +141,12 @@ class thrusterallocation_first {
           0.0 * sin(angle) + 0.1 * std::rand() / RAND_MAX;
     }
     _savefile.save_tau.block(1, 0, 1, 100) =
-        Eigen::MatrixXd::Constant(1, 100, 0.3) +
+        Eigen::MatrixXd::Constant(1, 100, -3) +
         0.0 * Eigen::MatrixXd::Random(1, 100);
     _savefile.save_tau.block(1, 100, 1, 100) =
-        Eigen::MatrixXd::Constant(1, 100, 0.5) +
+        Eigen::MatrixXd::Constant(1, 100, 3) +
         0.0 * Eigen::MatrixXd::Random(1, 100);
-    _savefile.save_tau.row(0) = 0.1 * Eigen::MatrixXd::Random(1, totalstep);
+    _savefile.save_tau.row(0) = 0.01 * Eigen::MatrixXd::Random(1, totalstep);
     for (int i = 0; i != totalstep; ++i) {
       // update tau
       _realtimevessel.tau = _savefile.save_tau.col(i);
@@ -285,7 +285,7 @@ class thrusterallocation_first {
     Q(0, 0) = 100;
     Q(1, 1) = 100;
     Q(2, 2) = 1000;
-    Omega(0, 0) = 1;
+    Omega(0, 0) = 0.1;
     Omega(1, 1) = 1;
     Omega(2, 2) = 1;
     qval[3] = Omega(0, 0);
@@ -392,6 +392,95 @@ class thrusterallocation_first {
       index_twice_bow = 0;
     }
   }
+
+  // calculate the contraints of bow thruster
+  // depend on the desired force in the Y direction
+  void calculateconstrains_bowthruster(
+      const realtimevessel_first &_realtimevessel, double _desired_Yforce) {
+    if (0 < _realtimevessel.rotation(0) &&
+        _realtimevessel.rotation(0) <= max_delta_rotation_bow) {
+      // specify the first case
+      if (_desired_Yforce > 0) {
+        upper_delta_alpha_bow(0) = 0;
+        lower_delta_alpha_bow(0) = 0;
+        lower_delta_u_bow(0) = -_realtimevessel.u(0);
+        upper_delta_u_bow(0) =
+            Kbar_positive *
+                (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+                (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
+            _realtimevessel.u(0);
+      } else {
+        upper_delta_alpha_bow(0) = -M_PI;
+        lower_delta_alpha_bow(0) = -M_PI;
+        lower_delta_u_bow(0) = -_realtimevessel.u(0);
+        upper_delta_u_bow(0) =
+            Kbar_negative *
+                (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+                (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
+            _realtimevessel.u(0);
+      }
+      // specify whether two optimization problems are solved or not
+      index_twice_bow = 0;
+    } else if (-max_delta_rotation_bow <= _realtimevessel.rotation(0) &&
+               _realtimevessel.rotation(0) < 0) {
+      if (_desired_Yforce > 0) {
+        // specify the second case
+        upper_delta_alpha_bow(0) = M_PI;
+        lower_delta_alpha_bow(0) = M_PI;
+        lower_delta_u_bow(0) = -_realtimevessel.u(0);
+        upper_delta_u_bow(0) =
+            Kbar_positive *
+                (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+                (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
+            _realtimevessel.u(0);
+      } else {
+        // specify the first case
+        upper_delta_alpha_bow(0) = 0;
+        lower_delta_alpha_bow(0) = 0;
+        lower_delta_u_bow(0) = -_realtimevessel.u(0);
+        upper_delta_u_bow(0) =
+            Kbar_negative *
+                (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+                (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
+            _realtimevessel.u(0);
+      }
+      // specify whether two optimization problems are solved or not
+      index_twice_bow = 0;
+    } else if (_realtimevessel.rotation(0) > max_delta_rotation_bow) {
+      lower_delta_alpha_bow(0) = 0;
+      upper_delta_alpha_bow(0) = 0;
+      upper_delta_u_bow(0) = std::min(
+          max_thrust_bow_positive - _realtimevessel.u(0),
+          Kbar_positive *
+                  (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+                  (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
+              _realtimevessel.u(0));
+      lower_delta_u_bow(0) =
+          Kbar_positive *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
+          _realtimevessel.u(0);
+      // specify whether two optimization problems are solved or not
+      index_twice_bow = 0;
+    } else {
+      lower_delta_alpha_bow(0) = 0;
+      upper_delta_alpha_bow(0) = 0;
+      upper_delta_u_bow(0) = std::min(
+          Kbar_negative *
+                  (_realtimevessel.rotation(0) - max_delta_rotation_bow) *
+                  (_realtimevessel.rotation(0) - max_delta_rotation_bow) -
+              _realtimevessel.u(0),
+          max_thrust_bow_negative - _realtimevessel.u(0));
+      lower_delta_u_bow(0) =
+          Kbar_negative *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) *
+              (_realtimevessel.rotation(0) + max_delta_rotation_bow) -
+          _realtimevessel.u(0);
+      // specify whether two optimization problems are solved or not
+      index_twice_bow = 0;
+    }
+  }
+
   // calculate the consraints of azimuth thruster
   void calculateconstrains_azimuth(
       const realtimevessel_first &_realtimevessel) {
@@ -514,7 +603,7 @@ class thrusterallocation_first {
     calculateJocobianBalphaU(_realtimevessel.alpha, _realtimevessel.u);
     calculateDeltauQ(_realtimevessel.u);
     calculateb(_realtimevessel);
-    calculateconstrains_bowthruster(_realtimevessel);
+    calculateconstrains_bowthruster(_realtimevessel, _realtimevessel.tau(1));
     calculateconstrains_azimuth(_realtimevessel);
   }
 

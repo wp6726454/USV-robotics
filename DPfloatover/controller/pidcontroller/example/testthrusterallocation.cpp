@@ -212,19 +212,19 @@ void testmultistep() {
       0.216                                    // right_y
   };
 
-  realtimevessel_first myrealtimevessel_first;
-  realtimevessel_third myrealtimevessel_third;
-  // specify parameters of the first vessel
-  myrealtimevessel_first.tau.setZero();
-  myrealtimevessel_first.alpha << -M_PI / 2, M_PI / 30, -M_PI / 180;
-  myrealtimevessel_first.u << 0.001, 0.1, 0.1;
-  thrusterallocation_first mythrusterallocation_first(myvessel_first,
-                                                      myrealtimevessel_first);
-  mythrusterallocation_first.test_multiplethrusterallocation(
-      mysavefile_first, myvessel_first, myrealtimevessel_first);
-  output2csv(mythrusterallocation_first, mysavefile_first, "First");
-  // specify parameters of the second vessel
-
+  realtimevessel_first myrealtimevessel_first{
+      Vector6d::Zero(),         // measurement
+      Vector6d::Zero(),         // position
+      Vector6d::Zero(),         // velocity
+      Vector6d::Zero(),         // state
+      Eigen::Vector3d::Zero(),  // tau
+      Eigen::Vector3d::Zero(),  // BalphaU
+      (Eigen::Vector3d() << -M_PI / 2, M_PI / 30, -M_PI / 30)
+          .finished(),                                    // alpha
+      Eigen::Vector3i::Zero(),                            // alpha_deg
+      (Eigen::Vector3d() << 0.01, 0.1, 0.01).finished(),  // u
+      Eigen::Vector3i::Zero()                             // rotation
+  };
   // realtime parameters of the second vessel (K class-II)
   realtimevessel_second myrealtimevessel_second{
       Vector6d::Zero(),         // measurement
@@ -239,6 +239,16 @@ void testmultistep() {
       (Eigen::Vector3d() << 0.01, 0.0, 0.0).finished(),  // u
       Eigen::Vector3i::Zero()                            // rotation
   };
+  realtimevessel_third myrealtimevessel_third;
+  // specify parameters of the first vessel
+
+  thrusterallocation_first mythrusterallocation_first(myvessel_first,
+                                                      myrealtimevessel_first);
+  mythrusterallocation_first.test_multiplethrusterallocation(
+      mysavefile_first, myvessel_first, myrealtimevessel_first);
+  output2csv(mythrusterallocation_first, mysavefile_first, "First");
+  // specify parameters of the second vessel
+
   thrusterallocation_second mythrusterallocation_second(
       myvessel_second, myrealtimevessel_second);
   mythrusterallocation_second.test_multiplethrusterallocation(
