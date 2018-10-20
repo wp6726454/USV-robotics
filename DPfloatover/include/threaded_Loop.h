@@ -35,7 +35,6 @@ class threadloop {
  public:
   threadloop()
       : connection_status(0),
-        mydb(dbsavepath),
         index_controlmode_first(0),
         index_controlmode_second(0),
         index_controlmode_third(0),
@@ -47,13 +46,13 @@ class threadloop {
   void initializelooop() {
     // open system file descriptors
     if (FILEORNOT) {
-      myfile = fopen(logsavepath.c_str(), "a+");
       // initialize pn server
       pnd_init();
     } else {
       // initialize socket server
       pnd_init();
     }
+    mydb = databasecpp(dbsavepath);
     // sqlite to create master table
     mydb.create_mastertable();
   }
@@ -141,11 +140,19 @@ class threadloop {
       pthread_cancel(_threadid_motion);
       for (int i = 0; i != MAXCONNECTION; ++i) stopmosekthread(i);
       pthread_cancel(_threadid_database);
-
-      fclose(myfile);
     }
   }
-
+  // setup the control mode of all vessels
+  void setcontrolmode(int _controlmode) {
+    index_controlmode_first = _controlmode;
+    index_controlmode_second = _controlmode;
+    index_controlmode_third = _controlmode;
+  }
+  // setup the sqlite db path
+  void setdbsavepath(const std::string &_projectname) {
+    dbsavepath = "/home/skloe/Coding/CPP1X/USV/DPfloatover/QT/build/data/" +
+                 _projectname + ".db";
+  }
   int get_connection_status() { return connection_status; }
 
   Vector6d getrealtimestate_first() { return _realtimevessel_first.State; }
@@ -203,7 +210,7 @@ class threadloop {
   gamepadmonitor mygamepad;
   motioncapture mymotioncapture;
   FILE *myfile;
-
+  std::string dbsavepath;
   // index for control mode
   // 0: manual control
   // 1: heading control
@@ -464,8 +471,8 @@ class threadloop {
 
   // send and receive data from the first client (K class-I)
   void controller_first_pn() {
-    Eigen::Vector3d mysetpoint = Eigen::Vector3d::Zero();
     while (1) {
+      Eigen::Vector3d mysetpoint = _realtimevessel_second.State.head(3);
       // real-time control and optimization for each client
       boost::posix_time::ptime t_start =
           boost::posix_time::second_clock::local_time();
@@ -503,8 +510,8 @@ class threadloop {
 
   // send and receive data from the second client (K class-II)
   void controller_second_pn() {
-    Eigen::Vector3d mysetpoint = Eigen::Vector3d::Zero();
     while (1) {
+      Eigen::Vector3d mysetpoint = _realtimevessel_second.State.head(3);
       // real-time control and optimization for each client
       boost::posix_time::ptime t_start =
           boost::posix_time::second_clock::local_time();

@@ -34,6 +34,14 @@ class MainWindow : public QMainWindow {
 
   void readfilebyline();
 
+  void on_RB_headhold_clicked();
+
+  void on_RB_PID_clicked();
+
+  void on_RB_manual_clicked();
+
+  void on_RB_MPC_clicked();
+
  private:
   Ui::MainWindow *ui;
   Display2DDialog *myDisplay2DDialog;

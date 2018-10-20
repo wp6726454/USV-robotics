@@ -4,7 +4,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
-  this->setWindowState(Qt::WindowMaximized);
+  // this->setWindowState(Qt::WindowMaximized);
   GetCurrentPath();
   initializeLoglist();
   updatelog();
@@ -24,6 +24,10 @@ void MainWindow::on_actionThruster_P_triggered() {
 }
 
 void MainWindow::on_PB_connection_clicked() {
+  QString _Projectname = ui->Projectname->text();
+  std::string s_projectname = _Projectname.toStdString();
+  globalvar::_threadloop.setdbsavepath(s_projectname);
+  // initialize the threaded loop
   globalvar::_threadloop.initializelooop();
   // connect to PN server
   globalvar::_threadloop.start_connnection_t();
@@ -31,21 +35,20 @@ void MainWindow::on_PB_connection_clicked() {
   globalvar::_threadloop.updategamepad_t();
   // start a thread for motion caputre
   globalvar::_threadloop.updatemotioncapture_t();
+  // start a thread for sqlite database
+  globalvar::_threadloop.save2database_t();
 }
 
 void MainWindow::on_PB_start_clicked() {
   // start multithreads for each socket client
   globalvar::_threadloop.controller_t();
   // start a thread for send/receive using Profinet
-  globalvar::_threadloop.send2allclients_pn_t();
-  // start a thread for sqlite database
-  globalvar::_threadloop.save2database_t();
+  // globalvar::_threadloop.send2allclients_pn_t();
 }
 
 void MainWindow::on_PB_test_clicked() {}
 
 void MainWindow::on_PB_suspend_clicked() {
-  // globalvar::_loop.closelooop();
   globalvar::_threadloop.closelooop();
 }
 
@@ -86,4 +89,20 @@ void MainWindow::updatelog() {
   QTimer *timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(readfilebyline()));
   timer->start(1000);
+}
+
+void MainWindow::on_RB_headhold_clicked() {
+  globalvar::_threadloop.setcontrolmode(1);
+}
+
+void MainWindow::on_RB_PID_clicked() {
+  globalvar::_threadloop.setcontrolmode(2);
+}
+
+void MainWindow::on_RB_manual_clicked() {
+  globalvar::_threadloop.setcontrolmode(0);
+}
+
+void MainWindow::on_RB_MPC_clicked() {
+  globalvar::_threadloop.setcontrolmode(2);
 }

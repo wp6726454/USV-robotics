@@ -41,9 +41,11 @@ struct realtimevessel_first {
 // real time data of the second vessel (K class-II)
 struct realtimevessel_second {
   /* data wroten by motion capture system */
-  // x(surge), y(sway), yaw(theta), u, v, r (next time stamp)
+  // x(surge: m), y(sway: m), orientation(theta: rad), u, v, r (next time stamp)
   Vector6d Measurement;
-  Vector6d Position;  // x(surge), y(sway), z(heave), roll, pitch, yaw(theta)
+  // x(surge: m), y(sway: m), z(heave: m), roll(deg), pitch(deg), yaw(theta:
+  // deg)
+  Vector6d Position;
   Vector6d Velocity;
 
   /* data wroten by controller (e.g. kalman, pid, thruster allocation) */

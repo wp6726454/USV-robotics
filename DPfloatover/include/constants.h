@@ -31,8 +31,8 @@
 const double sample_time = 0.1;            // second
 const int sample_mtime = 100;              // ms
 const unsigned int sample_utime = 100000;  // us
-const std::string dbsavepath =
-    "/home/skloe/Coding/CPP1X/USV/DPfloatover/QT/build/data/mytest.db";
+// const std::string dbsavepath =
+//     "/home/skloe/Coding/CPP1X/USV/DPfloatover/QT/build/data/mytest.db";
 const std::string logsavepath =
     "/home/skloe/Coding/CPP1X/USV/DPfloatover/QT/build/data/log";
 const std::string xmlpath =

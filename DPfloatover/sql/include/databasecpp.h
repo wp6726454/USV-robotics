@@ -130,7 +130,7 @@ class databasecpp {
     // measured 6 DoF motion
     for (int i = 0; i != 6; ++i) {
       _str += ", ";
-      _str += std::to_string(_realtimevessel_first.Measurement(i));
+      _str += std::to_string(_realtimevessel_first.Position(i));
     }
     // real time state
     for (int i = 0; i != 6; ++i) {
@@ -165,7 +165,7 @@ class databasecpp {
     // measured 6 DoF motion
     for (int i = 0; i != 6; ++i) {
       _str += ", ";
-      _str += std::to_string(_realtimevessel_second.Measurement(i));
+      _str += std::to_string(_realtimevessel_second.Position(i));
     }
     // real time state
     for (int i = 0; i != 6; ++i) {
