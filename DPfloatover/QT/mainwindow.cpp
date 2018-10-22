@@ -5,10 +5,16 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
   // this->setWindowState(Qt::WindowMaximized);
+  // this->setStyleSheet("background-color: black;");
+  // ui operation
+  ui->PB_connection->setEnabled(true);
+  ui->Projectname->setEnabled(true);
+  ui->PB_start->setEnabled(false);
+  ui->PB_enablePLC->setEnabled(false);
+  ui->PB_suspend->setEnabled(false);
   GetCurrentPath();
   initializeLoglist();
   updatelog();
-  //  this->setStyleSheet("background-color: black;");
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -37,16 +43,36 @@ void MainWindow::on_PB_connection_clicked() {
   globalvar::_threadloop.updatemotioncapture_t();
   // start a thread for sqlite database
   globalvar::_threadloop.save2database_t();
+
+  // ui operation
+  ui->PB_connection->setEnabled(false);
+  ui->Projectname->setEnabled(false);
+  ui->PB_start->setEnabled(true);
+  ui->PB_enablePLC->setEnabled(false);
+  ui->PB_suspend->setEnabled(false);
 }
 
 void MainWindow::on_PB_start_clicked() {
   // start multithreads for each socket client
   globalvar::_threadloop.controller_t();
-  // start a thread for send/receive using Profinet
-  // globalvar::_threadloop.send2allclients_pn_t();
+  // ui operation
+  ui->PB_connection->setEnabled(false);
+  ui->Projectname->setEnabled(false);
+  ui->PB_start->setEnabled(false);
+  ui->PB_enablePLC->setEnabled(true);
+  ui->PB_suspend->setEnabled(true);
 }
 
-void MainWindow::on_PB_test_clicked() {}
+void MainWindow::on_PB_enablePLC_clicked() {
+  // start a thread for send/receive using Profinet
+  globalvar::_threadloop.send2allclients_pn_t();
+  // ui operation
+  ui->PB_connection->setEnabled(false);
+  ui->Projectname->setEnabled(false);
+  ui->PB_start->setEnabled(false);
+  ui->PB_enablePLC->setEnabled(false);
+  ui->PB_suspend->setEnabled(true);
+}
 
 void MainWindow::on_PB_suspend_clicked() {
   globalvar::_threadloop.closelooop();

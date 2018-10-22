@@ -35,6 +35,7 @@ class threadloop {
  public:
   threadloop()
       : connection_status(0),
+        mydb(defaultdbsavepath),
         index_controlmode_first(0),
         index_controlmode_second(0),
         index_controlmode_third(0),
@@ -210,6 +211,9 @@ class threadloop {
   gamepadmonitor mygamepad;
   motioncapture mymotioncapture;
   FILE *myfile;
+  FILE *myfile_first;
+  FILE *myfile_second;
+  FILE *myfile_third;
   std::string dbsavepath;
   // index for control mode
   // 0: manual control
@@ -253,11 +257,11 @@ class threadloop {
       9,       // numvar
       3,       // num_constraints
       5.6e-7,  // Kbar_positive
-      4e-7,    // Kbar_negative
+      2.0e-7,  // Kbar_negative
       100,     // max_delta_rotation_bow
       4000,    // max_rotation_bow
       8.96,    // max_thrust_bow_positive
-      8,       // max_thrust_bow_negative
+      3.2,     // max_thrust_bow_negative
       2e-5,    // K_left
       2e-5,    // K_right
       20,      // max_delta_rotation_bow
@@ -295,7 +299,7 @@ class threadloop {
       8.0,                                     // maxpositive_x_thrust(N)
       7.0,                                     // maxnegative_x_thrust(N)
       3,                                       // maxpositive_y_thrust(N)
-      2,                                       // maxnegative_y_thrust(N)
+      1.5,                                     // maxnegative_y_thrust(N)
       5,                                       // maxpositive_Mz_thrust(N*m)
       3,                                       // maxnegative_Mz_thrust(N*m)
       // 26.0,    // maxpositive_x_thrust(N)
@@ -309,11 +313,11 @@ class threadloop {
       9,       // numvar
       3,       // num_constraints
       5.6e-7,  // Kbar_positive
-      2.2e-7,  // Kbar_negative
+      1.8e-7,  // Kbar_negative
       100,     // max_delta_rotation_bow
-      4000,    // max_rotation_bow
-      8.96,    // max_thrust_bow_positive
-      3.52,    // max_thrust_bow_negative
+      3000,    // max_rotation_bow
+      5.04,    // max_thrust_bow_positive
+      1.62,    // max_thrust_bow_negative
       2e-5,    // K_left
       2e-5,    // K_right
       20,      // max_delta_rotation_bow
@@ -471,35 +475,41 @@ class threadloop {
 
   // send and receive data from the first client (K class-I)
   void controller_first_pn() {
+    boost::posix_time::ptime t_start =
+        boost::posix_time::second_clock::local_time();
+    boost::posix_time::ptime t_end =
+        boost::posix_time::second_clock::local_time();
+    boost::posix_time::time_duration t_elapsed = t_end - t_start;
+    long int mt_elapsed = 0;
+    Eigen::Vector3d mysetpoint = _realtimevessel_first.State.head(3);
     while (1) {
-      Eigen::Vector3d mysetpoint = _realtimevessel_second.State.head(3);
+      mysetpoint = _realtimevessel_first.State.head(3);
       // real-time control and optimization for each client
-      boost::posix_time::ptime t_start =
-          boost::posix_time::second_clock::local_time();
+      t_start = boost::posix_time::second_clock::local_time();
 
       if (index_controlmode_first == 1) {
         _controller_first.headingcontrolleronestep(
             _realtimevessel_first, mysetpoint, mygamepad.getGamepadXforce(),
-            mygamepad.getGamepadYforce(), myfile);
+            mygamepad.getGamepadYforce(), myfile_first);
       } else if (index_controlmode_first == 2) {
         _controller_first.pidcontrolleronestep(_realtimevessel_first,
-                                               mysetpoint, myfile);
+                                               mysetpoint, myfile_first);
       } else {
         _controller_first.fullymanualcontroller(
             mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
-            mygamepad.getGamepadZmoment(), _realtimevessel_first, myfile);
+            mygamepad.getGamepadZmoment(), _realtimevessel_first, myfile_first);
       }
-      boost::posix_time::ptime t_end =
-          boost::posix_time::second_clock::local_time();
-      boost::posix_time::time_duration t_elapsed = t_end - t_start;
-      long int mt_elapsed = t_elapsed.total_milliseconds();
+      t_end = boost::posix_time::second_clock::local_time();
+      t_elapsed = t_end - t_start;
+      mt_elapsed = t_elapsed.total_milliseconds();
       if (mt_elapsed > sample_mtime) {
         if (FILEORNOT) {
-          myfile = fopen(logsavepath.c_str(), "a+");
-          fprintf(myfile, "First: Take too long for QP!\n");
-          fclose(myfile);
+          myfile_first = fopen(logsavepath_first.c_str(), "a+");
+          fprintf(myfile_first, "First: Take too long for QP!\n");
+          fclose(myfile_first);
         } else
           perror("First: Take too long for QP");
+        // continue;
       } else {
         std::this_thread::sleep_for(
             std::chrono::milliseconds(sample_mtime - mt_elapsed));
@@ -510,40 +520,47 @@ class threadloop {
 
   // send and receive data from the second client (K class-II)
   void controller_second_pn() {
+    boost::posix_time::ptime t_start =
+        boost::posix_time::second_clock::local_time();
+    boost::posix_time::ptime t_end =
+        boost::posix_time::second_clock::local_time();
+    boost::posix_time::time_duration t_elapsed = t_end - t_start;
+    long int mt_elapsed = 0;
+    Eigen::Vector3d mysetpoint = _realtimevessel_second.State.head(3);
     while (1) {
-      Eigen::Vector3d mysetpoint = _realtimevessel_second.State.head(3);
+      mysetpoint = _realtimevessel_second.State.head(3);
       // real-time control and optimization for each client
-      boost::posix_time::ptime t_start =
-          boost::posix_time::second_clock::local_time();
+      t_start = boost::posix_time::second_clock::local_time();
 
       if (index_controlmode_second == 1) {
         _controller_second.headingcontrolleronestep(
             _realtimevessel_second, mysetpoint, mygamepad.getGamepadXforce(),
-            mygamepad.getGamepadYforce(), myfile);
+            mygamepad.getGamepadYforce(), myfile_second);
       } else if (index_controlmode_second == 2) {
         _controller_second.pidcontrolleronestep(_realtimevessel_second,
-                                                mysetpoint, myfile);
+                                                mysetpoint, myfile_second);
       } else {
         _controller_second.fullymanualcontroller(
             mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
-            mygamepad.getGamepadZmoment(), _realtimevessel_second, myfile);
+            mygamepad.getGamepadZmoment(), _realtimevessel_second,
+            myfile_second);
       }
-      boost::posix_time::ptime t_end =
-          boost::posix_time::second_clock::local_time();
-      boost::posix_time::time_duration t_elapsed = t_end - t_start;
-      long int mt_elapsed = t_elapsed.total_milliseconds();
+      t_end = boost::posix_time::second_clock::local_time();
+      t_elapsed = t_end - t_start;
+      mt_elapsed = t_elapsed.total_milliseconds();
       if (mt_elapsed > sample_mtime) {
         if (FILEORNOT) {
-          myfile = fopen(logsavepath.c_str(), "a+");
-          fprintf(myfile, "Second: Take too long for QP!\n");
-          fclose(myfile);
+          myfile_second = fopen(logsavepath_second.c_str(), "a+");
+          fprintf(myfile_second, "Second: Take too long for QP!\n");
+          fclose(myfile_second);
         } else
           perror("Second: Take too long for QP");
+        // continue;
       } else {
         std::this_thread::sleep_for(
             std::chrono::milliseconds(sample_mtime - mt_elapsed));
       }
-      realtimeprint_second();
+      // realtimeprint_second();
     }
   }
 
@@ -564,9 +581,9 @@ class threadloop {
       long int mt_elapsed = t_elapsed.total_milliseconds();
       if (mt_elapsed > sample_mtime) {
         if (FILEORNOT) {
-          myfile = fopen(logsavepath.c_str(), "a+");
-          fprintf(myfile, "Third: Take too long for QP!\n");
-          fclose(myfile);
+          myfile_third = fopen(logsavepath_third.c_str(), "a+");
+          fprintf(myfile_third, "Third: Take too long for QP!\n");
+          fclose(myfile_third);
         } else
           perror("Third: Take too long for QP");
       } else {

@@ -731,7 +731,7 @@ class thrusterallocation_first {
             case MSK_SOL_STA_PRIM_INFEAS_CER:
             case MSK_SOL_STA_NEAR_DUAL_INFEAS_CER:
             case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER: {
-              t_file = fopen(logsavepath.c_str(), "a+");
+              t_file = fopen(logsavepath_first.c_str(), "a+");
               fprintf(
                   t_file,
                   "First: Primal or dual infeasibility certificate found.\n");
@@ -739,7 +739,7 @@ class thrusterallocation_first {
               break;
             }
             case MSK_SOL_STA_UNKNOWN: {
-              t_file = fopen(logsavepath.c_str(), "a+");
+              t_file = fopen(logsavepath_first.c_str(), "a+");
               fprintf(t_file,
                       "First: The status of the solution could not be "
                       "determined.\n");
@@ -747,14 +747,14 @@ class thrusterallocation_first {
               break;
             }
             default: {
-              t_file = fopen(logsavepath.c_str(), "a+");
+              t_file = fopen(logsavepath_first.c_str(), "a+");
               fprintf(t_file, "First: Other solution status.");
               fclose(t_file);
               break;
             }
           }
         } else {
-          t_file = fopen(logsavepath.c_str(), "a+");
+          t_file = fopen(logsavepath_first.c_str(), "a+");
           fprintf(t_file, "First: Error while optimizing.\n");
           fclose(t_file);
         }
@@ -763,7 +763,7 @@ class thrusterallocation_first {
         /* In case of an error print error code and description. */
         char symname[MSK_MAX_STR_LEN];
         char desc[MSK_MAX_STR_LEN];
-        t_file = fopen(logsavepath.c_str(), "a+");
+        t_file = fopen(logsavepath_first.c_str(), "a+");
         fprintf(t_file, "First: An error occurred while optimizing.\n");
         MSK_getcodedesc(r, symname, desc);
         fprintf(t_file, "Error %s - '%s'\n", symname, desc);
@@ -1560,7 +1560,7 @@ class thrusterallocation_second {
               break;
             }
             case MSK_SOL_STA_UNKNOWN: {
-              t_file = fopen(logsavepath.c_str(), "a+");
+              t_file = fopen(logsavepath_second.c_str(), "a+");
               fprintf(t_file,
                       "Second: The status of the solution could not be "
                       "determined.\n");
@@ -1568,14 +1568,14 @@ class thrusterallocation_second {
               break;
             }
             default: {
-              t_file = fopen(logsavepath.c_str(), "a+");
+              t_file = fopen(logsavepath_second.c_str(), "a+");
               fprintf(t_file, "Second: Other solution status.");
               fclose(t_file);
               break;
             }
           }
         } else {
-          t_file = fopen(logsavepath.c_str(), "a+");
+          t_file = fopen(logsavepath_second.c_str(), "a+");
           fprintf(t_file, "Second: Error while optimizing.\n");
           fclose(t_file);
         }
@@ -1584,7 +1584,7 @@ class thrusterallocation_second {
         /* In case of an error print error code and description. */
         char symname[MSK_MAX_STR_LEN];
         char desc[MSK_MAX_STR_LEN];
-        t_file = fopen(logsavepath.c_str(), "a+");
+        t_file = fopen(logsavepath_second.c_str(), "a+");
         fprintf(t_file, "Second: An error occurred while optimizing.\n");
         MSK_getcodedesc(r, symname, desc);
         fprintf(t_file, "Error %s - '%s'\n", symname, desc);

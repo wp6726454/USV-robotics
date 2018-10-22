@@ -146,6 +146,8 @@ class kalmanfilter_first {
     CT(0, 1) = -svalue;
     CT(1, 0) = svalue;
   }
+  // // real time lowpass filter (moving average)
+  // void movingaverage(int average_num = 3) {}
 };
 
 class kalmanfilter_second {

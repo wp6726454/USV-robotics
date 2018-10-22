@@ -100,12 +100,12 @@ void COutput::HandleDataFrame(FILE* logfile, CRTProtocol* poRTProtocol,
   }
 
   if (MAXCONNECTION == 1)
-    PrintData6DEuler(logfile, poRTPacket, poRTProtocol, _realtimevessel_first);
+    PrintData6DEuler(poRTPacket, poRTProtocol, _realtimevessel_first);
   else if (MAXCONNECTION == 2)
-    PrintData6DEuler(logfile, poRTPacket, poRTProtocol, _realtimevessel_first,
+    PrintData6DEuler(poRTPacket, poRTProtocol, _realtimevessel_first,
                      _realtimevessel_second);
   else if (MAXCONNECTION == 3)
-    PrintData6DEuler(logfile, poRTPacket, poRTProtocol, _realtimevessel_first,
+    PrintData6DEuler(poRTPacket, poRTProtocol, _realtimevessel_first,
                      _realtimevessel_second, _realtimevessel_third);
 }  // OutputData
 
@@ -194,8 +194,7 @@ void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
   }
 }  // PrintData6DEuler
 
-void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
-                               CRTProtocol* poRTProtocol,
+void COutput::PrintData6DEuler(CRTPacket* poRTPacket, CRTProtocol* poRTProtocol,
                                realtimevessel_first& _realtimevessel_first) {
   float fX, fY, fZ, fAng1, fAng2, fAng3;  // mm, mm, mm, deg, deg, deg (QTM)
 
@@ -205,31 +204,22 @@ void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
     if (nCount > 0) {
       poRTPacket->Get6DOFEulerBody(0, fX, fY, fZ, fAng1, fAng2, fAng3);
       // determine if the measured data is out of range or NaN
-      if ((abs(fX) < qtm_max_position) && (abs(fY) < qtm_max_position))
-        updaterealtimevesseldata(_realtimevessel_first.Measurement,
-                                 _realtimevessel_first.Position, fX, fY, fZ,
-                                 fAng1, fAng2, fAng3);
-      else {
-        resetmeasurement(_realtimevessel_first.Measurement,
-                         _realtimevessel_first.Position);
+      updaterealtimevesseldata(_realtimevessel_first.Measurement,
+                               _realtimevessel_first.Position, fX, fY, fZ,
+                               fAng1, fAng2, fAng3);
 
-        logfile = fopen(logsavepath.c_str(), "a+");
-        fprintf(logfile, "First: motion data out of range or NaN!\n");
-        fclose(logfile);
-      }
     } else {
       resetmeasurement(_realtimevessel_first.Measurement,
                        _realtimevessel_first.Position);
 
-      logfile = fopen(logsavepath.c_str(), "a+");
-      fprintf(logfile, "No rigid body found!\n");
-      fclose(logfile);
+      // logfile = fopen(logsavepath.c_str(), "a+");
+      fprintf(stdout, "No rigid body found!\n");
+      // fclose(logfile);
     }
   }
 }  // PrintData6DEuler (the first vessel)
 
-void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
-                               CRTProtocol* poRTProtocol,
+void COutput::PrintData6DEuler(CRTPacket* poRTPacket, CRTProtocol* poRTProtocol,
                                realtimevessel_first& _realtimevessel_first,
                                realtimevessel_second& _realtimevessel_second) {
   float fX, fY, fZ, fAng1, fAng2, fAng3;  // mm, mm, mm, deg, deg, deg (QTM)
@@ -240,31 +230,16 @@ void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
       // the first vessel
       poRTPacket->Get6DOFEulerBody(0, fX, fY, fZ, fAng1, fAng2, fAng3);
       // determine if the measured data is out of range or NaN
-      if ((abs(fX) < qtm_max_position) && (abs(fY) < qtm_max_position))
-        updaterealtimevesseldata(_realtimevessel_first.Measurement,
-                                 _realtimevessel_first.Position, fX, fY, fZ,
-                                 fAng1, fAng2, fAng3);
-      else {
-        resetmeasurement(_realtimevessel_first.Measurement,
-                         _realtimevessel_first.Position);
-        logfile = fopen(logsavepath.c_str(), "a+");
-        fprintf(logfile, "First: motion data out of range or NaN!\n");
-        fclose(logfile);
-      }
+      updaterealtimevesseldata(_realtimevessel_first.Measurement,
+                               _realtimevessel_first.Position, fX, fY, fZ,
+                               fAng1, fAng2, fAng3);
+
       // the second vessel
       poRTPacket->Get6DOFEulerBody(1, fX, fY, fZ, fAng1, fAng2, fAng3);
       // determine if the measured data is out of range or NaN
-      if ((abs(fX) < qtm_max_position) && (abs(fY) < qtm_max_position))
-        updaterealtimevesseldata(_realtimevessel_second.Measurement,
-                                 _realtimevessel_second.Position, fX, fY, fZ,
-                                 fAng1, fAng2, fAng3);
-      else {
-        resetmeasurement(_realtimevessel_second.Measurement,
-                         _realtimevessel_second.Position);
-        logfile = fopen(logsavepath.c_str(), "a+");
-        fprintf(logfile, "Second: motion data out of range or NaN!\n");
-        fclose(logfile);
-      }
+      updaterealtimevesseldata(_realtimevessel_second.Measurement,
+                               _realtimevessel_second.Position, fX, fY, fZ,
+                               fAng1, fAng2, fAng3);
 
     } else {
       resetmeasurement(_realtimevessel_first.Measurement,
@@ -272,15 +247,14 @@ void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
       resetmeasurement(_realtimevessel_second.Measurement,
                        _realtimevessel_second.Position);
 
-      logfile = fopen(logsavepath.c_str(), "a+");
-      fprintf(logfile, "No rigid body found!\n");
-      fclose(logfile);
+      // logfile = fopen(logsavepath.c_str(), "a+");
+      fprintf(stdout, "No rigid body found!\n");
+      // fclose(logfile);
     }
   }
 }  // PrintData6DEuler (the first and second vessel)
 
-void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
-                               CRTProtocol* poRTProtocol,
+void COutput::PrintData6DEuler(CRTPacket* poRTPacket, CRTProtocol* poRTProtocol,
                                realtimevessel_first& _realtimevessel_first,
                                realtimevessel_second& _realtimevessel_second,
                                realtimevessel_third& _realtimevessel_third) {
@@ -293,46 +267,23 @@ void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
       // the first vessel
       poRTPacket->Get6DOFEulerBody(0, fX, fY, fZ, fAng1, fAng2, fAng3);
       // determine if the measured data is out of range or NaN
-      if ((abs(fX) < qtm_max_position) && (abs(fY) < qtm_max_position))
-        updaterealtimevesseldata(_realtimevessel_first.Measurement,
-                                 _realtimevessel_first.Position, fX, fY, fZ,
-                                 fAng1, fAng2, fAng3);
-      else {
-        resetmeasurement(_realtimevessel_first.Measurement,
-                         _realtimevessel_first.Position);
-        logfile = fopen(logsavepath.c_str(), "a+");
-        fprintf(logfile, "First: motion data out of range or NaN!\n");
-        fclose(logfile);
-      }
+      updaterealtimevesseldata(_realtimevessel_first.Measurement,
+                               _realtimevessel_first.Position, fX, fY, fZ,
+                               fAng1, fAng2, fAng3);
+
       // the second vessel
       poRTPacket->Get6DOFEulerBody(1, fX, fY, fZ, fAng1, fAng2, fAng3);
       // determine if the measured data is out of range or NaN
-      if ((abs(fX) < qtm_max_position) && (abs(fY) < qtm_max_position))
-        updaterealtimevesseldata(_realtimevessel_second.Measurement,
-                                 _realtimevessel_second.Position, fX, fY, fZ,
-                                 fAng1, fAng2, fAng3);
-      else {
-        resetmeasurement(_realtimevessel_second.Measurement,
-                         _realtimevessel_second.Position);
-        logfile = fopen(logsavepath.c_str(), "a+");
-        fprintf(logfile, "Second: motion data out of range or NaN!\n");
-        fclose(logfile);
-      }
+      updaterealtimevesseldata(_realtimevessel_second.Measurement,
+                               _realtimevessel_second.Position, fX, fY, fZ,
+                               fAng1, fAng2, fAng3);
+
       // the third vessel
       poRTPacket->Get6DOFEulerBody(2, fX, fY, fZ, fAng1, fAng2, fAng3);
       // determine if the measured data is out of range or NaN
-      if ((abs(fX) < qtm_max_position) && (abs(fY) < qtm_max_position))
-        updaterealtimevesseldata(_realtimevessel_third.Measurement,
-                                 _realtimevessel_third.Position, fX, fY, fZ,
-                                 fAng1, fAng2, fAng3);
-      else {
-        resetmeasurement(_realtimevessel_third.Measurement,
-                         _realtimevessel_third.Position);
-        logfile = fopen(logsavepath.c_str(), "a+");
-        fprintf(logfile, "Third: motion data out of range or NaN!\n");
-        fclose(logfile);
-      }
-
+      updaterealtimevesseldata(_realtimevessel_third.Measurement,
+                               _realtimevessel_third.Position, fX, fY, fZ,
+                               fAng1, fAng2, fAng3);
     } else {
       resetmeasurement(_realtimevessel_first.Measurement,
                        _realtimevessel_first.Position);
@@ -341,9 +292,9 @@ void COutput::PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
       resetmeasurement(_realtimevessel_third.Measurement,
                        _realtimevessel_third.Position);
 
-      logfile = fopen(logsavepath.c_str(), "a+");
-      fprintf(logfile, "No rigid body found!\n");
-      fclose(logfile);
+      // logfile = fopen(logsavepath.c_str(), "a+");
+      fprintf(stdout, "No rigid body found!\n");
+      // fclose(logfile);
     }
   }
 }  // PrintData6DEuler (the first/second/third vessel)
@@ -407,35 +358,42 @@ void COutput::updaterealtimevesseldata(Vector6d& _measurement,
                                        Vector6d& _position, float _fX,
                                        float _fY, float _fZ, float _fAng1,
                                        float _fAng2, float _fAng3) {
-  // the first vessel
-  double m_fx = _fX / 1000;
-  double m_fy = _fY / 1000;
-  double rad_orientation = _fAng3 * M_PI / 180;
-  _position(0) = m_fx;
-  _position(1) = m_fy;
-  _position(2) = _fZ / 1000;
-  _position(3) = _fAng1;
-  _position(4) = _fAng2;
-  _position(5) = _fAng3;
+  // determine if the measured data is out of range or NaN
+  if ((abs(_fX) < qtm_max_position) && (abs(_fY) < qtm_max_position)) {
+    double m_fx = _fX / 1000;
+    double m_fy = _fY / 1000;
+    double rad_orientation = _fAng3 * M_PI / 180;
+    _position(0) = m_fx;
+    _position(1) = m_fy;
+    _position(2) = _fZ / 1000;
+    _position(3) = _fAng1;
+    _position(4) = _fAng2;
+    _position(5) = _fAng3;
 
-  double raw_u = (m_fx - _measurement(0)) / sample_time;
-  double raw_v = (m_fy - _measurement(1)) / sample_time;
-  double raw_r = (rad_orientation - _measurement(2)) / sample_time;
-  if ((abs(raw_u) > max_velocity_u) || (abs(raw_v) > max_velocity_v) ||
-      (abs(raw_r) > max_velocity_orientation)) {
-    _measurement(3) = 0;
-    _measurement(4) = 0;
-    _measurement(5) = 0;
-  } else {
-    _measurement(3) = raw_u;
-    _measurement(4) = raw_v;
-    _measurement(5) = raw_r;
+    double raw_u = (m_fx - _measurement(0)) / sample_time;
+    double raw_v = (m_fy - _measurement(1)) / sample_time;
+    double raw_r = (rad_orientation - _measurement(2)) / sample_time;
+    if ((abs(raw_u) > max_velocity_u) || (abs(raw_v) > max_velocity_v) ||
+        (abs(raw_r) > max_velocity_orientation)) {
+      _measurement(3) = 0;
+      _measurement(4) = 0;
+      _measurement(5) = 0;
+    } else {
+      _measurement(3) = raw_u;
+      _measurement(4) = raw_v;
+      _measurement(5) = raw_r;
+    }
+
+    _measurement(0) = m_fx;
+    _measurement(1) = m_fy;
+    _measurement(2) = rad_orientation;
   }
 
-  _measurement(0) = m_fx;
-  _measurement(1) = m_fy;
-  _measurement(2) = rad_orientation;
-  // the second vessel
+  // else {
+  //   // in this case, we don't update the realtime vessel data,
+  //   // and use the former data
+  //   fprintf(stdout, "motion data out of range or NaN!\n");
+  // }
 }
 
 void COutput::resetmeasurement(Vector6d& _measurement, Vector6d& _position) {

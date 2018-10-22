@@ -28,8 +28,6 @@ class MainWindow : public QMainWindow {
 
   void on_PB_connection_clicked();
 
-  void on_PB_test_clicked();
-
   void on_PB_suspend_clicked();
 
   void readfilebyline();
@@ -41,6 +39,8 @@ class MainWindow : public QMainWindow {
   void on_RB_manual_clicked();
 
   void on_RB_MPC_clicked();
+
+  void on_PB_enablePLC_clicked();
 
  private:
   Ui::MainWindow *ui;

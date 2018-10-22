@@ -52,15 +52,12 @@ class COutput {
                       CRTProtocol* poRTProtocol);
   void PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
                         CRTProtocol* poRTProtocol);
-  void PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
-                        CRTProtocol* poRTProtocol,
+  void PrintData6DEuler(CRTPacket* poRTPacket, CRTProtocol* poRTProtocol,
                         realtimevessel_first& _realtimevessel_first);
-  void PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
-                        CRTProtocol* poRTProtocol,
+  void PrintData6DEuler(CRTPacket* poRTPacket, CRTProtocol* poRTProtocol,
                         realtimevessel_first& _realtimevessel_first,
                         realtimevessel_second& _realtimevessel_second);
-  void PrintData6DEuler(FILE* logfile, CRTPacket* poRTPacket,
-                        CRTProtocol* poRTProtocol,
+  void PrintData6DEuler(CRTPacket* poRTPacket, CRTProtocol* poRTProtocol,
                         realtimevessel_first& _realtimevessel_first,
                         realtimevessel_second& _realtimevessel_second,
                         realtimevessel_third& _realtimevessel_third);

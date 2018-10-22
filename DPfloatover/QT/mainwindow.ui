@@ -63,10 +63,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>connection</string>
+     <string>Initialize</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="PB_test">
+   <widget class="QPushButton" name="PB_enablePLC">
     <property name="geometry">
      <rect>
       <x>360</x>
@@ -76,7 +76,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>test</string>
+     <string>connection</string>
     </property>
    </widget>
    <widget class="QPushButton" name="PB_suspend">
