@@ -99,8 +99,11 @@ void testmultistep() {
       2e-5,                                    // K_right
       20,                                      // max_delta_rotation_bow
       1000,                                    // max_rotation_azimuth
+      50,                                      // min_rotation_azimuth
       20,                                      // max_thrust_azimuth_left
       20,                                      // max_thrust_azimuth_right
+      0.05,                                    // min_thrust_azimuth_left
+      0.05,                                    // min_thrust_azimuth_right
       0.1277,                                  // max_delta_alpha_azimuth
       M_PI,                                    // max_alpha_azimuth_left
       0,                                       // min_alpha_azimuth_left
@@ -146,7 +149,7 @@ void testmultistep() {
       3.52,                                    // max_thrust_bow_negative
       2e-5,                                    // K_left
       2e-5,                                    // K_right
-      20,                                      // max_delta_rotation_bow
+      20,                                      // max_delta_rotation_azimuth
       1000,                                    // max_rotation_azimuth
       20,                                      // max_thrust_azimuth_left
       20,                                      // max_thrust_azimuth_right
@@ -195,10 +198,13 @@ void testmultistep() {
       3.52,                                    // max_thrust_bow_negative
       2e-5,                                    // K_left
       2e-5,                                    // K_right
-      20,                                      // max_delta_rotation_bow
+      20,                                      // max_delta_rotation_azimuth
       1000,                                    // max_rotation_azimuth
+      100,                                     // min_rotation_azimuth
       20,                                      // max_thrust_azimuth_left
       20,                                      // max_thrust_azimuth_right
+      0.2,                                     // min_thrust_azimuth_left
+      0.2,                                     // min_thrust_azimuth_right
       0.1277,                                  // max_delta_alpha_azimuth
       M_PI,                                    // max_alpha_azimuth_left
       0,                                       // min_alpha_azimuth_left
@@ -220,10 +226,10 @@ void testmultistep() {
       Eigen::Vector3d::Zero(),  // tau
       Eigen::Vector3d::Zero(),  // BalphaU
       (Eigen::Vector3d() << -M_PI / 2, M_PI / 30, -M_PI / 30)
-          .finished(),                                    // alpha
-      Eigen::Vector3i::Zero(),                            // alpha_deg
-      (Eigen::Vector3d() << 0.01, 0.1, 0.01).finished(),  // u
-      Eigen::Vector3i::Zero()                             // rotation
+          .finished(),                                   // alpha
+      Eigen::Vector3i::Zero(),                           // alpha_deg
+      (Eigen::Vector3d() << 0.01, 0.2, 0.2).finished(),  // u
+      Eigen::Vector3i::Zero()                            // rotation
   };
   // realtime parameters of the second vessel (K class-II)
   realtimevessel_second myrealtimevessel_second{
@@ -236,7 +242,7 @@ void testmultistep() {
       (Eigen::Vector3d() << -M_PI / 2, M_PI / 10, -M_PI / 4)
           .finished(),                                   // alpha
       Eigen::Vector3i::Zero(),                           // alpha_deg
-      (Eigen::Vector3d() << 0.01, 0.0, 0.0).finished(),  // u
+      (Eigen::Vector3d() << 0.01, 0.2, 0.2).finished(),  // u
       Eigen::Vector3i::Zero()                            // rotation
   };
   realtimevessel_third myrealtimevessel_third;

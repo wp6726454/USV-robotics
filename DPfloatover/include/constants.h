@@ -87,15 +87,18 @@ struct vessel_first {
   // relationship between rotation and thrust of azimuth thruster
   const double K_left;
   const double K_right;
-  const int max_delta_rotation_azimuth;  // rpm
-  const int max_rotation_azimuth;        // rpm
-  const double max_thrust_azimuth_left;
-  const double max_thrust_azimuth_right;
-  const double max_delta_alpha_azimuth;  // rad
-  const double max_alpha_azimuth_left;   // rad
-  const double min_alpha_azimuth_left;   // rad
-  const double max_alpha_azimuth_right;  // rad
-  const double min_alpha_azimuth_right;  // rad
+  const int max_delta_rotation_azimuth;   // rpm
+  const int max_rotation_azimuth;         // rpm
+  const int min_rotation_azimuth;         // rpm
+  const double max_thrust_azimuth_left;   // N
+  const double max_thrust_azimuth_right;  // N
+  const double min_thrust_azimuth_left;   // N
+  const double min_thrust_azimuth_right;  // N
+  const double max_delta_alpha_azimuth;   // rad
+  const double max_alpha_azimuth_left;    // rad
+  const double min_alpha_azimuth_left;    // rad
+  const double max_alpha_azimuth_right;   // rad
+  const double min_alpha_azimuth_right;   // rad
 
   // position of each propeller
   const double bow_x;
@@ -151,15 +154,18 @@ struct vessel_second {
   // relationship between rotation and thrust of azimuth thruster
   const double K_left;
   const double K_right;
-  const int max_delta_rotation_azimuth;  // rpm
-  const int max_rotation_azimuth;        // rpm
-  const double max_thrust_azimuth_left;
-  const double max_thrust_azimuth_right;
-  const double max_delta_alpha_azimuth;  // rad
-  const double max_alpha_azimuth_left;   // rad
-  const double min_alpha_azimuth_left;   // rad
-  const double max_alpha_azimuth_right;  // rad
-  const double min_alpha_azimuth_right;  // rad
+  const int max_delta_rotation_azimuth;   // rpm
+  const int max_rotation_azimuth;         // rpm
+  const int min_rotation_azimuth;         // rpm
+  const double max_thrust_azimuth_left;   // N
+  const double max_thrust_azimuth_right;  // N
+  const double min_thrust_azimuth_left;   // N
+  const double min_thrust_azimuth_right;  // N
+  const double max_delta_alpha_azimuth;   // rad
+  const double max_alpha_azimuth_left;    // rad
+  const double min_alpha_azimuth_left;    // rad
+  const double max_alpha_azimuth_right;   // rad
+  const double min_alpha_azimuth_right;   // rad
 
   // position of each propeller
   const double bow_x;

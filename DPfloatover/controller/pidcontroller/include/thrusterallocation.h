@@ -59,9 +59,10 @@ class thrusterallocation_first {
         K_left(_vessel_first.K_left),
         K_right(_vessel_first.K_right),
         max_delta_rotation_azimuth(_vessel_first.max_delta_rotation_azimuth),
-        max_rotation_azimuth(_vessel_first.max_rotation_azimuth),
         max_thrust_azimuth_left(_vessel_first.max_thrust_azimuth_left),
         max_thrust_azimuth_right(_vessel_first.max_thrust_azimuth_right),
+        min_thrust_azimuth_left(_vessel_first.min_thrust_azimuth_left),
+        min_thrust_azimuth_right(_vessel_first.min_thrust_azimuth_right),
         max_delta_alpha_azimuth(_vessel_first.max_delta_alpha_azimuth),
         max_alpha_azimuth_left(_vessel_first.max_alpha_azimuth_left),
         min_alpha_azimuth_left(_vessel_first.min_alpha_azimuth_left),
@@ -141,12 +142,17 @@ class thrusterallocation_first {
           0.0 * sin(angle) + 0.1 * std::rand() / RAND_MAX;
     }
     _savefile.save_tau.block(1, 0, 1, 100) =
-        Eigen::MatrixXd::Constant(1, 100, -3) +
+        Eigen::MatrixXd::Constant(1, 100, -0) +
         0.0 * Eigen::MatrixXd::Random(1, 100);
     _savefile.save_tau.block(1, 100, 1, 100) =
-        Eigen::MatrixXd::Constant(1, 100, 3) +
+        Eigen::MatrixXd::Constant(1, 100, 0) +
         0.0 * Eigen::MatrixXd::Random(1, 100);
-    _savefile.save_tau.row(0) = 0.01 * Eigen::MatrixXd::Random(1, totalstep);
+    _savefile.save_tau.block(0, 0, 1, 100) =
+        Eigen::MatrixXd::Constant(1, 100, -3) +
+        0.0 * Eigen::MatrixXd::Random(1, 100);
+    _savefile.save_tau.block(0, 100, 1, 100) =
+        Eigen::MatrixXd::Constant(1, 100, 4) +
+        0.0 * Eigen::MatrixXd::Random(1, 100);
     for (int i = 0; i != totalstep; ++i) {
       // update tau
       _realtimevessel.tau = _savefile.save_tau.col(i);
@@ -177,15 +183,16 @@ class thrusterallocation_first {
   // relationship between rotation and thrust of azimuth thruster
   double K_left;
   double K_right;
-  int max_delta_rotation_azimuth;  // rpm
-  int max_rotation_azimuth;        // rpm
-  double max_thrust_azimuth_left;
-  double max_thrust_azimuth_right;
-  double max_delta_alpha_azimuth;  // rad
-  double max_alpha_azimuth_left;   // rad
-  double min_alpha_azimuth_left;   // rad
-  double max_alpha_azimuth_right;  // rad
-  double min_alpha_azimuth_right;  // rad
+  int max_delta_rotation_azimuth;   // rpm
+  double max_thrust_azimuth_left;   // N
+  double max_thrust_azimuth_right;  // N
+  double min_thrust_azimuth_left;   // N
+  double min_thrust_azimuth_right;  // N
+  double max_delta_alpha_azimuth;   // rad
+  double max_alpha_azimuth_left;    // rad
+  double min_alpha_azimuth_left;    // rad
+  double max_alpha_azimuth_right;   // rad
+  double min_alpha_azimuth_right;   // rad
 
   // real time constraints of bow thruster
   int index_twice_bow;
@@ -282,12 +289,12 @@ class thrusterallocation_first {
   }
 
   void initializeQuadraticObjective() {
-    Q(0, 0) = 100;
-    Q(1, 1) = 100;
+    Q(0, 0) = 1000;
+    Q(1, 1) = 1000;
     Q(2, 2) = 1000;
-    Omega(0, 0) = 0.1;
-    Omega(1, 1) = 1;
-    Omega(2, 2) = 1;
+    Omega(0, 0) = 1;
+    Omega(1, 1) = 10;
+    Omega(2, 2) = 10;
     qval[3] = Omega(0, 0);
     qval[4] = Omega(1, 1);
     qval[5] = Omega(2, 2);
@@ -485,49 +492,54 @@ class thrusterallocation_first {
   void calculateconstrains_azimuth(
       const realtimevessel_first &_realtimevessel) {
     // specify constriants on left azimuth
+    /* contraints on the increment of angle */
     upper_delta_alpha_left =
         std::min(max_delta_alpha_azimuth,
                  max_alpha_azimuth_left - _realtimevessel.alpha(1));
     lower_delta_alpha_left =
         std::max(-max_delta_alpha_azimuth,
                  min_alpha_azimuth_left - _realtimevessel.alpha(1));
-
+    /* contraints on the increment of thrust */
     double thrust_azimuth_left =
         K_left * _realtimevessel.rotation(1) * _realtimevessel.rotation(1);
-    upper_delta_u_left = std::min(
-        K_left * (_realtimevessel.rotation(1) + max_delta_rotation_azimuth) *
-                (_realtimevessel.rotation(1) + max_delta_rotation_azimuth) -
-            thrust_azimuth_left,
-        max_thrust_azimuth_left - thrust_azimuth_left);
-    if (_realtimevessel.rotation(1) <= max_delta_rotation_azimuth)
-      lower_delta_u_left = -thrust_azimuth_left;
-    else
-      lower_delta_u_left =
-          K_left * (_realtimevessel.rotation(1) - max_delta_rotation_azimuth) *
-              (_realtimevessel.rotation(1) - max_delta_rotation_azimuth) -
-          thrust_azimuth_left;
+    upper_delta_u_left =
+        std::min(K_left * (_realtimevessel.rotation(1) +
+                           max_delta_rotation_azimuth) *
+                     (_realtimevessel.rotation(1) + max_delta_rotation_azimuth),
+                 max_thrust_azimuth_left) -
+        thrust_azimuth_left;
+
+    lower_delta_u_left =
+        std::max(K_left * (_realtimevessel.rotation(1) -
+                           max_delta_rotation_azimuth) *
+                     (_realtimevessel.rotation(1) - max_delta_rotation_azimuth),
+                 min_thrust_azimuth_left) -
+        thrust_azimuth_left;
 
     // specify constraints on right azimuth
+    /* contraints on the increment of angle */
     upper_delta_alpha_right =
         std::min(max_delta_alpha_azimuth,
                  max_alpha_azimuth_right - _realtimevessel.alpha(2));
     lower_delta_alpha_right =
         std::max(-max_delta_alpha_azimuth,
                  min_alpha_azimuth_right - _realtimevessel.alpha(2));
+    /* contraints on the increment of thrust */
     double thrust_azimuth_right =
         K_right * _realtimevessel.rotation(2) * _realtimevessel.rotation(2);
-    upper_delta_u_right = std::min(
-        K_right * (_realtimevessel.rotation(2) + max_delta_rotation_azimuth) *
-                (_realtimevessel.rotation(2) + max_delta_rotation_azimuth) -
-            thrust_azimuth_right,
-        max_thrust_azimuth_right - thrust_azimuth_right);
-    if (_realtimevessel.rotation(2) <= max_delta_rotation_azimuth)
-      lower_delta_u_right = -thrust_azimuth_right;
-    else
-      lower_delta_u_right =
-          K_right * (_realtimevessel.rotation(2) - max_delta_rotation_azimuth) *
-              (_realtimevessel.rotation(2) - max_delta_rotation_azimuth) -
-          thrust_azimuth_right;
+    upper_delta_u_right =
+        std::min(K_right * (_realtimevessel.rotation(2) +
+                            max_delta_rotation_azimuth) *
+                     (_realtimevessel.rotation(2) + max_delta_rotation_azimuth),
+                 max_thrust_azimuth_right) -
+        thrust_azimuth_right;
+
+    lower_delta_u_right =
+        std::max(K_right * (_realtimevessel.rotation(2) -
+                            max_delta_rotation_azimuth) *
+                     (_realtimevessel.rotation(2) - max_delta_rotation_azimuth),
+                 min_thrust_azimuth_right) -
+        thrust_azimuth_right;
   }
 
   // calculate Balpha as function of alpha
@@ -868,29 +880,30 @@ class thrusterallocation_second {
   friend void outputmatrices(const thrusterallocation_second &);
 
  public:
-  explicit thrusterallocation_second(const vessel_second &_vessel_second,
+  explicit thrusterallocation_second(const vessel_second &_vessel,
                                      realtimevessel_second &_realtimevessel)
-      : m(_vessel_second.m),
-        n(_vessel_second.n),
-        numvar(_vessel_second.numvar),
-        num_constraints(_vessel_second.num_constraints),
-        Kbar_positive(_vessel_second.Kbar_positive),
-        Kbar_negative(_vessel_second.Kbar_negative),
-        max_delta_rotation_bow(_vessel_second.max_delta_rotation_bow),
-        max_rotation_bow(_vessel_second.max_rotation_bow),
-        max_thrust_bow_positive(_vessel_second.max_thrust_bow_positive),
-        max_thrust_bow_negative(_vessel_second.max_thrust_bow_negative),
-        K_left(_vessel_second.K_left),
-        K_right(_vessel_second.K_right),
-        max_delta_rotation_azimuth(_vessel_second.max_delta_rotation_azimuth),
-        max_rotation_azimuth(_vessel_second.max_rotation_azimuth),
-        max_thrust_azimuth_left(_vessel_second.max_thrust_azimuth_left),
-        max_thrust_azimuth_right(_vessel_second.max_thrust_azimuth_right),
-        max_delta_alpha_azimuth(_vessel_second.max_delta_alpha_azimuth),
-        max_alpha_azimuth_left(_vessel_second.max_alpha_azimuth_left),
-        min_alpha_azimuth_left(_vessel_second.min_alpha_azimuth_left),
-        max_alpha_azimuth_right(_vessel_second.max_alpha_azimuth_right),
-        min_alpha_azimuth_right(_vessel_second.min_alpha_azimuth_right),
+      : m(_vessel.m),
+        n(_vessel.n),
+        numvar(_vessel.numvar),
+        num_constraints(_vessel.num_constraints),
+        Kbar_positive(_vessel.Kbar_positive),
+        Kbar_negative(_vessel.Kbar_negative),
+        max_delta_rotation_bow(_vessel.max_delta_rotation_bow),
+        max_rotation_bow(_vessel.max_rotation_bow),
+        max_thrust_bow_positive(_vessel.max_thrust_bow_positive),
+        max_thrust_bow_negative(_vessel.max_thrust_bow_negative),
+        K_left(_vessel.K_left),
+        K_right(_vessel.K_right),
+        max_delta_rotation_azimuth(_vessel.max_delta_rotation_azimuth),
+        max_thrust_azimuth_left(_vessel.max_thrust_azimuth_left),
+        max_thrust_azimuth_right(_vessel.max_thrust_azimuth_right),
+        min_thrust_azimuth_left(_vessel.min_thrust_azimuth_left),
+        min_thrust_azimuth_right(_vessel.min_thrust_azimuth_right),
+        max_delta_alpha_azimuth(_vessel.max_delta_alpha_azimuth),
+        max_alpha_azimuth_left(_vessel.max_alpha_azimuth_left),
+        min_alpha_azimuth_left(_vessel.min_alpha_azimuth_left),
+        max_alpha_azimuth_right(_vessel.max_alpha_azimuth_right),
+        min_alpha_azimuth_right(_vessel.min_alpha_azimuth_right),
         index_twice_bow(0),
         upper_delta_alpha_left(0),
         lower_delta_alpha_left(0),
@@ -916,7 +929,7 @@ class thrusterallocation_second {
         qsubi{0, 1, 2, 3, 4, 5, 6, 7, 8},
         qsubj{0, 1, 2, 3, 4, 5, 6, 7, 8},
         qval{0, 0, 0, 0, 0, 0, 0, 0, 0} {
-    initializethrusterallocation(_vessel_second, _realtimevessel);
+    initializethrusterallocation(_vessel, _realtimevessel);
   }
   thrusterallocation_second() = delete;
   ~thrusterallocation_second() {
@@ -1001,15 +1014,16 @@ class thrusterallocation_second {
   // relationship between rotation and thrust of azimuth thruster
   double K_left;
   double K_right;
-  int max_delta_rotation_azimuth;  // rpm
-  int max_rotation_azimuth;        // rpm
-  double max_thrust_azimuth_left;
-  double max_thrust_azimuth_right;
-  double max_delta_alpha_azimuth;  // rad
-  double max_alpha_azimuth_left;   // rad
-  double min_alpha_azimuth_left;   // rad
-  double max_alpha_azimuth_right;  // rad
-  double min_alpha_azimuth_right;  // rad
+  int max_delta_rotation_azimuth;   // rpm
+  double max_thrust_azimuth_left;   // N
+  double max_thrust_azimuth_right;  // N
+  double min_thrust_azimuth_left;   // N
+  double min_thrust_azimuth_right;  // N
+  double max_delta_alpha_azimuth;   // rad
+  double max_alpha_azimuth_left;    // rad
+  double min_alpha_azimuth_left;    // rad
+  double max_alpha_azimuth_right;   // rad
+  double min_alpha_azimuth_right;   // rad
 
   // real time constraints of bow thruster
   int index_twice_bow;
@@ -1106,12 +1120,12 @@ class thrusterallocation_second {
   }
 
   void initializeQuadraticObjective() {
-    Q(0, 0) = 100;
-    Q(1, 1) = 100;
+    Q(0, 0) = 1000;
+    Q(1, 1) = 1000;
     Q(2, 2) = 1000;
-    Omega(0, 0) = 0.1;
-    Omega(1, 1) = 1;
-    Omega(2, 2) = 1;
+    Omega(0, 0) = 1;
+    Omega(1, 1) = 10;
+    Omega(2, 2) = 10;
     qval[3] = Omega(0, 0);
     qval[4] = Omega(1, 1);
     qval[5] = Omega(2, 2);
@@ -1307,49 +1321,54 @@ class thrusterallocation_second {
   void calculateconstrains_azimuth(
       const realtimevessel_second &_realtimevessel) {
     // specify constriants on left azimuth
+    /* contraints on the increment of angle */
     upper_delta_alpha_left =
         std::min(max_delta_alpha_azimuth,
                  max_alpha_azimuth_left - _realtimevessel.alpha(1));
     lower_delta_alpha_left =
         std::max(-max_delta_alpha_azimuth,
                  min_alpha_azimuth_left - _realtimevessel.alpha(1));
-
+    /* contraints on the increment of thrust */
     double thrust_azimuth_left =
         K_left * _realtimevessel.rotation(1) * _realtimevessel.rotation(1);
-    upper_delta_u_left = std::min(
-        K_left * (_realtimevessel.rotation(1) + max_delta_rotation_azimuth) *
-                (_realtimevessel.rotation(1) + max_delta_rotation_azimuth) -
-            thrust_azimuth_left,
-        max_thrust_azimuth_left - thrust_azimuth_left);
-    if (_realtimevessel.rotation(1) <= max_delta_rotation_azimuth)
-      lower_delta_u_left = -thrust_azimuth_left;
-    else
-      lower_delta_u_left =
-          K_left * (_realtimevessel.rotation(1) - max_delta_rotation_azimuth) *
-              (_realtimevessel.rotation(1) - max_delta_rotation_azimuth) -
-          thrust_azimuth_left;
+    upper_delta_u_left =
+        std::min(K_left * (_realtimevessel.rotation(1) +
+                           max_delta_rotation_azimuth) *
+                     (_realtimevessel.rotation(1) + max_delta_rotation_azimuth),
+                 max_thrust_azimuth_left) -
+        thrust_azimuth_left;
+
+    lower_delta_u_left =
+        std::max(K_left * (_realtimevessel.rotation(1) -
+                           max_delta_rotation_azimuth) *
+                     (_realtimevessel.rotation(1) - max_delta_rotation_azimuth),
+                 min_thrust_azimuth_left) -
+        thrust_azimuth_left;
 
     // specify constraints on right azimuth
+    /* contraints on the increment of angle */
     upper_delta_alpha_right =
         std::min(max_delta_alpha_azimuth,
                  max_alpha_azimuth_right - _realtimevessel.alpha(2));
     lower_delta_alpha_right =
         std::max(-max_delta_alpha_azimuth,
                  min_alpha_azimuth_right - _realtimevessel.alpha(2));
+    /* contraints on the increment of thrust */
     double thrust_azimuth_right =
         K_right * _realtimevessel.rotation(2) * _realtimevessel.rotation(2);
-    upper_delta_u_right = std::min(
-        K_right * (_realtimevessel.rotation(2) + max_delta_rotation_azimuth) *
-                (_realtimevessel.rotation(2) + max_delta_rotation_azimuth) -
-            thrust_azimuth_right,
-        max_thrust_azimuth_right - thrust_azimuth_right);
-    if (_realtimevessel.rotation(2) <= max_delta_rotation_azimuth)
-      lower_delta_u_right = -thrust_azimuth_right;
-    else
-      lower_delta_u_right =
-          K_right * (_realtimevessel.rotation(2) - max_delta_rotation_azimuth) *
-              (_realtimevessel.rotation(2) - max_delta_rotation_azimuth) -
-          thrust_azimuth_right;
+    upper_delta_u_right =
+        std::min(K_right * (_realtimevessel.rotation(2) +
+                            max_delta_rotation_azimuth) *
+                     (_realtimevessel.rotation(2) + max_delta_rotation_azimuth),
+                 max_thrust_azimuth_right) -
+        thrust_azimuth_right;
+
+    lower_delta_u_right =
+        std::max(K_right * (_realtimevessel.rotation(2) -
+                            max_delta_rotation_azimuth) *
+                     (_realtimevessel.rotation(2) - max_delta_rotation_azimuth),
+                 min_thrust_azimuth_right) -
+        thrust_azimuth_right;
   }
 
   // calculate Balpha as function of alpha

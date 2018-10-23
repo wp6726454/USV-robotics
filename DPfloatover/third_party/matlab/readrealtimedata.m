@@ -30,22 +30,79 @@ alpha_second=totaldata_second(:,22:24);
 rpm_second=totaldata_second(:,25:27);
 
 
-
+%% figure 1 
 figure(1)
 subplot(311)
-plot(timestamp_second,Position_second(:,1));hold on;
-plot(timestamp_second,State_second(:,1));
-legend('position-Surge');
+plot(timestamp_second,Position_second(:,1),'-r','linewidth',2);hold on;
+plot(timestamp_second,State_second(:,1),':k','linewidth',2); hold on;
+plot([0,timestamp_second(end)],[5,5],'--b');
+legend('position','State');
+xlabel('time(s)');
+ylabel('surge(m)');
+title('Position comparison')
+
 subplot(312)
-plot(timestamp_second,Position_second(:,2)); hold on;
-plot(timestamp_second,State_second(:,2));
-legend('position-Sway');
+plot(timestamp_second,Position_second(:,2),'-r','linewidth',2); hold on;
+plot(timestamp_second,State_second(:,2),':k','linewidth',2); hold on;
+plot([0,timestamp_second(end)],[7,7],'--b');
+legend('position','State');
+xlabel('time(s)');
+ylabel('sway(m)');
+
 subplot(313)
-plot(timestamp_second,Position_second(:,6));hold on;
-plot(timestamp_second,State_second(:,3)*180/pi);
-legend('position-Yaw');
+plot(timestamp_second,Position_second(:,6)*pi/180,'-r','linewidth',2);hold on;
+plot(timestamp_second,State_second(:,3),':k','linewidth',2); hold on;
+plot([0,timestamp_second(end)],[0,0],'--b');
+legend('position','State');
+xlabel('time(s)');
+ylabel('Yaw(rad)');
+
+%% figure 2 
+figure(2)
+subplot(311)
+plot(timestamp_second,State_second(:,4),'-r','linewidth',2);
+xlabel('time(s)');
+ylabel('surge(m/s)');
+title('Velocity')
+
+subplot(312)
+plot(timestamp_second,State_second(:,5),'-r','linewidth',2);
+xlabel('time(s)');
+ylabel('sway(m/s)');
+
+subplot(313)
+plot(timestamp_second,State_second(:,6),'-r','linewidth',2);
+xlabel('time(s)');
+ylabel('yaw(rad/s)');
 
 
 
+%% figure 3
+figure(3)
+title('Trajectory')
+plot(Position_second(:,2),Position_second(:,1),'ro','MarkerSize',2); 
+
+
+%% figure 4
+figure(4)
+subplot(311)
+plot(timestamp_second, Tau_second(:,1),'-r','linewidth',2); hold on; 
+plot(timestamp_second, est_second(:,1),':k','linewidth',2);
+xlabel('time(s)');
+ylabel('surge(N)');
+legend('Desired force','Estimated force');
+title('PID force')
+subplot(312)
+plot(timestamp_second, Tau_second(:,2),'-r','linewidth',2); hold on; 
+plot(timestamp_second, est_second(:,2),':k','linewidth',2);
+xlabel('time(s)');
+ylabel('sway(N)');
+legend('Desired force','Estimated force');
+subplot(313)
+plot(timestamp_second, Tau_second(:,3),'-r','linewidth',2); hold on; 
+plot(timestamp_second, est_second(:,3),':k','linewidth',2);
+xlabel('time(s)');
+ylabel('Yaw(N*m)');
+legend('Desired force','Estimated force');
 
 
