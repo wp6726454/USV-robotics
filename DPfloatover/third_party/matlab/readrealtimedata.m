@@ -35,7 +35,7 @@ figure(1)
 subplot(311)
 plot(timestamp_second,Position_second(:,1),'-r','linewidth',2);hold on;
 plot(timestamp_second,State_second(:,1),':k','linewidth',2); hold on;
-plot([0,timestamp_second(end)],[5,5],'--b');
+plot([0,timestamp_second(end)],[6,6],'--b');
 legend('position','State');
 xlabel('time(s)');
 ylabel('surge(m)');
@@ -44,14 +44,14 @@ title('Position comparison')
 subplot(312)
 plot(timestamp_second,Position_second(:,2),'-r','linewidth',2); hold on;
 plot(timestamp_second,State_second(:,2),':k','linewidth',2); hold on;
-plot([0,timestamp_second(end)],[7,7],'--b');
+plot([0,timestamp_second(end)],[4,4],'--b');
 legend('position','State');
 xlabel('time(s)');
 ylabel('sway(m)');
 
 subplot(313)
-plot(timestamp_second,Position_second(:,6)*pi/180,'-r','linewidth',2);hold on;
-plot(timestamp_second,State_second(:,3),':k','linewidth',2); hold on;
+plot(timestamp_second,Position_second(:,6),'-r','linewidth',2);hold on;
+plot(timestamp_second,State_second(:,3)*180/pi,':k','linewidth',2); hold on;
 plot([0,timestamp_second(end)],[0,0],'--b');
 legend('position','State');
 xlabel('time(s)');

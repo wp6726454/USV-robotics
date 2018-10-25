@@ -290,7 +290,7 @@ class thrusterallocation_first {
 
   void initializeQuadraticObjective() {
     Q(0, 0) = 1000;
-    Q(1, 1) = 1000;
+    Q(1, 1) = 2000;
     Q(2, 2) = 1000;
     Omega(0, 0) = 1;
     Omega(1, 1) = 10;
@@ -1121,7 +1121,7 @@ class thrusterallocation_second {
 
   void initializeQuadraticObjective() {
     Q(0, 0) = 1000;
-    Q(1, 1) = 1000;
+    Q(1, 1) = 2000;
     Q(2, 2) = 1000;
     Omega(0, 0) = 1;
     Omega(1, 1) = 10;

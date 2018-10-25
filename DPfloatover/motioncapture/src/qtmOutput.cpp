@@ -6,7 +6,9 @@ COutput::COutput()
     : mfDist(NULL),
       mbWriteLogFileHeader(true),
       time_start(T_BOOST_CLOCK::local_time()),
-      mbOutputModeScrolling(false) {}
+      mbOutputModeScrolling(false) {
+  initializemovingaverage();
+}
 
 void COutput::HandleDataFrame(FILE* logfile, bool bLogMinimum,
                               CRTProtocol* poRTProtocol) {
@@ -370,19 +372,20 @@ void COutput::updaterealtimevesseldata(Vector6d& _measurement,
     _position(4) = _fAng2;
     _position(5) = _fAng3;
 
-    double raw_u = (m_fx - _measurement(0)) / sample_time;
-    double raw_v = (m_fy - _measurement(1)) / sample_time;
-    double raw_r = (rad_orientation - _measurement(2)) / sample_time;
-    if ((abs(raw_u) > max_velocity_u) || (abs(raw_v) > max_velocity_v) ||
-        (abs(raw_r) > max_velocity_orientation)) {
-      _measurement(3) = 0;
-      _measurement(4) = 0;
-      _measurement(5) = 0;
-    } else {
-      _measurement(3) = raw_u;
-      _measurement(4) = raw_v;
-      _measurement(5) = raw_r;
-    }
+    // double raw_u = (m_fx - _measurement(0)) / sample_time;
+    // double raw_v = (m_fy - _measurement(1)) / sample_time;
+    // double raw_r = (rad_orientation - _measurement(2)) / sample_time;
+    // if ((abs(raw_u) > max_velocity_u) || (abs(raw_v) > max_velocity_v) ||
+    //     (abs(raw_r) > max_velocity_orientation)) {
+    //   _measurement(3) = 0;
+    //   _measurement(4) = 0;
+    //   _measurement(5) = 0;
+    // } else {
+    //   _measurement(3) = raw_u;
+    //   _measurement(4) = raw_v;
+    //   _measurement(5) = raw_r;
+    // }
+    _measurement.tail(3) = movingaverage(m_fx, m_fy, rad_orientation);
 
     _measurement(0) = m_fx;
     _measurement(1) = m_fy;
@@ -399,4 +402,29 @@ void COutput::updaterealtimevesseldata(Vector6d& _measurement,
 void COutput::resetmeasurement(Vector6d& _measurement, Vector6d& _position) {
   _measurement.setZero();
   _position.setZero();
+}
+
+void COutput::initializemovingaverage() {
+  Matrix_average.setZero();
+  average_vector.setZero();
+}
+
+Eigen::Vector3d COutput::movingaverage(double _dx, double _dy, double _dtheta) {
+  // copy the former average vector
+  Eigen::Vector3d former_average_vector = average_vector;
+  // pop_front
+  Matrix3100d t_Matrix_average = Matrix3100d::Zero();
+  int index = num_average_point - 1;
+  t_Matrix_average.leftCols(index) = Matrix_average.rightCols(index);
+  // push_back
+  t_Matrix_average(0, index) = _dx;
+  t_Matrix_average(1, index) = _dy;
+  t_Matrix_average(2, index) = _dtheta;
+  Matrix_average = t_Matrix_average;
+  // calculate the mean value
+  for (int i = 0; i != 3; ++i) average_vector(i) = Matrix_average.row(i).mean();
+  // calculate the velocity
+  Eigen::Vector3d average_velocity = Eigen::Vector3d::Zero();
+  average_velocity = (average_vector - former_average_vector) / sample_time;
+  return average_velocity;
 }

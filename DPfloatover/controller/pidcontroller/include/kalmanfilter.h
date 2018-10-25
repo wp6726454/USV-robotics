@@ -44,11 +44,10 @@ class kalmanfilter_first {
   ~kalmanfilter_first() {}
 
   // perform kalman filter for one step
-  void kalmanonestep(realtimevessel_first &_realtimedata, const Vector6d &_Z,
-                     double theta_setpoint) {
-    updateKalmanA(theta_setpoint);
+  void kalmanonestep(realtimevessel_first &_realtimedata) {
+    updateKalmanA(_realtimedata.setPoints(2));
     predict(_realtimedata);
-    correct(_realtimedata, _Z);
+    correct(_realtimedata);
   }
   // perform kalman filter for one step
   void kalmanonestep(realtimevessel_first &_realtimedata,
@@ -159,11 +158,10 @@ class kalmanfilter_second {
   ~kalmanfilter_second() {}
 
   // perform kalman filter for one step
-  void kalmanonestep(realtimevessel_second &_realtimedata, const Vector6d &_Z,
-                     double theta_setpoint) {
-    updateKalmanA(theta_setpoint);
+  void kalmanonestep(realtimevessel_second &_realtimedata) {
+    updateKalmanA(_realtimedata.setPoints(2));
     predict(_realtimedata);
-    correct(_realtimedata, _Z);
+    correct(_realtimedata);
   }
   // perform kalman filter for one step
   void kalmanonestep(realtimevessel_second &_realtimedata,
@@ -271,11 +269,10 @@ class kalmanfilter_third {
   ~kalmanfilter_third() {}
 
   // perform kalman filter for one step
-  void kalmanonestep(realtimevessel_third &_realtimedata, const Vector6d &_Z,
-                     double theta_setpoint) {
-    updateKalmanA(theta_setpoint);
+  void kalmanonestep(realtimevessel_third &_realtimedata) {
+    updateKalmanA(_realtimedata.setPoints(2));
     predict(_realtimedata);
-    correct(_realtimedata, _Z);
+    correct(_realtimedata);
   }
   // perform kalman filter for one step
   void kalmanonestep(realtimevessel_third &_realtimedata,

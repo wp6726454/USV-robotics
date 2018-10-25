@@ -26,8 +26,8 @@ struct realtimevessel_first {
   // x(surge: m), y(sway: m), z(heave: m), roll(deg), pitch(deg), yaw(theta:
   // deg)
   Vector6d Position;
-  Vector6d Velocity;
-
+  // x(surge: m), y(sway: m), orientation(theta: rad)
+  Eigen::Vector3d setPoints;
   /* data wroten by controller (e.g. kalman, pid, thruster allocation) */
   Vector6d State;           // x(surge: m), y(sway: m), yaw(theta: rad), u, v, r
   Eigen::Vector3d tau;      // << x, y, Mz (desired force)
@@ -46,8 +46,8 @@ struct realtimevessel_second {
   // x(surge: m), y(sway: m), z(heave: m), roll(deg), pitch(deg), yaw(theta:
   // deg)
   Vector6d Position;
-  Vector6d Velocity;
-
+  // x(surge: m), y(sway: m), orientation(theta: rad)
+  Eigen::Vector3d setPoints;
   /* data wroten by controller (e.g. kalman, pid, thruster allocation) */
   Vector6d State;             // x(surge), y(sway), yaw(theta), u, v, r
   Eigen::Vector3d tau;        // << x, y, Mz (desired force)
@@ -64,8 +64,8 @@ struct realtimevessel_third {
   // x(surge), y(sway), yaw(theta), u, v, r (next time stamp)
   Vector6d Measurement;
   Vector6d Position;  // x(surge), y(sway), z(heave), roll, pitch, yaw(theta)
-  Vector6d Velocity;
-
+  // x(surge: m), y(sway: m), orientation(theta: rad)
+  Eigen::Vector3d setPoints;
   /* data wroten by controller (e.g. kalman, pid, thruster allocation) */
   Vector6d State;             // x(surge), y(sway), yaw(theta), u, v, r
   Eigen::Vector3d tau;        // << x, y, Mz (desired force)

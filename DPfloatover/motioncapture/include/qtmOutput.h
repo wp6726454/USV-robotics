@@ -21,9 +21,11 @@ const double max_velocity_u = 1;              // m/s
 const double max_velocity_v = 0.5;            // m/s
 const double max_velocity_orientation = 0.5;  // rad/s
 const double qtm_max_position = 30000;        // mm
+const int num_average_point = 200;            // delay 2 s when frequenc=50Hz
 
 using T_BOOST_CLOCK =
     boost::date_time::microsec_clock<boost::posix_time::ptime>;
+typedef Eigen::Matrix<double, 3, num_average_point> Matrix3100d;
 
 class CDataPacket;
 
@@ -68,6 +70,9 @@ class COutput {
                                 float _fX, float _fY, float _fZ, float _fAng1,
                                 float _fAng2, float _fAng3);
   void resetmeasurement(Vector6d& _measurement, Vector6d& _position);
+
+  void initializemovingaverage();
+  Eigen::Vector3d movingaverage(double _dx, double _dy, double _dtheta);
   // How many cameras can be measured noise on
   static const int mcnMaxCameras = 20;
   // How many markers can be measured noise on
@@ -102,6 +107,10 @@ class COutput {
   unsigned int mnReceivedFrames;
   int mnFrameNumberDiff;
   unsigned int mnMaxFrameNumberDiff;
+
+  // moving average for velocity calculation
+  Matrix3100d Matrix_average;
+  Eigen::Vector3d average_vector;
 };
 
 #endif  // OUTPUT_H

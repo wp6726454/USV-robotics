@@ -46,6 +46,26 @@ class pidcontroller_first {
       restrictdesiredforce(_realtimedata.tau);
     }
   }
+  // calculate the desired force using PID controller
+  void calculategeneralizeforce(realtimevessel_first &_realtimedata) {
+    setsetpoints(_realtimedata.setPoints);
+    // calculate error
+    position_error = setpoints - _realtimedata.State.head(3);
+    if (compareerror(position_error)) {
+      _realtimedata.tau.setZero();
+    } else {  // proportional term
+      Eigen::Vector3d Pout = matrix_P * position_error;
+      // integral term
+      position_error_integral += sample_time * position_error;
+      Eigen::Vector3d Iout = matrix_I * position_error_integral;
+      // derivative term
+      Eigen::Vector3d Dout = -matrix_D * _realtimedata.State.tail(3);
+      // output
+      _realtimedata.tau = Pout + Iout + Dout;
+      // restrict desired force
+      restrictdesiredforce(_realtimedata.tau);
+    }
+  }
 
  private:
   // constant
@@ -140,6 +160,26 @@ class pidcontroller_second {
   void calculategeneralizeforce(realtimevessel_second &_realtimedata,
                                 const Eigen::Vector3d &_setpoints) {
     setsetpoints(_setpoints);
+    // calculate error
+    position_error = setpoints - _realtimedata.State.head(3);
+    if (compareerror(position_error)) {
+      _realtimedata.tau.setZero();
+    } else {
+      // proportional term
+      Eigen::Vector3d Pout = matrix_P * position_error;
+      // integral term
+      position_error_integral += sample_time * position_error;
+      Eigen::Vector3d Iout = matrix_I * position_error_integral;
+      // derivative term
+      Eigen::Vector3d Dout = -matrix_D * _realtimedata.State.tail(3);
+      // output
+      _realtimedata.tau = Pout + Iout + Dout;
+      // restrict desired force
+      restrictdesiredforce(_realtimedata.tau);
+    }
+  }
+  void calculategeneralizeforce(realtimevessel_second &_realtimedata) {
+    setsetpoints(_realtimedata.setPoints);
     // calculate error
     position_error = setpoints - _realtimedata.State.head(3);
     if (compareerror(position_error)) {
@@ -254,6 +294,26 @@ class pidcontroller_third {
     if (compareerror(position_error)) {
       _realtimedata.tau.setZero();
     } else {  // proportional term
+      Eigen::Vector3d Pout = matrix_P * position_error;
+      // integral term
+      position_error_integral += sample_time * position_error;
+      Eigen::Vector3d Iout = matrix_I * position_error_integral;
+      // derivative term
+      Eigen::Vector3d Dout = -matrix_D * _realtimedata.State.tail(3);
+      // output
+      _realtimedata.tau = Pout + Iout + Dout;
+      // restrict desired force
+      restrictdesiredforce(_realtimedata.tau);
+    }
+  }
+  void calculategeneralizeforce(realtimevessel_third &_realtimedata) {
+    setsetpoints(_realtimedata.setPoints);
+    // calculate error
+    position_error = setpoints - _realtimedata.State.head(3);
+    if (compareerror(position_error)) {
+      _realtimedata.tau.setZero();
+    } else {
+      // proportional term
       Eigen::Vector3d Pout = matrix_P * position_error;
       // integral term
       position_error_integral += sample_time * position_error;

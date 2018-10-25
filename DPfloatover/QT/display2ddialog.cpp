@@ -58,7 +58,6 @@ void Display2DDialog::setupDemo() {
   setupVesselRealtimeData();
   setWindowTitle(demoName);
   ui->status_text->clear();
-  ui->customPlot_2Dmotion->replot();
 }
 
 // start the real-time viewer for 6DOF and 2DOF motion of vessels
@@ -111,20 +110,32 @@ void Display2DDialog::vesselshapeDataSlot() {
   if (MAXCONNECTION > 0) {
     convertvessel(_state_first(0), _state_first(1), _state_first(5),
                   planarmotion_y[0], planarmotion_x[0]);
+    updatetrajectoryvector(_state_first(0), _state_first(1), trajectory_y[0],
+                           trajectory_x[0]);
     ui->customPlot_2Dmotion->graph(0)->setData(planarmotion_x[0],
                                                planarmotion_y[0]);
+    ui->customPlot_2Dmotion->graph(MAXCONNECTION)
+        ->setData(trajectory_x[0], trajectory_y[0]);
   }
   if (MAXCONNECTION > 1) {
     convertvessel(_state_second(0), _state_second(1), _state_second(5),
                   planarmotion_y[1], planarmotion_x[1]);
+    updatetrajectoryvector(_state_second(0), _state_second(1), trajectory_y[1],
+                           trajectory_x[1]);
     ui->customPlot_2Dmotion->graph(1)->setData(planarmotion_x[1],
                                                planarmotion_y[1]);
+    ui->customPlot_2Dmotion->graph(MAXCONNECTION + 1)
+        ->setData(trajectory_x[1], trajectory_y[1]);
   }
   if (MAXCONNECTION > 2) {
     convertvessel(_state_third(0), _state_third(1), _state_third(5),
                   planarmotion_y[2], planarmotion_x[2]);
+    updatetrajectoryvector(_state_third(0), _state_third(1), trajectory_y[2],
+                           trajectory_x[2]);
     ui->customPlot_2Dmotion->graph(2)->setData(planarmotion_x[2],
                                                planarmotion_y[2]);
+    ui->customPlot_2Dmotion->graph(2 + MAXCONNECTION)
+        ->setData(trajectory_x[2], trajectory_y[2]);
   }
   ui->customPlot_2Dmotion->replot();
 
@@ -148,7 +159,7 @@ void Display2DDialog::vesselshapeDataSlot() {
 // real-time 6DOF motion data
 void Display2DDialog::motion6DOFdataSlot() {
   Vector6d position6DoF_first =
-      globalvar::_threadloop.getrealtimestate_second();
+      globalvar::_threadloop.getrealtime6dmotion_first();
   Vector6d position6DoF_second =
       globalvar::_threadloop.getrealtime6dmotion_second();
   Vector6d position6DoF_third =
@@ -211,7 +222,15 @@ void Display2DDialog::convertvessel(double origin_x, double origin_y,
                  c_value * 0.28 * globalvar::vesselshape_y[i] + origin_y;
   }
 }
-
+// pop_front and push_back
+void Display2DDialog::updatetrajectoryvector(double origin_x, double origin_y,
+                                             QVector<double> &t_trajectory_x,
+                                             QVector<double> &t_trajectory_y) {
+  t_trajectory_x.pop_front();
+  t_trajectory_x.push_back(origin_x);
+  t_trajectory_y.pop_front();
+  t_trajectory_y.push_back(origin_y);
+}
 // initialize UI for real-time 6DoF motion
 void Display2DDialog::initialize6DOFmotion(QCustomPlot *customPlot) {
   customPlot->setGeometry(980, 10, MAXCONNECTION * 450, 950);
@@ -255,8 +274,9 @@ void Display2DDialog::initializePlanarMotion(QCustomPlot *customPlot) {
   //  mypen.setColor(QColor(30, 40, 255, 150));
   //  customPlot->graph()->setPen(mypen);
 
-  std::vector<QColor> V_Qcolor = {QColor(180, 180, 180), QColor(0, 180, 180),
+  std::vector<QColor> V_Qcolor = {QColor(255, 0, 0), QColor(0, 180, 180),
                                   QColor(180, 180, 0)};
+  // 2d display
   for (int c_index = 0; c_index != MAXCONNECTION; ++c_index) {
     customPlot->addGraph();
     // convert position and orientation of vessel to global coordinate
@@ -268,9 +288,22 @@ void Display2DDialog::initializePlanarMotion(QCustomPlot *customPlot) {
     customPlot->graph(c_index)->setScatterStyle(myQCPScatterStyle);
     customPlot->graph(c_index)->setData(planarmotion_x[c_index],
                                         planarmotion_y[c_index]);
+
     customPlot->graph(c_index)->rescaleAxes(true);
   }
+  // trajectory display
+  for (int c_index = 0; c_index != MAXCONNECTION; ++c_index) {
+    customPlot->addGraph();
 
+    customPlot->graph(c_index + MAXCONNECTION)->setLineStyle(QCPGraph::lsNone);
+    QCPScatterStyle myQCPScatterStyle(QCPScatterStyle::ssDisc,
+                                      V_Qcolor[c_index], 1);
+    customPlot->graph(c_index + MAXCONNECTION)
+        ->setScatterStyle(myQCPScatterStyle);
+    customPlot->graph(c_index + MAXCONNECTION)
+        ->setData(trajectory_x[c_index], trajectory_y[c_index]);
+    customPlot->graph(c_index + MAXCONNECTION)->rescaleAxes(true);
+  }
   // setup x,y axis
   customPlot->xAxis->setRangeReversed(true);
   customPlot->yAxis->setRangeReversed(true);
@@ -304,5 +337,7 @@ void Display2DDialog::initializePlanarMotionData() {
   for (int i = 0; i != MAXCONNECTION; ++i) {
     planarmotion_x[i] = QVector<double>(arraylength, 0);
     planarmotion_y[i] = QVector<double>(arraylength, 0);
+    trajectory_x[i] = QVector<double>(trajectorylength, 0);
+    trajectory_y[i] = QVector<double>(trajectorylength, 0);
   }
 }

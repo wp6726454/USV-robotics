@@ -1,9 +1,9 @@
 /*
 ***********************************************************************
-* thread_Loop.hpp: thread-based concurrent socket server
-* function to run the whole loop on server (including receive from clients,
-* crccheck, unpack, 6D motion capture, LQE, LQR, thruster allocation, pack, send
-* to clients, save2sqlite, viewer).
+* thread_Loop.hpp: thread-based DP controller and network
+* function to run the whole loop on server (including PN server,
+* 6D motion capture, Kalman, PID, thruster allocation, joystick,
+* save2sqlite, viewer).
 * This header file can be read by C++ compilers
 *
 *  by Hu.ZH(Mr.SJTU)
@@ -132,17 +132,22 @@ class threadloop {
 
   void closelooop() {
     if (FILEORNOT) {
-      resetallvessels();     // set zero of each vessel
-      closemotioncapture();  // close qtm clients
-      _closepncontroller();  // close pn server
-      // close all thread
+      for (int i = 0; i != MAXCONNECTION; ++i) stopmosekthread(i);
+      resetallvessels();  // set zero of each vessel
+      std::this_thread::sleep_for(std::chrono::milliseconds(500));
       pthread_cancel(_threadid_pnsend);
+
+      closemotioncapture();  // close qtm clients
+
+      // // close all thread
       pthread_cancel(_threadid_gamepad);
       pthread_cancel(_threadid_motion);
-      for (int i = 0; i != MAXCONNECTION; ++i) stopmosekthread(i);
-      // pthread_cancel(_threadid_database);
+      pthread_cancel(_threadid_database);
+
+      _closepncontroller();  // close pn server
     }
   }
+
   // setup the control mode of all vessels
   void setcontrolmode(int _controlmode) {
     index_controlmode_first = _controlmode;
@@ -258,8 +263,11 @@ class threadloop {
       2e-5,                                    // K_right
       20,                                      // max_delta_rotation_azimuth
       1000,                                    // max_rotation_azimuth
+      50,                                      // min_rotation_azimuth
       20,                                      // max_thrust_azimuth_left
       20,                                      // max_thrust_azimuth_right
+      0.05,                                    // min_thrust_azimuth_left
+      0.05,                                    // min_thrust_azimuth_right
       0.1277,                                  // max_delta_alpha_azimuth
       M_PI,                                    // max_alpha_azimuth_left
       0,                                       // min_alpha_azimuth_left
@@ -276,57 +284,54 @@ class threadloop {
   vessel_second _vessel_second{
       {623, 0, 0, 0, 706, 444, 0, 444, 1298},  // mass
       {17, 0, 0, 0, 20, 0, 0, 0, 100},         // damping
-      0.2,                                     // P_x
-      0.2,                                     // P_y
-      0.5,                                     // P_theta
+      2.0,                                     // P_x
+      1.5,                                     // P_y
+      8.0,                                     // P_theta
       0.0,                                     // I_x
       0.0,                                     // I_y
       0.0,                                     // I_theta
-      0.4,                                     // D_x
-      0.2,                                     // D_y
-      0.2,                                     // D_theta
+      20.0,                                    // D_x
+      5.0,                                     // D_y
+      30.0,                                    // D_theta
       0.01,                                    // allowed_error_x
       0.01,                                    // allowed_error_y;
-      0.01,                                    // allowed_error_orientation;
+      0.02,                                    // allowed_error_orientation;
       6.0,                                     // maxpositive_x_thrust(N)
       5.0,                                     // maxnegative_x_thrust(N)
       3,                                       // maxpositive_y_thrust(N)
       1.5,                                     // maxnegative_y_thrust(N)
       5,                                       // maxpositive_Mz_thrust(N*m)
       3,                                       // maxnegative_Mz_thrust(N*m)
-      // 26.0,    // maxpositive_x_thrust(N)
-      // 25.0,    // maxnegative_x_thrust(N)
-      // 6,       // maxpositive_y_thrust(N)
-      // 4,       // maxnegative_y_thrust(N)
-      // 11,      // maxpositive_Mz_thrust(N*m)
-      // 7.6,     // maxnegative_Mz_thrust(N*m)
-      3,       // m
-      3,       // n
-      9,       // numvar
-      3,       // num_constraints
-      5.6e-7,  // Kbar_positive
-      1.7e-7,  // Kbar_negative
-      100,     // max_delta_rotation_bow
-      3000,    // max_rotation_bow
-      5.04,    // max_thrust_bow_positive
-      1.53,    // max_thrust_bow_negative
-      2e-5,    // K_left
-      2e-5,    // K_right
-      20,      // max_delta_rotation_azimuth
-      1000,    // max_rotation_azimuth
-      20,      // max_thrust_azimuth_left
-      20,      // max_thrust_azimuth_right
-      0.1277,  // max_delta_alpha_azimuth
-      M_PI,    // max_alpha_azimuth_left
-      0,       // min_alpha_azimuth_left
-      0,       // max_alpha_azimuth_right
-      -M_PI,   // min_alpha_azimuth_right
-      1.9,     // bow_x
-      0,       // bow_y
-      -1.893,  // left_x
-      -0.216,  // left_y
-      -1.893,  // right_x
-      0.216    // right_y
+      3,                                       // m
+      3,                                       // n
+      9,                                       // numvar
+      3,                                       // num_constraints
+      5.5e-7,                                  // Kbar_positive
+      1.0e-7,                                  // Kbar_negative
+      100,                                     // max_delta_rotation_bow
+      3000,                                    // max_rotation_bow
+      4.95,                                    // max_thrust_bow_positive
+      0.9,                                     // max_thrust_bow_negative
+      2e-5,                                    // K_left
+      2e-5,                                    // K_right
+      20,                                      // max_delta_rotation_azimuth
+      1000,                                    // max_rotation_azimuth
+      20,                                      // min_rotation_azimuth
+      20,                                      // max_thrust_azimuth_left
+      20,                                      // max_thrust_azimuth_right
+      0.008,                                   // min_thrust_azimuth_left
+      0.008,                                   // min_thrust_azimuth_right
+      0.1277,                                  // max_delta_alpha_azimuth
+      M_PI,                                    // max_alpha_azimuth_left
+      M_PI / 180,                              // min_alpha_azimuth_left
+      -M_PI / 180,                             // max_alpha_azimuth_right
+      -M_PI,                                   // min_alpha_azimuth_right
+      1.9,                                     // bow_x
+      0,                                       // bow_y
+      -1.893,                                  // left_x
+      -0.216,                                  // left_y
+      -1.893,                                  // right_x
+      0.216                                    // right_y
   };
   // constant parameters of the third vessel
   vessel_third _vessel_third{
@@ -383,35 +388,35 @@ class threadloop {
   realtimevessel_first _realtimevessel_first{
       Vector6d::Zero(),         // measurement
       Vector6d::Zero(),         // position
-      Vector6d::Zero(),         // velocity
+      Eigen::Vector3d::Zero(),  // setPoints
       Vector6d::Zero(),         // state
       Eigen::Vector3d::Zero(),  // tau
       Eigen::Vector3d::Zero(),  // BalphaU
-      (Eigen::Vector3d() << -M_PI / 2, M_PI / 180, -M_PI / 30)
-          .finished(),                                    // alpha
-      Eigen::Vector3i::Zero(),                            // alpha_deg
-      (Eigen::Vector3d() << 0.01, 0.1, 0.01).finished(),  // u
-      Eigen::Vector3i::Zero()                             // rotation
+      (Eigen::Vector3d() << -M_PI / 2, M_PI / 30, -M_PI / 30)
+          .finished(),                                   // alpha
+      Eigen::Vector3i::Zero(),                           // alpha_deg
+      (Eigen::Vector3d() << 0.01, 0.2, 0.2).finished(),  // u
+      Eigen::Vector3i::Zero()                            // rotation
   };
   // realtime parameters of the second vessel (K class-II)
   realtimevessel_second _realtimevessel_second{
       Vector6d::Zero(),         // measurement
       Vector6d::Zero(),         // position
-      Vector6d::Zero(),         // velocity
+      Eigen::Vector3d::Zero(),  // setPoints
       Vector6d::Zero(),         // state
       Eigen::Vector3d::Zero(),  // tau
       Eigen::Vector3d::Zero(),  // BalphaU
       (Eigen::Vector3d() << M_PI / 2, M_PI / 10, -M_PI / 4)
           .finished(),                                   // alpha
       Eigen::Vector3i::Zero(),                           // alpha_deg
-      (Eigen::Vector3d() << 0.01, 0.0, 0.0).finished(),  // u
+      (Eigen::Vector3d() << 0.01, 0.2, 0.2).finished(),  // u
       Eigen::Vector3i::Zero()                            // rotation
   };
   // realtime parameters of the third vessel (X class)
   realtimevessel_third _realtimevessel_third{
       Vector6d::Zero(),         // measurement
       Vector6d::Zero(),         // position
-      Vector6d::Zero(),         // velocity
+      Eigen::Vector3d::Zero(),  // setPoints
       Vector6d::Zero(),         // state
       Eigen::Vector3d::Zero(),  // tau
       Eigen::Vector3d::Zero(),  // BalphaU
@@ -519,7 +524,7 @@ class threadloop {
     boost::posix_time::time_duration t_elapsed = t_end - t_start;
     long int mt_elapsed = 0;
     Eigen::Vector3d mysetpoint = Eigen::Vector3d::Zero();
-    mysetpoint << 5, 7, 0;
+    mysetpoint << 6, 4, 0;
     while (1) {
       // real-time control and optimization for each client
       t_start = boost::posix_time::second_clock::local_time();
