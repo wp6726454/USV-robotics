@@ -123,24 +123,31 @@ class threadloop {
     } else
       _threadmotioncapure.join();
   }
-
   // save data into sqlite database
   void save2database_t() {
     std::thread _thread(&threadloop::save2database, this);
     _threadid_database = _thread.native_handle();
     _thread.detach();
   }
-
+  // update setpoints
+  void updatesetpoints_t() {
+    std::thread _thread(&threadloop::updatesetpoints, this);
+    _threadid_setpoints = _thread.native_handle();
+    _thread.detach();
+  }
+  // reset all data, close controller, database and PN driver, and kill all
+  // threads
   void closelooop() {
     if (FILEORNOT) {
       for (int i = 0; i != MAXCONNECTION; ++i) stopmosekthread(i);
       resetallvessels();  // set zero of each vessel
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::seconds(1));
       pthread_cancel(_threadid_pnsend);
 
       closemotioncapture();  // close qtm clients
 
       // // close all thread
+      pthread_cancel(_threadid_setpoints);
       pthread_cancel(_threadid_gamepad);
       pthread_cancel(_threadid_motion);
       pthread_cancel(_threadid_database);
@@ -206,11 +213,12 @@ class threadloop {
  private:
   // thread pool
   typedef std::unordered_map<int, pthread_t> ThreadMap;
-  ThreadMap _tmclients;          // the id array of thread for socket connection
-  pthread_t _threadid_database;  // the id of thread for saving data
-  pthread_t _threadid_motion;    // the id of thread for motion capture
-  pthread_t _threadid_gamepad;   // the id of thread for gamepad
-  pthread_t _threadid_pnsend;    // the id of thread for gamepad
+  ThreadMap _tmclients;  // the id array of thread for socket connection
+  pthread_t _threadid_setpoints;  // the id of thread for setpoints
+  pthread_t _threadid_database;   // the id of thread for saving data
+  pthread_t _threadid_motion;     // the id of thread for motion capture
+  pthread_t _threadid_gamepad;    // the id of thread for gamepad
+  pthread_t _threadid_pnsend;     // the id of thread for gamepad
   //
   int connection_status;
   databasecpp mydb;
@@ -528,19 +536,17 @@ class threadloop {
         boost::posix_time::second_clock::local_time();
     boost::posix_time::time_duration t_elapsed = t_end - t_start;
     long int mt_elapsed = 0;
-    Eigen::Vector3d mysetpoint = Eigen::Vector3d::Zero();
-    mysetpoint << 6, 4, 0;
     while (1) {
       // real-time control and optimization for each client
       t_start = boost::posix_time::second_clock::local_time();
 
       if (index_controlmode_second == 1) {
         _controller_second.headingcontrolleronestep(
-            _realtimevessel_second, mysetpoint, mygamepad.getGamepadXforce(),
+            _realtimevessel_second, mygamepad.getGamepadXforce(),
             mygamepad.getGamepadYforce(), myfile_second);
       } else if (index_controlmode_second == 2) {
         _controller_second.pidcontrolleronestep(_realtimevessel_second,
-                                                mysetpoint, myfile_second);
+                                                myfile_second);
       } else {
         _controller_second.fullymanualcontroller(
             mygamepad.getGamepadXforce(), mygamepad.getGamepadYforce(),
@@ -613,8 +619,13 @@ class threadloop {
       mydb.create_client_table(i);
     }
   }
+  // update setpoints of each vessel
+  void updatesetpoints() {
+    mysetpoints.gofixedpoint_second(_realtimevessel_second,
+                                    _fixedpointdata_second);
+  }
 
-  void updatesetpoints() {}
+  // reset realtime data of each vessel
   void resetallvessels() {
     // reset the data of the first vessel
     _realtimevessel_first.Measurement.setZero();

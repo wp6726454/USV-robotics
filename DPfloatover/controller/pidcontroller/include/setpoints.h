@@ -117,7 +117,7 @@ class setpoints {
       _setpoints(1) = total_delta_y * mt_elapsed / total_mt_elapsed +
                       _strightlinedata.initialy;
       _setpoints(2) = _strightlinedata.desired_theta;
-    } while (mt_elapsed < total_mt_elapsed)
+    } while (mt_elapsed < total_mt_elapsed);
   }
 };
 #endif /* _SETPOINTS_H_ */
