@@ -125,9 +125,6 @@ class controller_first {
     else
       _realtimedata.tau(1) = yforce * maxnegative_y_thruster;
   }
-
-  // update setpoints
-  void updatesetpoints();
 };
 
 class controller_second {

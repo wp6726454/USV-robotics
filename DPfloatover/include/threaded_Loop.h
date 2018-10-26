@@ -23,6 +23,7 @@
 #include <thread>
 #include <unordered_map>
 #include "../controller/pidcontroller/include/controller.h"
+#include "../controller/pidcontroller/include/setpoints.h"
 #include "../joystick/include/gamepadmonitor.h"
 #include "../motioncapture/include/motioncapture.h"
 #include "../network/include/crccheck.h"
@@ -427,6 +428,10 @@ class threadloop {
       Eigen::Vector3i::Zero()                             // rotation
   };
 
+  // setpoints
+  fixedpointdata _fixedpointdata_second{6, 4, 0};
+
+  setpoints mysetpoints;
   // controller of each vessel
   controller_first _controller_first;
   controller_second _controller_second;
@@ -591,7 +596,7 @@ class threadloop {
       realtimeprint_third();
     }
   }
-
+  // function for send data to all clients using PN
   void send2allclients_pn() {
     if (MAXCONNECTION == 1) {
       send2firstvessel(&_realtimevessel_first, myfile);
@@ -601,7 +606,7 @@ class threadloop {
       std::this_thread::sleep_for(std::chrono::milliseconds(sample_mtime));
     }
   }
-
+  // create sqlite database
   void createtables() {
     for (int i = 0; i != MAXCONNECTION; ++i) {
       mydb.update_mastertable(i);
@@ -609,6 +614,7 @@ class threadloop {
     }
   }
 
+  void updatesetpoints() {}
   void resetallvessels() {
     // reset the data of the first vessel
     _realtimevessel_first.Measurement.setZero();
